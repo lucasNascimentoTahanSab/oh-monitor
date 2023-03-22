@@ -1,38 +1,91 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,700;1,300&display=swap');
+
+:root {
+  --color-gray: #808B96;
+  --color-white: #FFFFFF;
+  --color-blue--light: #D4E6F1;
+  --color-blue--light-medium: #84C7E6;
+  --color-blue--light-dark: #3498DB;
+  --color-blue--dark-medium: #212F3D;
+  --color-blue--dark-light: #2C3E50;
+  --color-blue--dark: #17202A;
+
+  --font-family--ubuntu: 'Ubuntu', sans-serif;
+
+  --font-size-10: .625rem;
+  --font-size-12: .75rem;
+  --font-size-14: .875rem;
+  --font-size-32: 2rem;
+
+  --font-weigth--bold: 700;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App {}
+
+.classroom {
+  display: grid;
+  grid-template-columns: .18fr .82fr;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.sidebar {
+  position: relative;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  gap: .9375rem;
+  padding: 3.125rem;
+  background-color: var(--color-blue--dark);
+  height: 100vh;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.sidebar-item {
+  display: flex;
+  gap: .3125rem;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
 }
 
-.App-link {
-  color: #61dafb;
+.sidebar-item__name:hover:not(.sidebar-item--selected) {
+  color: var(--color-blue--light-medium);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sidebar-item__name {
+  font-family: var(--font-family--ubuntu);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weigth--bold);
+  color: var(--color-blue--light);
+  transition: .5s;
+}
+
+.sidebar-item--selected {
+  color: var(--color-blue--light-dark);
+}
+
+.classroom-main {
+  display: grid;
+  grid-template-columns: .68fr .32fr;
+  height: 100vh;
+}
+
+/* utils */
+
+.overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.no-select {
+  -webkit-user-select: none;
+  /* Safari */
+  -ms-user-select: none;
+  /* IE 10 and IE 11 */
+  user-select: none;
+  /* Standard syntax */
 }
