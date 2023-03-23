@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Sidebar from '../Sidebar/Sidebar';
 import SidebarItem from '../SidebarItem/SidebarItem';
 
 function ClassroomSidebar(props) {
@@ -44,9 +43,9 @@ function ClassroomSidebar(props) {
   }
 
   return (
-    <Sidebar>
+    <nav className='section sidebar'>
       {getSidebarItems()}
-    </Sidebar>
+    </nav>
   );
 }
 

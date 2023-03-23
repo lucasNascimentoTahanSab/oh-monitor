@@ -15,12 +15,60 @@
   --font-size-10: .625rem;
   --font-size-12: .75rem;
   --font-size-14: .875rem;
+  --font-size-18: 1.125rem;
   --font-size-32: 2rem;
+
+  --line-height-18: 1.125rem;
+  --line-height-20: 1.25rem;
+  --line-height-40: 2.5rem;
 
   --font-weigth--bold: 700;
 }
 
-.App {}
+h2,
+h3,
+p,
+li,
+span {
+  font-family: var(--font-family--ubuntu);
+  color: var(--color-blue--dark);
+}
+
+h2,
+h3 {
+  font-weight: var(--font-weigth--bold);
+}
+
+h2 {
+  font-size: var(--font-size-32);
+  line-height: var(--line-height-40);
+  letter-spacing: .08rem;
+}
+
+h3 {
+  font-size: var(--font-size-18);
+  line-height: var(--line-height-20);
+  letter-spacing: .04rem;
+}
+
+p,
+li,
+span {
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-18);
+  letter-spacing: .045rem;
+}
+
+ol,
+ul {
+  padding-left: 1.875rem;
+}
+
+/* .App {} */
+
+.section {
+  padding: 3.125rem;
+}
 
 .classroom {
   display: grid;
@@ -33,7 +81,6 @@
   flex-direction: column;
   flex: 1;
   gap: .9375rem;
-  padding: 3.125rem;
   background-color: var(--color-blue--dark);
   height: 100vh;
   max-width: 100%;
@@ -73,6 +120,85 @@
   height: 100vh;
 }
 
+.classroom-main__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.875rem;
+  overflow: auto;
+}
+
+.classroom__content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.875rem;
+}
+
+.classroom__content-sections {
+  display: flex;
+  flex-direction: column;
+  gap: .9375rem;
+}
+
+.classroom__content-section {
+  display: flex;
+  flex-direction: column;
+  gap: .9375rem;
+}
+
+.classroom__content-section-item {
+  display: flex;
+  flex-direction: column;
+  gap: .9375rem;
+}
+
+.classroom__question {
+  list-style-position: inside;
+  padding: 0;
+}
+
+li.classroom__question-statement:not(:last-child) {
+  margin-bottom: 1.875rem;
+}
+
+.classroom__question-answers {
+  display: flex;
+  flex-direction: column;
+  gap: .9375rem;
+  padding: .9375rem 0 0 .9375rem;
+}
+
+.classroom__question-answer {
+  list-style: none;
+}
+
+.exercise__answer {
+  display: flex;
+  gap: .625rem;
+}
+
+.exercise__answer-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: .0625rem solid var(--color-blue--dark);
+  height: 2rem;
+  width: 2rem;
+  background: none;
+  cursor: pointer;
+  transition: .5s;
+}
+
+.exercise__answer-letter:hover {
+  color: var(--color-white);
+  background-color: var(--color-blue--light-medium);
+  border: none;
+}
+
+.exercise__answer-text {
+  padding-top: .4rem;
+}
+
 /* utils */
 
 .overflow-ellipsis {
@@ -88,4 +214,24 @@
   /* IE 10 and IE 11 */
   user-select: none;
   /* Standard syntax */
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: .625rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--color-blue--light);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-blue--dark-light);
 }
