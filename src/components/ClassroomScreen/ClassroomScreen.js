@@ -4,13 +4,13 @@ import ClassroomMain from '../ClassroomMain/ClassroomMain';
 import ClassroomPractice from '../ClassroomPractice/ClassroomPractice';
 import { ContentContext } from '../ContentContext/ContentContext';
 
-function ClassroomContent(props) {
+function ClassroomScreen(props) {
   const [content,] = useContext(ContentContext);
 
   function getCurrentContent() {
     if (typeof content !== 'object') { return null; }
 
-    return content.screen === 'main' ? <ClassroomMain questions={props.questions} /> :
+    return content.screen === 'main' ? <ClassroomMain content={props.content} questions={props.questions} /> :
       content.screen === 'practice' ? <ClassroomPractice /> :
         content.screen === 'creative' ? <ClassroomCreative /> :
           null;
@@ -19,4 +19,4 @@ function ClassroomContent(props) {
   return (<div>{getCurrentContent()}</div>);
 }
 
-export default ClassroomContent;
+export default ClassroomScreen;
