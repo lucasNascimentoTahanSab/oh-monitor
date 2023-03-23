@@ -5,7 +5,7 @@ import ClassroomMainNavigation from '../ClassroomMainNavigation/ClassroomMainNav
 function ClassroomMain(props) {
   return (
     <div className='classroom-main'>
-      <ClassroomMainContent />
+      <ClassroomMainContent questions={props.questions} />
       <ClassroomMainNavigation />
     </div>
   );

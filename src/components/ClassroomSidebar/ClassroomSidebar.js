@@ -35,7 +35,7 @@ function ClassroomSidebar(props) {
   }
 
   function getSidebarItems() {
-    if (!Array.isArray(props?.items)) { return null; }
+    if (!Array.isArray(items)) { return null; }
 
     return items.map(item => (
       <SidebarItem key={item.screen} screen={item.screen} label={item.label} selected={item.selected} selectItem={selectItem} />

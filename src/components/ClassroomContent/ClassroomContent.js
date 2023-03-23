@@ -10,7 +10,7 @@ function ClassroomContent(props) {
   function getCurrentContent() {
     if (typeof content !== 'object') { return null; }
 
-    return content.screen === 'main' ? <ClassroomMain /> :
+    return content.screen === 'main' ? <ClassroomMain questions={props.questions} /> :
       content.screen === 'practice' ? <ClassroomPractice /> :
         content.screen === 'creative' ? <ClassroomCreative /> :
           null;

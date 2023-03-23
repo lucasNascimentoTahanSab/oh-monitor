@@ -1,5 +1,5 @@
 import React from 'react';
-import ExerciseAnswer from '../ExerciseAnswer/ExerciseAnswer';
+import Exercise from '../Exercise/Exercise';
 
 function ClassroomMainContent(props) {
   return (
@@ -91,33 +91,7 @@ function ClassroomMainContent(props) {
           </section>
         </div>
       </section>
-      <section className='classroom__content'>
-        <h2>Exercícios</h2>
-        <div>
-          <ol className='classroom__question'>
-            <li className='classroom__question-statement'>
-              <span>Quanto aos conceitos de árvore binária, assinale a alternativa correta.</span>
-              <ul class='classroom__question-answers'>
-                <li className='classroom__question-answer'><ExerciseAnswer letter='A' answer='Operações que utilizam recursão não podem ser realizadas sobre árvores binárias.' /></li>
-                <li className='classroom__question-answer'><ExerciseAnswer letter='B' answer='A árvore pode ser vazia, isto é, não ter nenhum elemento.' /></li>
-                <li className='classroom__question-answer'><ExerciseAnswer letter='C' answer='Uma árvore estritamente binária com n folhas tem 2n² - 1 nós.' /></li>
-                <li className='classroom__question-answer'><ExerciseAnswer letter='D' answer='A altura de um nó é o comprimento do menor caminho do nó até o seu primeiro descendente.' /></li>
-                <li className='classroom__question-answer'><ExerciseAnswer letter='E' answer='Uma árvore binária completa possui, no máximo, oito nós.' /></li>
-              </ul>
-            </li>
-            <li className='classroom__question-statement'>
-              <span>Quanto aos conceitos de árvore binária, assinale a alternativa correta.</span>
-              <ul class='classroom__question-answers'>
-                <li className='classroom__question-answer'><ExerciseAnswer letter='A' answer='Operações que utilizam recursão não podem ser realizadas sobre árvores binárias.' /></li>
-                <li className='classroom__question-answer'><ExerciseAnswer letter='B' answer='A árvore pode ser vazia, isto é, não ter nenhum elemento.' /></li>
-                <li className='classroom__question-answer'><ExerciseAnswer letter='C' answer='Uma árvore estritamente binária com n folhas tem 2n² - 1 nós.' /></li>
-                <li className='classroom__question-answer'><ExerciseAnswer letter='D' answer='A altura de um nó é o comprimento do menor caminho do nó até o seu primeiro descendente.' /></li>
-                <li className='classroom__question-answer'><ExerciseAnswer letter='E' answer='Uma árvore binária completa possui, no máximo, oito nós.' /></li>
-              </ul>
-            </li>
-          </ol>
-        </div>
-      </section>
+      <Exercise questions={props.questions} />
     </div>
   );
 }
