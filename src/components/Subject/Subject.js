@@ -1,4 +1,5 @@
 import React from 'react';
+import CodeSnippet from '../CodeSnippet/CodeSnippet';
 
 function Subject(props) {
   return (
@@ -71,12 +72,14 @@ function Subject(props) {
           <h3>Implementação da BST</h3>
           <div className='classroom__content-section-item'>
             <p>Aqui temos uma definição para um nó da BST com alguns dados, referenciando seus nós filhos da esquerda e da direita.</p>
+            <CodeSnippet value={'struct node {\n\tint data;\n\tstruct node *leftChild;\n\tstruct node *rightChild;\n};'} />
           </div>
         </section>
         <section className='classroom__content-section'>
           <h3>Operação de pesquisa</h3>
           <div className='classroom__content-section-item'>
             <p>Sempre que um elemento precisa ser pesquisado, comece a pesquisa a partir do nó raiz. Depois, se os dados forem menores do que o valor-chave, pesquise o elemento na subárvore da esquerda. Do contrário, pesquise o elemento na subárvore da direita. Siga o mesmo algoritmo para cada nó.</p>
+            <CodeSnippet displayAnimationScreen={true} value={'struct node* search(int data) {\n\tstruct node *current = root;\n\tprintf("Elementos visitados: ");\n\n\twhile(current->data != data) {\n\t\tif(current != NULL) {\n\t\t\tprintf("%d ",current->data);\n\n\t\t\t// vá para a subárvore da esquerda\n\t\t\tif(current->data > data) { \n\t\t\t\tcurrent = current->leftChild; \n\t\t\t} // senão, vá para a subárvore da direita \n\t\t\telse { \n\t\t\t\tcurrent = current->rightChild; \n\t\t\t} // não encontrado \n\n\t\t\tif(current == NULL) {\n\t\t\t\treturn NULL; \n\t\t\t} \n\t\t} \n\t} \n\n\treturn current; \n}'} />
           </div>
         </section>
         <section className='classroom__content-section'>

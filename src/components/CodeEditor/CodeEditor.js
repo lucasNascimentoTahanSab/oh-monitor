@@ -1,24 +1,32 @@
-import Editor from "@monaco-editor/react"
-import { useRef } from "react"
+import React, { useRef } from 'react';
+import Editor from '@monaco-editor/react';
+import AnimationScreen from '../AnimationScreen/AnimationScreen';
+import CodeEditorOutput from '../CodeEditorOutput/CodeEditorOutput';
 
 function CodeEditor(props) {
-  const editorRef = useRef(null)
+  const editorRef = useRef(null);
 
   function handleEditorDidMount(editor, monaco) {
-    editorRef.current = editor
+    editorRef.current = editor;
   }
 
   return (
-    <div>
-      <Editor
-        height="90vh"
-        defaultLanguage="java"
-        defaultValue=""
-        theme="vs-dark"
-        onMount={handleEditorDidMount}
-      />
+    <div className='code-editor'>
+      <div className='code-editor__inner'>
+        <Editor
+          height={'34.6875rem'}
+          defaultLanguage='java'
+          value={props.value}
+          theme='vs-dark'
+          onMount={handleEditorDidMount}
+          options={{
+          }}
+        />
+        <AnimationScreen />
+      </div>
+      <CodeEditorOutput />
     </div>
-  )
+  );
 }
 
-export default CodeEditor
+export default CodeEditor;

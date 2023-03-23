@@ -1,8 +1,11 @@
 import React from 'react';
+import CodeEditor from '../CodeEditor/CodeEditor'
 
 function ClassroomPractice(props) {
   return (
-    <div></div>
+    <div className='section classroom-practice'>
+      <CodeEditor />
+    </div>
   );
 }
 
