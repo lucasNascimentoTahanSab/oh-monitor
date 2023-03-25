@@ -20,7 +20,7 @@ function Exercise(props) {
         </ol>
       </div>
       <div className='exercise__confirmation'>
-        <ButtonConfirmation text='Enviar' />
+        <ButtonConfirmation value='Enviar' />
       </div>
     </section>
   );
