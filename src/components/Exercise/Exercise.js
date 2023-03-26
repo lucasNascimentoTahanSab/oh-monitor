@@ -4,11 +4,9 @@ import ExerciseQuestion from '../ExerciseQuestion/ExerciseQuestion';
 
 function Exercise(props) {
   function getExerciseQuestions() {
-    if (!Array.isArray(props?.questions)) { return null; }
+    if (!Array.isArray(props.exercises?.data)) { return null; }
 
-    return props.questions.map(question => (
-      <ExerciseQuestion key={question.number} statement={question.statement} answers={question.answers} />
-    ));
+    return props.exercises.data.map(exercise => <ExerciseQuestion key={exercise.id} exercise={exercise} />);
   }
 
   return (

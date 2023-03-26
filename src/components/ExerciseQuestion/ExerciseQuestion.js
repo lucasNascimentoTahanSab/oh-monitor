@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ExerciseAnswer from '../ExerciseAnswer/ExerciseAnswer';
 
 function ExerciseQuestion(props) {
-  const [answers, setAnswers] = useState(props.answers);
+  const [answers, setAnswers] = useState(props.exercise?.attributes?.answers?.data);
   const [, updateState] = useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);;
 
@@ -42,14 +42,12 @@ function ExerciseQuestion(props) {
   function getQuestionAnswers() {
     if (!Array.isArray(answers)) { return null; }
 
-    return answers.map(answer => (
-      <ExerciseAnswer key={answer.letter} letter={answer.letter} statement={answer.statement} selected={answer.selected} selectAnswer={selectAnswer} />
-    ));
+    return answers.map(answer => <ExerciseAnswer key={answer.id} answer={answer} selectAnswer={selectAnswer} />);
   }
 
   return (
     <li className='exercise__question-statement'>
-      <span>Quanto aos conceitos de árvore binária, assinale a alternativa correta.</span>
+      <span>{props.exercise?.attributes?.statement}</span>
       <ul className='exercise__question-answers'>
         {getQuestionAnswers()}
       </ul>

@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ContentContext } from '../ContentContext/ContentContext';
 import ClassroomScreen from '../ClassroomScreen/ClassroomScreen';
 import ClassroomSidebar from '../ClassroomSidebar/ClassroomSidebar';
-import { contents } from '../../classes/Content';
+import { contents } from '../../classes/content';
+import { callouts } from '../../classes/callout';
 
 function Classroom(props) {
   const [content, setContent] = useState(contents['main']);
+  const [subject, setSubject] = useState({});
+
+  useEffect(() => { getSubject() });
+
+  async function getSubject() {
+    setSubject(await callouts.content.getSubject(props.subjectId));
+  }
 
   return (
     <ContentContext.Provider value={[content, setContent]}>
@@ -17,6 +25,7 @@ function Classroom(props) {
             { label: 'Criativo', selected: false, screen: 'creative' }
           ]} />
         <ClassroomScreen
+          subject={subject}
           content={{}}
           questions={[
             {

@@ -3,21 +3,15 @@ import Editor from '@monaco-editor/react';
 import AnimationScreen from '../AnimationScreen/AnimationScreen';
 import CodeEditorOutput from '../CodeEditorOutput/CodeEditorOutput';
 import ButtonConfirmation from '../ButtonConfirmation/ButtonConfirmation';
+import { callouts } from '../../classes/callout';
 
 function CodeEditor(props) {
   const editorRef = useRef(null);
 
-  function sendCode() {
-    fetch('/api/code/submit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ code: editorRef.current.getValue(), language: 'java' })
-    })
-      .then(result => result.json())
-      .then(result => console.log(result))
-      .catch(error => console.log(error));
+  async function sendCode() {
+    const response = await callouts.code.post({ code: editorRef.current.getValue(), language: 'java' });
+
+    console.log(response);
   }
 
   function handleEditorDidMount(editor,) {

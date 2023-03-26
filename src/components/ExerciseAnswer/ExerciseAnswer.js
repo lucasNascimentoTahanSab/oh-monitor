@@ -4,7 +4,7 @@ function ExerciseAnswer(props) {
   function onAnswerClick() {
     if (typeof props?.selectAnswer !== 'function') { return; }
 
-    props.selectAnswer(props.letter);
+    props.selectAnswer(props.answer?.attributes?.letter);
   }
 
   function getLetterClass() {
@@ -14,8 +14,8 @@ function ExerciseAnswer(props) {
   return (
     <li className='exercise__question-answer'>
       <div className='exercise__answer' onClick={onAnswerClick}>
-        <button className={getLetterClass()}>{props.letter}</button>
-        <p className='exercise__answer-text'>{props.statement}</p>
+        <button className={getLetterClass()}>{props.answer?.attributes?.letter}</button>
+        <p className='exercise__answer-text'>{props.answer?.attributes?.statement}</p>
       </div>
     </li>
   );

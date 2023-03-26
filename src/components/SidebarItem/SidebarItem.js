@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ContentContext } from '../ContentContext/ContentContext';
 import { ReactComponent as Asterisk } from '../../svg/asterisk.svg';
-import { contents } from '../../classes/Content';
+import { contents } from '../../classes/content';
 
 function SidebarItem(props) {
   const [, setContent] = useContext(ContentContext);

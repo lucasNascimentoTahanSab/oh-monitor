@@ -5,8 +5,8 @@ import Subject from '../Subject/Subject';
 function ClassroomMainContent(props) {
   return (
     <div className='section classroom-screen__content'>
-      <Subject content={props.content} />
-      <Exercise questions={props.questions} />
+      <Subject subject={props.subject} />
+      <Exercise exercises={props.subject?.exercises} questions={props.questions} />
     </div>
   );
 }
