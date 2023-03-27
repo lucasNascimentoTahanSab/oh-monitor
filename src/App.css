@@ -116,7 +116,7 @@ ul {
   color: var(--color-blue--light-dark);
 }
 
-.classroom-main {
+.classroom-stage {
   display: grid;
   grid-template-columns: .68fr .32fr;
   height: 100vh;

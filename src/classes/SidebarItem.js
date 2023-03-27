@@ -1,4 +1,4 @@
-export default class SidebarItem {
+export default class ClassroomSidebarItem {
   label;
   selected;
 

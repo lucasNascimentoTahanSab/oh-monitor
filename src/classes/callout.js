@@ -12,9 +12,9 @@ export const callouts = {
     )
   },
   content: {
-    getSubject: async subjectId => (
+    getSubject: async uuid => (
       new Promise((resolve, reject) => {
-        fetch(endpoints.content.getSubject(subjectId), requests.content.getSubject())
+        fetch(endpoints.content.getSubject(uuid), requests.content.getSubject())
           .then(response => resolve(response.json()))
           .catch(error => reject(error))
       })

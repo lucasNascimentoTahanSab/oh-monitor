@@ -3,6 +3,6 @@ export const endpoints = {
     post: '/api/code/submit'
   },
   content: {
-    getSubject: subjectId => `api/content/subjects/${subjectId}`
+    getSubject: uuid => `api/content/subjects/${uuid}`
   }
 };

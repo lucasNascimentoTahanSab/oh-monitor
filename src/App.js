@@ -1,10 +1,10 @@
 import './App.css';
-import Classroom from './components/Classroom/Classroom';
+import Classroom from './components/ClassroomComponents/Classroom/Classroom';
 
 function App() {
   return (
     <div className="App">
-      <Classroom subjectId='1' />
+      <Classroom uuid='a3657d92-cca3-11ed-afa1-0242ac120002' />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { createElement } from 'react';
-import CodeSnippet from '../components/CodeSnippet/CodeSnippet';
+import CodeSnippet from '../components/CodeComponents/CodeSnippet/CodeSnippet';
 
 export function getElement(element) {
   switch (element?.attributes?.type) {
@@ -19,19 +19,19 @@ export function getElement(element) {
 }
 
 function getCodeSnippet(element) {
-  return createElement(CodeSnippet, { key: element.id, displayAnimationScreen: element.attributes.displayAnimationScreen });
+  return createElement(CodeSnippet, { key: element.attributes.uuid, displayAnimationScreen: element.attributes.displayAnimationScreen });
 }
 
 function getBlockElement(element) {
-  return createElement(element.attributes.type, { key: element.id }, getBlockElementInnetHTML(element));
+  return createElement(element.attributes.type, { key: element.attributes.uuid, id: element.attributes.uuid }, getBlockElementInnetHTML(element));
 }
 
 function getBlockElementInnetHTML(element) {
-  if (!Array.isArray(element.attributes?.elements?.data)) { return; }
+  if (!Array.isArray(element?.attributes.elements?.data)) { return; }
 
   return element.attributes.elements.data.map(innerElement => getElement(innerElement));
 }
 
 function getInlineElement(element) {
-  return createElement(element.attributes.type, { key: element.id }, element.attributes.value);
+  return createElement(element.attributes.type, { key: element.attributes.uuid, id: element.attributes.uuid }, element.attributes.value);
 }

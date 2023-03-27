@@ -4,7 +4,7 @@ module.exports = {
   getSubjectRequest: req => {
     return {
       method: 'GET',
-      url: `${process.env.ST_ENDPOINT}subjects/${req.params.subjectId}?populate[sections][populate][0]=elements&populate[sections][populate][1]=elements.elements&populate[exercises][populate][0]=answers`,
+      url: `${process.env.ST_ENDPOINT}/subjects?filters[uuid][$eq]=${req.params.subjectId}&populate[tabs][populate][1]=sections.elements.elements&populate[tabs][populate][2]=exercises.answers`,
       headers: { 'Authorization': process.env.ST_TOKEN },
     };
   }
