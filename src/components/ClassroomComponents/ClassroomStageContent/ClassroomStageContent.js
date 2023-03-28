@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ExerciseContext } from '../../Context/ExerciseContext/ExerciseContext';
 import ClassroomStageExercises from '../ClassroomStageExercises/ClassroomStageExercises';
 import ClassroomStageSections from '../ClassroomStageSections/ClassroomStageSections';
 
 function ClassroomStageContent(props) {
+  const [exercises,] = useContext(ExerciseContext);
+
   function getExercises() {
-    return Array.isArray(props.tab?.attributes?.exercises?.data)
-      ? <ClassroomStageExercises exercises={props.tab?.attributes?.exercises?.data} />
-      : null;
+    return Array.isArray(exercises) && exercises.length ? <ClassroomStageExercises /> : null;
   }
 
   return (
     <div className='section classroom-screen__content'>
-      <ClassroomStageSections tab={props.tab} />
+      <ClassroomStageSections />
       {getExercises()}
     </div>
   );

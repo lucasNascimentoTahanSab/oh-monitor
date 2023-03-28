@@ -1,9 +1,17 @@
 import React, { useContext } from 'react';
 import { TabContext } from '../../Context/TabContext/TabContext';
+import { ExerciseContext } from '../../Context/ExerciseContext/ExerciseContext';
 import { ReactComponent as Asterisk } from '../../../svg/asterisk.svg';
+import { util } from '../../../classes/util';
 
 function ClassroomSidebarItem(props) {
   const [tab, setTab] = useContext(TabContext);
+  const [, setExercises] = useContext(ExerciseContext);
+
+  function onItemClick() {
+    setTab(props.tab);
+    setExercises(util.getExercises(props.tab));
+  }
 
   function selected() {
     return isCurrentTabSelected(props.tab)
@@ -23,7 +31,7 @@ function ClassroomSidebarItem(props) {
   }
 
   return (
-    <button id={props.tab?.attributes?.uuid} className='sidebar-item' onClick={() => setTab(props.tab)}>
+    <button id={props.tab?.attributes?.uuid} className='sidebar-item' onClick={onItemClick}>
       {selected()}
       <span className={getItemClass()} title={props.tab?.attributes?.title}>{props.tab?.attributes?.title}</span>
     </button>

@@ -1,20 +1,65 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ExerciseContext } from '../../Context/ExerciseContext/ExerciseContext';
 import ClassroomStageExerciseAnswer from '../ClassroomStageExerciseAnswer/ClassroomStageExerciseAnswer';
 
 function ClassroomStageExercise(props) {
-  function getQuestionAnswers() {
-    if (!Array.isArray(props.exercise?.attributes?.answers?.data)) { return null; }
+  const [exercises, setExercises] = useContext(ExerciseContext);
 
-    return props.exercise.attributes.answers.data.map((answer, index) =>
-      <ClassroomStageExerciseAnswer key={answer.attributes?.uuid} answer={answer} index={index} />
+  function selectAnswer(uuid) {
+    const exercise = getExerciseByUuid(props.exercise?.uuid);
+
+    unselectCurrentAnswer(exercise);
+    selectAnswerByUuid(uuid, exercise);
+    setExercises([...exercises]);
+  }
+
+  function selectAnswerByUuid(uuid, exercise) {
+    const answer = getAnswerByUuid(uuid, exercise);
+
+    if (!answer) { return; }
+
+    answer.selected = true;
+  }
+
+  function getAnswerByUuid(uuid, exercise) {
+    if (!Array.isArray(exercise?.answers)) { return null; }
+
+    return exercise.answers.find(answer => answer.uuid === uuid);
+  }
+
+  function unselectCurrentAnswer(exercise) {
+    const currentAnswer = getCurrentAnswer(exercise);
+
+    if (!currentAnswer) { return; }
+
+    currentAnswer.selected = false;
+  }
+
+  function getCurrentAnswer(exercise) {
+    if (!Array.isArray(exercise?.answers)) { return null; }
+
+    return exercise.answers.find(answer => answer.selected);
+  }
+
+  function getExerciseByUuid(uuid) {
+    if (!Array.isArray(exercises)) { return null; }
+
+    return exercises.find(exercise => exercise.uuid === uuid);
+  }
+
+  function getExerciseAnswers() {
+    if (!Array.isArray(props.exercise?.answers)) { return null; }
+
+    return props.exercise.answers.map((answer, index) =>
+      <ClassroomStageExerciseAnswer key={answer.uuid} answer={answer} index={index} selectAnswer={selectAnswer} />
     );
   }
 
   return (
-    <li id={props.exercise?.attributes?.uuid} className='exercise__question-statement'>
-      <span>{props.exercise?.attributes?.statement}</span>
+    <li id={props.exercise?.uuid} className='exercise__question-statement'>
+      <span>{props.exercise?.statement}</span>
       <ul className='exercise__question-answers'>
-        {getQuestionAnswers()}
+        {getExerciseAnswers()}
       </ul>
     </li>
   );

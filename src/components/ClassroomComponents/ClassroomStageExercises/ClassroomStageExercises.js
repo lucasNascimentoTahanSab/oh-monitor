@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ExerciseContext } from '../../Context/ExerciseContext/ExerciseContext';
 import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation';
 import ClassroomStageExercise from '../ClassroomStageExercise/ClassroomStageExercise';
 
 function ClassroomStageExercises(props) {
-  function getExercises() {
-    if (!Array.isArray(props.exercises)) { return null; }
+  const [exercises,] = useContext(ExerciseContext);
 
-    return props.exercises.map(exercise => <ClassroomStageExercise key={exercise.attributes?.uuid} exercise={exercise} />);
+  function getExercises() {
+    if (!Array.isArray(exercises)) { return null; }
+
+    return exercises.map(exercise => <ClassroomStageExercise key={exercise.uuid} exercise={exercise} />);
   }
 
   return (

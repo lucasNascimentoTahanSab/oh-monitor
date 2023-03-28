@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { TabContext } from '../../Context/TabContext/TabContext';
 import ClassroomStageSection from '../ClassroomStageSection/ClassroomStageSection';
 
 function ClassroomStageSections(props) {
-  function getSections() {
-    if (!Array.isArray(props.tab?.attributes?.sections?.data)) { return null; }
+  const [tab,] = useContext(TabContext);
 
-    return props.tab.attributes.sections.data.map(section => <ClassroomStageSection key={section.attributes?.uuid} section={section} />);
+  function getSections() {
+    if (!Array.isArray(tab?.attributes?.sections?.data)) { return null; }
+
+    return tab.attributes.sections.data.map(section => <ClassroomStageSection key={section.attributes?.uuid} section={section} />);
   }
 
   return (
     <section className='classroom__content'>
-      <h2>{props.tab?.attributes?.title}</h2>
+      <h2>{tab?.attributes?.title}</h2>
       <div className='classroom__content-sections'>
         {getSections()}
       </div>
