@@ -31,7 +31,8 @@ h2,
 h3,
 p,
 li,
-span {
+span,
+button {
   font-family: var(--font-family--ubuntu);
   color: var(--color-blue--dark);
 }
@@ -55,7 +56,8 @@ h3 {
 
 p,
 li,
-span {
+span,
+button {
   font-size: var(--font-size-14);
   line-height: var(--line-height-18);
   letter-spacing: .045rem;
@@ -186,6 +188,7 @@ li.exercise__question-statement:not(:last-child) {
   border: .0625rem solid var(--color-blue--dark);
   height: 2rem;
   width: 2rem;
+  min-width: 2rem;
   background: none;
   cursor: pointer;
   transition: .25s;
@@ -286,6 +289,31 @@ li.exercise__question-statement:not(:last-child) {
   cursor: text;
   min-height: 3.375rem;
   box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.25);
+}
+
+.classroom-stage__navigation {
+  display: flex;
+  flex-direction: column;
+  gap: .625rem;
+  overflow: auto;
+}
+
+.navigation-item {
+  display: flex;
+  align-items: center;
+  gap: .3125rem;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0;
+}
+
+.navigation-item__name {
+  font-weight: var(--font-weigth--bold);
+  color: var(--color-gray);
+}
+
+.navigation-item__navigation-items {
+  padding: .3125rem 0 0 1.1875rem;
 }
 
 /* utils */
