@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 module.exports = {
-  getRequest: req => {
+  getRequest(req) {
     const encodedParams = new URLSearchParams();
 
     encodedParams.append('code', req.body.code);

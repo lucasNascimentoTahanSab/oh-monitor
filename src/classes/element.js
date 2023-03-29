@@ -19,7 +19,7 @@ export function getElement(element) {
 }
 
 function getCodeSnippet(element) {
-  return createElement(CodeSnippet, { key: element.attributes.uuid, displayAnimationScreen: element.attributes.displayAnimationScreen });
+  return createElement(CodeSnippet, { key: element.attributes.uuid, element });
 }
 
 function getBlockElement(element) {

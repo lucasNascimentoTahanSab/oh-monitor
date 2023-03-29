@@ -19,5 +19,14 @@ export const callouts = {
           .catch(error => reject(error))
       })
     )
+  },
+  repo: {
+    getFile: async (path, language, extension) => (
+      new Promise((resolve, reject) => {
+        fetch(endpoints.repo.getFile(path, language, extension), requests.repo.getFile())
+          .then(response => resolve(response.json()))
+          .catch(error => reject(error))
+      })
+    )
   }
 };

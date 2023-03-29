@@ -10,5 +10,10 @@ export const requests = {
     getSubject: () => ({
       method: 'GET'
     })
+  },
+  repo: {
+    getFile: () => ({
+      method: 'GET'
+    })
   }
 };
