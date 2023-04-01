@@ -3,7 +3,7 @@ import ButtonDropdown from '../../ButtonComponents/ButtonDropdown/ButtonDropdown
 
 function ClassroomStageNavigationItem(props) {
   function getNavigationItemButton() {
-    return Array.isArray(props.navigationItem?.attributes?.navigationItems?.data) && props.navigationItem.attributes.navigationItems.data.length
+    return props.navigationItem?.attributes?.navigationItems?.data?.length
       ? (
         <div className='overflow-ellipsis'>
           <a className='navigation-item' href={`#${props.navigationItem?.attributes?.uuidParent ?? '#'}`}>
@@ -22,7 +22,7 @@ function ClassroomStageNavigationItem(props) {
   }
 
   function getNavigation() {
-    return Array.isArray(props.navigationItem?.attributes?.navigationItems?.data) && props.navigationItem.attributes.navigationItems.data.length
+    return props.navigationItem?.attributes?.navigationItems?.data?.length
       ? (
         <nav className='classroom-stage__navigation navigation-item__navigation-items'>
           {getNavigationItems()}
@@ -32,7 +32,7 @@ function ClassroomStageNavigationItem(props) {
   }
 
   function getNavigationItems() {
-    return Array.isArray(props.navigationItem?.attributes?.navigationItems?.data) && props.navigationItem.attributes.navigationItems.data.length
+    return props.navigationItem?.attributes?.navigationItems?.data?.length
       ? props.navigationItem.attributes.navigationItems.data.map(navigationItem =>
         <ClassroomStageNavigationItem key={navigationItem.attributes?.uuid} navigationItem={navigationItem} />
       )

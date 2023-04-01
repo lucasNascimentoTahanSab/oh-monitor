@@ -124,6 +124,12 @@ ul {
   height: 100vh;
 }
 
+.classroom-stage--without-navigation {
+  display: grid;
+  grid-template-columns: 1fr;
+  height: 100vh;
+}
+
 .classroom-screen__content {
   display: flex;
   flex-direction: column;
@@ -295,7 +301,8 @@ li.exercise__question-statement:not(:last-child) {
   display: flex;
   flex-direction: column;
   gap: .625rem;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .navigation-item {

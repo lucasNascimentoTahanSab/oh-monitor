@@ -3,7 +3,7 @@ import ClassroomSidebarItem from '../ClassroomSidebarItem/ClassroomSidebarItem';
 
 function ClassroomSidebar(props) {
   function getSidebarItems() {
-    if (!Array.isArray(props.tabs?.data)) { return null; }
+    if (!props.tabs?.data?.length) { return null; }
 
     return props.tabs.data.map(tab => <ClassroomSidebarItem key={tab.attributes?.uuid} tab={tab} />);
   }

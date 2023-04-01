@@ -6,7 +6,7 @@ function ClassroomStageNavigation(props) {
   const [tab,] = useContext(TabContext);
 
   function getNavigationItems() {
-    if (!Array.isArray(tab?.attributes?.navigation?.data?.attributes?.navigationItems?.data)) { return; }
+    if (!tab?.attributes?.navigation?.data?.attributes?.navigationItems?.data?.length) { return null; }
 
     return tab.attributes.navigation.data.attributes.navigationItems.data.map(navigationItem =>
       <ClassroomStageNavigationItem key={navigationItem.attributes?.uuid} navigationItem={navigationItem} />

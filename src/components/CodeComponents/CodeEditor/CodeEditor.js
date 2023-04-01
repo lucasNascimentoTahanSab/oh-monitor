@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import Editor from '@monaco-editor/react';
-import AnimationScreen from '../AnimationScreen/AnimationScreen';
+import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen';
 import CodeEditorOutput from '../CodeEditorOutput/CodeEditorOutput';
-import ButtonConfirmation from '../ButtonConfirmation/ButtonConfirmation';
+import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation';
 import { callouts } from '../../../classes/callout';
 
 function CodeEditor(props) {
@@ -20,11 +20,10 @@ function CodeEditor(props) {
 
   return (
     <div className='code-editor'>
-      <ButtonConfirmation value='Enviar' onClick={sendCode} />
       <div className='code-editor__inner'>
         <Editor
           height={'34.6875rem'}
-          defaultLanguage='java'
+          defaultLanguage='c'
           value={props.value}
           theme='vs-dark'
           onMount={handleEditorDidMount}
@@ -34,6 +33,7 @@ function CodeEditor(props) {
         <AnimationScreen />
       </div>
       <CodeEditorOutput />
+      <ButtonConfirmation value='Enviar' onClick={sendCode} />
     </div>
   );
 }

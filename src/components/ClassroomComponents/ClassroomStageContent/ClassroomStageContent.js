@@ -7,7 +7,7 @@ function ClassroomStageContent(props) {
   const [exercises,] = useContext(ExerciseContext);
 
   function getExercises() {
-    return Array.isArray(exercises) && exercises.length ? <ClassroomStageExercises /> : null;
+    return exercises?.length ? <ClassroomStageExercises /> : null;
   }
 
   return (

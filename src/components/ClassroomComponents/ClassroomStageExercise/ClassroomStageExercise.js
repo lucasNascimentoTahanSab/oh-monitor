@@ -22,7 +22,7 @@ function ClassroomStageExercise(props) {
   }
 
   function getAnswerByUuid(uuid, exercise) {
-    if (!Array.isArray(exercise?.answers)) { return null; }
+    if (!exercise?.answers?.length) { return null; }
 
     return exercise.answers.find(answer => answer.uuid === uuid);
   }
@@ -36,19 +36,19 @@ function ClassroomStageExercise(props) {
   }
 
   function getCurrentAnswer(exercise) {
-    if (!Array.isArray(exercise?.answers)) { return null; }
+    if (!exercise?.answers?.length) { return null; }
 
     return exercise.answers.find(answer => answer.selected);
   }
 
   function getExerciseByUuid(uuid) {
-    if (!Array.isArray(exercises)) { return null; }
+    if (!exercises?.length) { return null; }
 
     return exercises.find(exercise => exercise.uuid === uuid);
   }
 
   function getExerciseAnswers() {
-    if (!Array.isArray(props.exercise?.answers)) { return null; }
+    if (!props.exercise?.answers?.length) { return null; }
 
     return props.exercise.answers.map((answer, index) =>
       <ClassroomStageExerciseAnswer key={answer.uuid} answer={answer} index={index} selectAnswer={selectAnswer} />

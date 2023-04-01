@@ -7,7 +7,7 @@ function ClassroomStageExercises(props) {
   const [exercises,] = useContext(ExerciseContext);
 
   function getExercises() {
-    if (!Array.isArray(exercises)) { return null; }
+    if (!exercises?.length) { return null; }
 
     return exercises.map(exercise => <ClassroomStageExercise key={exercise.uuid} exercise={exercise} />);
   }

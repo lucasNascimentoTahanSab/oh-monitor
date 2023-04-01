@@ -8,7 +8,7 @@ export default class Exercise {
   }
 
   _getAnswers(exercise) {
-    if (!Array.isArray(exercise?.attributes?.answers?.data)) { return []; }
+    if (!exercise?.attributes?.answers?.data?.length) { return []; }
 
     return exercise.attributes.answers.data.map(answer => new Answer(answer));
   }

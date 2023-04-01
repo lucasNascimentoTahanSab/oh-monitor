@@ -6,7 +6,7 @@ function ClassroomStageSections(props) {
   const [tab,] = useContext(TabContext);
 
   function getSections() {
-    if (!Array.isArray(tab?.attributes?.sections?.data)) { return null; }
+    if (!tab?.attributes?.sections?.data?.length) { return null; }
 
     return tab.attributes.sections.data.map(section => <ClassroomStageSection key={section.attributes?.uuid} section={section} />);
   }

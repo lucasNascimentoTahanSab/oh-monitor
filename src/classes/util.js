@@ -2,12 +2,12 @@ import Exercise from './exercise'
 
 export const util = {
   getMainTab(subject) {
-    if (!Array.isArray(subject?.attributes?.tabs?.data)) { return null; }
+    if (!subject?.attributes?.tabs?.data?.length) { return null; }
 
     return subject.attributes.tabs.data.find(tab => tab.attributes?.main);
   },
   getExercises(tab) {
-    if (!Array.isArray(tab?.attributes?.exercises?.data)) { return null; }
+    if (!tab?.attributes?.exercises?.data?.length) { return null; }
 
     return tab.attributes.exercises.data.map(exercise => new Exercise(exercise));
   },

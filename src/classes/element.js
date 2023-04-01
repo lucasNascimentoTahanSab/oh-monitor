@@ -27,7 +27,7 @@ function getBlockElement(element) {
 }
 
 function getBlockElementInnetHTML(element) {
-  if (!Array.isArray(element?.attributes.elements?.data)) { return; }
+  if (!element?.attributes.elements?.data?.length) { return; }
 
   return element.attributes.elements.data.map(innerElement => getElement(innerElement));
 }
