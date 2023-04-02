@@ -274,26 +274,51 @@ li.exercise__question-statement:not(:last-child) {
   display: flex;
   flex-direction: column;
   gap: .625rem;
-  background-color: rgb(30, 30, 30);
-  padding: 1.25rem;
+  background-color: var(--color-blue--dark);
   border-radius: .625rem;
+  overflow: hidden;
 }
 
-.code-editor__inner {
+.code-editor__workspace {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.code-editor__workspace-inner {
   display: flex;
   gap: 1.25rem;
   width: 100%;
   height: 100%;
 }
 
+.code-editor__menu {
+  display: flex;
+  width: 100%;
+  background-color: var(--color-blue--dark-medium);
+}
+
+.code-editor__menu-tabs {
+  display: flex;
+  width: 100%;
+  overflow: auto;
+}
+
+/* .code-editor__menu-settings {} */
+
+.code-editor__file {
+  width: 100%;
+}
+
 .code-editor__output {
   border-radius: .625rem;
   border: .0625rem dashed var(--color-blue--light);
-  background-color: rgb(30, 30, 30);
+  background-color: var(--color-blue--dark);
   color: var(--color-white);
   padding: .625rem;
   cursor: text;
-  min-height: 3.375rem;
+  min-height: 5rem;
   box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.25);
 }
 

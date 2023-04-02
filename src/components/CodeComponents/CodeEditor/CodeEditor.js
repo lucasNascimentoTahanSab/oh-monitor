@@ -1,39 +1,32 @@
-import React, { useRef } from 'react';
-import Editor from '@monaco-editor/react';
-import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen';
+import React, { useEffect, useState } from 'react';
 import CodeEditorOutput from '../CodeEditorOutput/CodeEditorOutput';
-import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation';
+import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
+import File from '../../../classes/file';
 import { callouts } from '../../../classes/callout';
 
 function CodeEditor(props) {
-  const editorRef = useRef(null);
+  const [files, setFiles] = useState([]);
 
-  async function sendCode() {
-    const response = await callouts.code.post({ code: editorRef.current.getValue(), language: 'java' });
+  useEffect(() => { if (!files.length) { getFiles(); } });
 
-    console.log(response);
+  async function getFiles() {
+    if (!props.files?.length) { return; }
+
+    setFiles(await retriveFilesFromRepo());
   }
 
-  function handleEditorDidMount(editor,) {
-    editorRef.current = editor;
+  async function retriveFilesFromRepo() {
+    return Promise.all(props.files.map(retriveFileFromRepo));
+  }
+
+  async function retriveFileFromRepo(file) {
+    return new File(file.attributes, (await callouts.repo.getFile(file.attributes?.path, 'c', 'c'))?.data);
   }
 
   return (
     <div className='code-editor'>
-      <div className='code-editor__inner'>
-        <Editor
-          height={'34.6875rem'}
-          defaultLanguage='c'
-          value={props.value}
-          theme='vs-dark'
-          onMount={handleEditorDidMount}
-          options={{
-          }}
-        />
-        <AnimationScreen />
-      </div>
+      <CodeEditorWorkspace files={files} />
       <CodeEditorOutput />
-      <ButtonConfirmation value='Enviar' onClick={sendCode} />
     </div>
   );
 }

@@ -9,7 +9,7 @@ function CodeSnippet(props) {
   useEffect(() => { if (!snippet) { getSnippet(); } });
 
   async function getSnippet() {
-    setSnippet((await callouts.repo.getFile(props.element?.attributes?.value, 'c', 'c'))?.data);
+    setSnippet((await callouts.repo.getFile(props.element?.attributes?.value, 'c', 'c'))?.data ?? snippet);
   }
 
   function displayAnimationScreen() {

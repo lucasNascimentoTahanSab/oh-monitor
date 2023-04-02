@@ -7,7 +7,7 @@ export const util = {
     return subject.attributes.tabs.data.find(tab => tab.attributes?.main);
   },
   getExercises(tab) {
-    if (!tab?.attributes?.exercises?.data?.length) { return null; }
+    if (!tab?.attributes?.exercises?.data?.length) { return []; }
 
     return tab.attributes.exercises.data.map(exercise => new Exercise(exercise));
   },
@@ -15,5 +15,10 @@ export const util = {
     if (typeof index !== 'number') { return String.fromCharCode(65); }
 
     return String.fromCharCode(index + 65);
+  },
+  getCurrentFile(files) {
+    if (!files?.length) { return null; }
+
+    return files.find(file => file.current);
   }
 };
