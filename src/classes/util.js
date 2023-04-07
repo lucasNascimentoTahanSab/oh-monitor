@@ -20,5 +20,10 @@ export const util = {
     if (!files?.length) { return null; }
 
     return files.find(file => file.current);
+  },
+  getFileByUuid(files, uuid) {
+    if (!files?.length) { return null; }
+
+    return files.find(file => file.uuid === uuid);
   }
 };

@@ -68,6 +68,14 @@ ul {
   padding-left: 1.875rem;
 }
 
+button {
+  display: flex;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
 /* .App {} */
 
 .section {
@@ -195,8 +203,6 @@ li.exercise__question-statement:not(:last-child) {
   height: 2rem;
   width: 2rem;
   min-width: 2rem;
-  background: none;
-  cursor: pointer;
   transition: .25s;
 }
 
@@ -271,12 +277,21 @@ li.exercise__question-statement:not(:last-child) {
 }
 
 .code-editor {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: .625rem;
-  background-color: var(--color-blue--dark);
   border-radius: .625rem;
   overflow: hidden;
+}
+
+.code-editor--fullscreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
 }
 
 .code-editor__workspace {
@@ -287,16 +302,19 @@ li.exercise__question-statement:not(:last-child) {
 }
 
 .code-editor__workspace-inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1.25rem;
   width: 100%;
   height: 100%;
+  padding: .625rem .625rem .625rem 0;
+  background-color: var(--color-blue--dark);
 }
 
 .code-editor__menu {
   display: flex;
   width: 100%;
-  background-color: var(--color-blue--dark-medium);
+  background-color: var(--color-blue--dark-light);
 }
 
 .code-editor__menu-tabs {
@@ -305,21 +323,68 @@ li.exercise__question-statement:not(:last-child) {
   overflow: auto;
 }
 
-/* .code-editor__menu-settings {} */
+.menu__item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.menu__item-radio {
+  display: none;
+}
+
+.menu__item-radio:checked~.menu__item-label {
+  background-color: var(--color-blue--dark);
+}
+
+.menu__item-radio:not(:checked)~.menu__item-label:hover {
+  background-color: rgb(33, 47, 61, .75);
+}
+
+.menu__item-label {
+  padding: .625rem;
+  background-color: var(--color-blue--dark-medium);
+  font-family: var(--font-family--ubuntu);
+  font-size: var(--font-size-14);
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+.code-editor__menu-settings {
+  display: flex;
+  align-items: center;
+  padding: .625rem;
+}
 
 .code-editor__file {
   width: 100%;
 }
 
 .code-editor__output {
-  border-radius: .625rem;
-  border: .0625rem dashed var(--color-blue--light);
+  position: absolute;
+  bottom: -1.25rem;
+  width: 100%;
+  max-height: 100%;
+}
+
+.code-editor__output-resizer {
+  border-top: .25rem solid var(--color-blue--dark-light);
+  width: 100%;
+  cursor: n-resize;
+}
+
+.code-editor__output-resizer:hover {
+  border-top: .5rem solid rgba(132, 199, 230, .5);
+}
+
+.code-editor__output-content {
   background-color: var(--color-blue--dark);
   color: var(--color-white);
   padding: .625rem;
   cursor: text;
-  min-height: 5rem;
-  box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
 .classroom-stage__navigation {

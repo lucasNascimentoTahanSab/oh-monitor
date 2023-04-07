@@ -1,20 +1,14 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Editor from '@monaco-editor/react';
 
 function CodeEditorFile(props) {
-  const [file, setFile] = useState(null);
+  const [monaco, setMonaco] = useState(null);
   const editorRef = useRef(null);
 
-  const callbackGetFile = useCallback(() => setFile(props.file), [props.file]);
-
-  useEffect(() => {
-    if (!file && props.file) {
-      callbackGetFile();
-    }
-  }, [file, props.file, callbackGetFile]);
-
-  function handleEditorDidMount(editor,) {
+  function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
+
+    setMonaco(monaco);
   }
 
   return (
@@ -22,7 +16,7 @@ function CodeEditorFile(props) {
       <Editor
         height={'34.6875rem'}
         defaultLanguage='c'
-        value={file?.code}
+        value={props.file?.code}
         theme='vs-dark'
         onMount={handleEditorDidMount}
         options={{
