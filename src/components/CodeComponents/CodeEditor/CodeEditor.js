@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
 import CodeEditorOutput from '../CodeEditorOutput/CodeEditorOutput';
 import File from '../../../classes/file';
@@ -58,10 +58,27 @@ function CodeEditor(props) {
     return fullscreen ? 'code-editor code-editor--fullscreen' : 'code-editor';
   }
 
+  function updateFile(file) {
+    if (!files.length) { return; }
+
+    updateFiles(file);
+    setFile(file);
+  }
+
+  function updateFiles(file) {
+    const index = util.getItemIndexByUuid(files, file.uuid);
+
+    if (index === -1) { return; }
+
+    files[index] = file;
+
+    setFiles(files);
+  }
+
   return (
     <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
       <div className={getCodeEditorClass()}>
-        <CodeEditorWorkspace files={files} file={file} setCurrentFile={setCurrentFile} />
+        <CodeEditorWorkspace files={files} file={file} setFile={updateFile} setCurrentFile={setCurrentFile} />
         <CodeEditorOutput />
       </div>
     </FullscreenContext.Provider>

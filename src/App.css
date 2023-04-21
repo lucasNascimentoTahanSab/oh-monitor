@@ -368,9 +368,10 @@ li.exercise__question-statement:not(:last-child) {
 }
 
 .code-editor__output-resizer {
-  border-top: .25rem solid var(--color-blue--dark-light);
+  border-top: .125rem solid var(--color-blue--dark-light);
   width: 100%;
   cursor: n-resize;
+  transition: .25s;
 }
 
 .code-editor__output-resizer:hover {
@@ -385,6 +386,7 @@ li.exercise__question-statement:not(:last-child) {
   width: 100%;
   height: 100%;
   overflow: auto;
+  cursor: text;
 }
 
 .classroom-stage__navigation {

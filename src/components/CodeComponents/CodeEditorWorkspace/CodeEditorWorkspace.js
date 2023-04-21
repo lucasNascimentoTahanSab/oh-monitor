@@ -8,7 +8,7 @@ function CodeEditorWorkspace(props) {
     <div className='code-editor__workspace'>
       <CodeEditorMenu files={props.files} setCurrentFile={props.setCurrentFile} />
       <div className='code-editor__workspace-inner'>
-        <CodeEditorFile file={props.file} />
+        <CodeEditorFile file={props.file} setFile={props.setFile} />
         <AnimationScreen />
       </div>
     </div>

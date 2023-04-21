@@ -25,5 +25,10 @@ export const util = {
     if (!files?.length) { return null; }
 
     return files.find(file => file.uuid === uuid);
+  },
+  getItemIndexByUuid(items, uuid) {
+    if (!items?.length) { return null; }
+
+    return items.map(item => item.uuid).indexOf(uuid);
   }
 };
