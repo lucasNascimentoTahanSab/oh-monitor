@@ -6,7 +6,7 @@ import CodeEditorMenu from '../CodeEditorMenu/CodeEditorMenu';
 function CodeEditorWorkspace(props) {
   return (
     <div className='code-editor__workspace'>
-      <CodeEditorMenu files={props.files} setCurrentFile={props.setCurrentFile} />
+      <CodeEditorMenu files={props.files} setCurrentFile={props.setCurrentFile} setResult={props.setResult} />
       <div className='code-editor__workspace-inner'>
         <CodeEditorFile file={props.file} setFile={props.setFile} />
         <AnimationScreen />

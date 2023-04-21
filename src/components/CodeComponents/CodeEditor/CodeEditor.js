@@ -1,14 +1,23 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, createElement } from 'react';
 import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
 import CodeEditorOutput from '../CodeEditorOutput/CodeEditorOutput';
 import File from '../../../classes/file';
 import { callouts } from '../../../classes/callout';
 import { util } from '../../../classes/util';
 import { FullscreenContext } from '../../Context/FullscreenContext/FullscreenContext';
+import { ReactComponent as Right } from '../../../svg/right.svg';
 
 function CodeEditor(props) {
   const [files, setFiles] = useState([]);
   const [file, setFile] = useState(null);
+  const [result, setResult] = useState(null);
+  const [output, setOutput] = useState([
+    createElement(Right, {
+      key: 0,
+      style: { height: '1rem', width: '1rem', minHeight: '1rem' },
+      alt: 'Arrow pointing to the right.'
+    })
+  ]);
   const [fullscreen, setFullscreen] = useState(false);
 
   useEffect(() => { if (!files.length) { getFiles(); } });
@@ -75,11 +84,38 @@ function CodeEditor(props) {
     setFiles(files);
   }
 
+  function updateResult(result) {
+    setResult(result);
+    updateOutput(result);
+  }
+
+  function updateOutput(result) {
+    if (!result) { return; }
+
+    if (result.error) {
+      output.push(createElement('p', { key: output.length }, result.error));
+      output.push(createElement(Right, {
+        key: output.length,
+        style: { height: '1rem', width: '1rem', minHeight: '1rem' },
+        alt: 'Arrow pointing to the right.'
+      }));
+    } else {
+      output.push(createElement('p', { key: output.length }, result.output));
+      output.push(createElement(Right, {
+        key: output.length,
+        style: { height: '1rem', width: '1rem', minHeight: '1rem' },
+        alt: 'Arrow pointing to the right.'
+      }));
+    }
+
+    setOutput(output);
+  }
+
   return (
     <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
       <div className={getCodeEditorClass()}>
-        <CodeEditorWorkspace files={files} file={file} setFile={updateFile} setCurrentFile={setCurrentFile} />
-        <CodeEditorOutput />
+        <CodeEditorWorkspace files={files} file={file} setFile={updateFile} setCurrentFile={setCurrentFile} setResult={updateResult} />
+        <CodeEditorOutput output={output} />
       </div>
     </FullscreenContext.Provider>
   );

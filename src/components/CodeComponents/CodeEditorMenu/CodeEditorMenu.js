@@ -12,7 +12,7 @@ function CodeEditorMenu(props) {
   return (
     <div className='code-editor__menu'>
       <div className='code-editor__menu-tabs'>{getMenuItems()}</div>
-      <CodeEditorMenuSettings />
+      <CodeEditorMenuSettings files={props.files} setResult={props.setResult} />
     </div>
   );
 }

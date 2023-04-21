@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Editor from '@monaco-editor/react';
-import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation';
-import { callouts } from '../../../classes/callout';
 
 function CodeEditorFile(props) {
   const [file, setFile] = useState(null);
@@ -21,10 +19,6 @@ function CodeEditorFile(props) {
     props.setFile({ ...props.file, code });
   }
 
-  async function sendCode() {
-    await callouts.code.post({ code: editorRef.current.getValue(), language: 'c' });
-  }
-
   return (
     <div className='code-editor__file'>
       <Editor
@@ -35,9 +29,9 @@ function CodeEditorFile(props) {
         onMount={handleEditorDidMount}
         onChange={handleEditorChange}
         options={{
+          readOnly: file?.disabled
         }}
       />
-      <ButtonConfirmation value='Enviar' onClick={sendCode} />
     </div>
   );
 }

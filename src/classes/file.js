@@ -4,6 +4,8 @@ export default class File {
     this.name = file?.name ?? null;
     this.path = file?.path ?? null;
     this.current = file?.current ?? null;
+    this.order = file?.order ?? null;
+    this.disabled = file?.disabled ?? null;
     this.code = code;
   }
 }
