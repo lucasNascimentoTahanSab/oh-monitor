@@ -7,6 +7,7 @@ import { util } from '../../../classes/util';
 import { FullscreenContext } from '../../Context/FullscreenContext/FullscreenContext';
 import { ReactComponent as Right } from '../../../svg/right.svg';
 import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
+import Command from '../../../classes/command';
 
 function CodeEditor(props) {
   const config = useContext(ConfigContext);
@@ -20,6 +21,7 @@ function CodeEditor(props) {
       alt: 'Arrow pointing to the right.'
     })
   ]);
+  const [commands, setCommands] = useState([]);
   const [fullscreen, setFullscreen] = useState(false);
 
   useEffect(() => { if (!files.length) { getFiles(); } });
@@ -96,6 +98,26 @@ function CodeEditor(props) {
   function updateResult(result) {
     setResult(result);
     updateOutput(result);
+    updateCommands(result);
+  }
+
+  function updateCommands(result) {
+    if (!result || result.error) { return; }
+    if (!result.output) { return; }
+
+    const justCommands = getJustCommandsFromResult(result);
+
+    setCommands(getCommands(justCommands));
+  }
+
+  function getCommands(justCommands) {
+    if (!justCommands?.length) { return []; }
+
+    return justCommands.map(justCommand => new Command(justCommand.split(' ')));
+  }
+
+  function getJustCommandsFromResult(result) {
+    return result.output.split('\n')?.filter(line => line.match(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*/g));
   }
 
   function updateOutput(result) {
@@ -118,7 +140,7 @@ function CodeEditor(props) {
   return (
     <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
       <div className={getCodeEditorClass()}>
-        <CodeEditorWorkspace files={files} file={file} result={result} setFile={updateFile} setCurrentFile={setCurrentFile} setResult={updateResult} />
+        <CodeEditorWorkspace files={files} file={file} commands={commands} setFile={updateFile} setCurrentFile={setCurrentFile} setResult={updateResult} />
         <CodeEditorOutput output={output} />
       </div>
     </FullscreenContext.Provider>
