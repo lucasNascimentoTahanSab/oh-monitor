@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, createElement } from 'react';
+import React, { useCallback, useEffect, useState, createElement, useContext } from 'react';
 import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
 import CodeEditorOutput from '../CodeEditorOutput/CodeEditorOutput';
 import File from '../../../classes/file';
@@ -6,8 +6,10 @@ import { callouts } from '../../../classes/callout';
 import { util } from '../../../classes/util';
 import { FullscreenContext } from '../../Context/FullscreenContext/FullscreenContext';
 import { ReactComponent as Right } from '../../../svg/right.svg';
+import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
 
 function CodeEditor(props) {
+  const config = useContext(ConfigContext);
   const [files, setFiles] = useState([]);
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
@@ -33,7 +35,14 @@ function CodeEditor(props) {
   }
 
   async function retriveFileFromRepo(file) {
-    return new File(file.attributes, (await callouts.repo.getFile(file.attributes?.path, 'c', 'c'))?.data);
+    return new File(
+      file.attributes,
+      (await callouts.repo.getFile(
+        file.attributes?.path,
+        config?.language,
+        config?.languages?.[config.language]?.extension)
+      )?.data
+    );
   }
 
   const callbackGetFile = useCallback(() => setFile(util.getCurrentFile(files)), [files]);

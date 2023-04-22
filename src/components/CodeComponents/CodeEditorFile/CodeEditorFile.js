@@ -1,7 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import Editor from '@monaco-editor/react';
+import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
 
 function CodeEditorFile(props) {
+  const config = useContext(ConfigContext);
   const [file, setFile] = useState(null);
   const editorRef = useRef(null);
 
@@ -23,7 +25,7 @@ function CodeEditorFile(props) {
     <div className='code-editor__file'>
       <Editor
         height={'34.6875rem'}
-        defaultLanguage='c'
+        defaultLanguage={config?.language}
         value={file?.code}
         theme='vs-dark'
         onMount={handleEditorDidMount}

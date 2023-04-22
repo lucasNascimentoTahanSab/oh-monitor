@@ -1,15 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen';
 import { callouts } from '../../../classes/callout';
+import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
 
 function CodeSnippet(props) {
+  const config = useContext(ConfigContext);
   const [snippet, setSnippet] = useState(null);
 
   useEffect(() => { if (!snippet) { getSnippet(); } });
 
   async function getSnippet() {
-    setSnippet((await callouts.repo.getFile(props.element?.attributes?.value, 'c', 'c'))?.data ?? snippet);
+    setSnippet(
+      (await callouts.repo.getFile(
+        props.element?.attributes?.value,
+        config?.language,
+        config?.languages?.[config.language]?.extension)
+      )?.data ?? snippet
+    );
   }
 
   function displayAnimationScreen() {
@@ -21,7 +29,7 @@ function CodeSnippet(props) {
       <div className='code-snippet__editor'>
         <Editor
           theme='vs-dark'
-          defaultLanguage='c'
+          defaultLanguage={config?.language}
           value={snippet}
           options={{
             readOnly: true,

@@ -39,6 +39,6 @@ export const util = {
   sortFilesByOrder(files) {
     if (!files?.length) { return null; }
 
-    return files.sort((firstFile, secondFile) => firstFile.order > secondFile.order ? 1 : -1);
+    return files.sort((firstFile, secondFile) => firstFile.order > secondFile.order ? -1 : 1);
   }
 };

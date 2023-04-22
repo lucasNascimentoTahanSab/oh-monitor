@@ -7,8 +7,8 @@ const { getRequest } = require('./codeXRequest');
 
 const router = express.Router();
 
-router.post('/submit', (req, res) => {
-  axios.request(getRequest(req))
+router.post('/submit', async (req, res) => {
+  axios.request(await getRequest(req))
     .then(response => res.send(response.data))
     .catch(error => res.send(error));
 });

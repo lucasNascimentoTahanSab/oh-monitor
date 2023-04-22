@@ -3,15 +3,16 @@ import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay';
 import { FullscreenContext } from '../../Context/FullscreenContext/FullscreenContext';
 import { callouts } from '../../../classes/callout';
-import { util } from '../../../classes/util';
+import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
 
 function CodeEditorMenuSettings(props) {
+  const config = useContext(ConfigContext);
   const [fullscreen, setFullscreen] = useContext(FullscreenContext);
 
   async function sendCode() {
     if (typeof props.setResult !== 'function') { return; }
 
-    props.setResult(await callouts.code.post({ code: util.getCodeFromFiles(props.files), language: 'c' }));
+    props.setResult(await callouts.code.post({ files: props.files, config }));
   }
 
   return (

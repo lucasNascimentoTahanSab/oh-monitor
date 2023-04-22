@@ -1,11 +1,12 @@
 require('dotenv').config();
+const { build } = require('./codeXBuilder');
 
 module.exports = {
-  getRequest(req) {
+  async getRequest(req) {
     const encodedParams = new URLSearchParams();
 
-    encodedParams.append('code', req.body.code);
-    encodedParams.append('language', req.body.language);
+    encodedParams.append('code', await build(req.body.files, req.body.config));
+    encodedParams.append('language', req.body.config?.language);
 
     return {
       method: 'POST',

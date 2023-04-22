@@ -1,0 +1,13 @@
+{
+  "language": "java",
+  "languages": {
+    "c": {
+      "extension": "c",
+      "sort": "asc"
+    },
+    "java": {
+      "extension": "java",
+      "sort": "desc"
+    }
+  }
+}
