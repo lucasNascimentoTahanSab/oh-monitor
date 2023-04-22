@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const codeXRouter = require('./routes/codeX/codeXRouter');
 const strapiRouter = require('./routes/strapi/strapiRouter');
-const gitHubRouter = require('./routes/gitHub/gitHubRouter');
+const { gitHubRouter } = require('./routes/gitHub/gitHubRouter');
 
 require('dotenv').config();
 

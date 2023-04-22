@@ -1,10 +1,10 @@
 require('dotenv').config();
 
 module.exports = {
-  getRequest(req) {
+  getRequest(url) {
     return {
       method: 'GET',
-      url: `${process.env.GH_ENDPOINT}/repos/${process.env.GH_OWNER}/${process.env.GH_REPO}/contents${req.url}`,
+      url: `${process.env.GH_ENDPOINT}/repos/${process.env.GH_OWNER}/${process.env.GH_REPO}/contents${url}`,
       headers: {
         'Authorization': process.env.GH_TOKEN,
         'Accept': 'application/vnd.github+json',

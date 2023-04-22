@@ -101,21 +101,16 @@ function CodeEditor(props) {
   function updateOutput(result) {
     if (!result) { return; }
 
-    if (result.error) {
-      output.push(createElement('p', { key: output.length }, result.error));
-      output.push(createElement(Right, {
-        key: output.length,
-        style: { height: '1rem', width: '1rem', minHeight: '1rem' },
-        alt: 'Arrow pointing to the right.'
-      }));
-    } else {
-      output.push(createElement('p', { key: output.length }, result.output));
-      output.push(createElement(Right, {
-        key: output.length,
-        style: { height: '1rem', width: '1rem', minHeight: '1rem' },
-        alt: 'Arrow pointing to the right.'
-      }));
-    }
+    output.push(createElement(
+      'p',
+      { key: output.length },
+      result.error ? result.error : result.output.replaceAll(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*\n/g, ''))
+    );
+    output.push(createElement(Right, {
+      key: output.length,
+      style: { height: '1rem', width: '1rem', minHeight: '1rem' },
+      alt: 'Arrow pointing to the right.'
+    }));
 
     setOutput(output);
   }
@@ -123,7 +118,7 @@ function CodeEditor(props) {
   return (
     <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
       <div className={getCodeEditorClass()}>
-        <CodeEditorWorkspace files={files} file={file} setFile={updateFile} setCurrentFile={setCurrentFile} setResult={updateResult} />
+        <CodeEditorWorkspace files={files} file={file} result={result} setFile={updateFile} setCurrentFile={setCurrentFile} setResult={updateResult} />
         <CodeEditorOutput output={output} />
       </div>
     </FullscreenContext.Provider>

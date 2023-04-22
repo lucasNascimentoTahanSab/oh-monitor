@@ -30,15 +30,5 @@ export const util = {
     if (!items?.length) { return null; }
 
     return items.map(item => item.uuid).indexOf(uuid);
-  },
-  getCodeFromFiles(files) {
-    if (!files?.length) { return null; }
-
-    return this.sortFilesByOrder([...files])?.reduce((code, file) => `${code}${file.code}\n`, '');
-  },
-  sortFilesByOrder(files) {
-    if (!files?.length) { return null; }
-
-    return files.sort((firstFile, secondFile) => firstFile.order > secondFile.order ? -1 : 1);
   }
 };

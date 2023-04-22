@@ -5,13 +5,23 @@ require('dotenv').config();
 
 const { getRequest, getRequestFor } = require('./gitHubRequest');
 
-const router = express.Router();
+const gitHubRouter = express.Router();
 
-router.get('/*', (req, res) => {
-  axios.request(getRequest(req))
-    .then(response => axios.request(getRequestFor(response.data?.download_url)))
+gitHubRouter.get('/*', (req, res) => {
+  getFile(req.url)
     .then(response => res.send({ data: response.data }))
     .catch(error => res.send(error));
 });
 
-module.exports = router;
+function getFile(url) {
+  return new Promise((resolve, reject) =>
+    axios.request(getRequest(url))
+      .then(response => resolve(axios.request(getRequestFor(response.data?.download_url))))
+      .catch(error => reject(error))
+  );
+}
+
+module.exports = {
+  gitHubRouter,
+  getFile
+};

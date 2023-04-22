@@ -1,4 +1,4 @@
-const axios = require('axios');
+const { getFile } = require('../gitHub/gitHubRouter.js');
 
 function sortFilesByOrder(files, config) {
   if (!files?.length) { return null; }
@@ -18,25 +18,22 @@ function sortFilesByOrderDesc(files) {
   return files.sort((firstFile, secondFile) => firstFile.order > secondFile.order ? -1 : 1);
 }
 
-function getFile(file, config) {
-  return new Promise((resolve, reject) => {
-    axios.request(getFileRequest(file, config))
-      .then(response => resolve(response.json()))
+function getAlternativeFile(url) {
+  return new Promise((resolve, reject) =>
+    getFile(url)
+      .then(response => resolve({ data: response.data }))
       .catch(error => reject(error))
-  })
+  );
 }
 
-function getFileRequest(file, config) {
-  return {
-    endpoint: `api/repo/${config?.language}${file?.alternativePath}.${config?.languages?.[config.language]?.extension}`,
-    method: 'GET'
-  }
+function getAlternativeFileEndpoint(file, config) {
+  return `/${config?.language}${file?.alternativePath}.${config?.languages?.[config.language]?.extension}`
 }
 
 module.exports = {
   async build(files, config) {
     return (await Promise.all(sortFilesByOrder(files, config)?.map(async file => {
-      return file.alternativePath ? await getFile(file, config)?.data : file.code;
+      return file.alternativePath ? (await getAlternativeFile(getAlternativeFileEndpoint(file, config)))?.data : file.code;
     }))).reduce((code, data) => `${code}${data}\n`, '');
   },
 };
