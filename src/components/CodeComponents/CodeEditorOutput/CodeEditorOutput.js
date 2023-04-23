@@ -14,7 +14,7 @@ function CodeEditorOutput(props) {
     <div className='code-editor__output'>
       <div className='code-editor__output-resizer' onMouseDown={event => resize(event, contentRef.current)}></div>
       <div className='code-editor__output-content' ref={contentRef}>
-        <div className='code-editor__output-inner' ref={contentRef}>
+        <div className='code-editor__output-inner'>
           {getOutput()}
         </div>
       </div>

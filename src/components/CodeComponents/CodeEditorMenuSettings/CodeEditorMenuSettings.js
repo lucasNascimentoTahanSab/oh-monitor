@@ -17,8 +17,8 @@ function CodeEditorMenuSettings(props) {
 
   return (
     <div className='code-editor__menu-settings'>
-      <ButtonPlay height='.875rem' width='.875rem' onClick={() => sendCode()} />
-      <ButtonExpand height='.875rem' width='.875rem' onClick={() => setFullscreen(!fullscreen)} />
+      <ButtonPlay height='.875rem' width='.875rem' color='#3498DB' onClick={() => sendCode()} />
+      <ButtonExpand height='.875rem' width='.875rem' color='#3498DB' onClick={() => setFullscreen(!fullscreen)} />
     </div>
   );
 }

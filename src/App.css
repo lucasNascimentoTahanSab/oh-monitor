@@ -257,18 +257,29 @@ li.exercise__question-statement:not(:last-child) {
 }
 
 .code-snippet__animation {
+  position: relative;
   border-radius: .3125rem;
   overflow: hidden;
   width: 100%;
   min-height: 100%;
+  z-index: 0;
 }
 
 .animation-screen__screen {
+  position: absolute;
   height: 100%;
+  width: 100%;
+  z-index: 1;
 }
 
 .animation-screen__control {
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
   display: flex;
+  gap: .9375rem;
+  width: 100%;
+  padding: .625rem;
 }
 
 .classroom-practice {
@@ -433,7 +444,59 @@ li.exercise__question-statement:not(:last-child) {
   padding: .3125rem 0 0 1.1875rem;
 }
 
+.progress-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.progress-bar__thumb {
+  position: absolute;
+  left: -.4375rem;
+  width: .875rem;
+  height: .875rem;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.progress-bar__track {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.progress-bar__track-accomplished {
+  position: absolute;
+  height: 25%;
+  width: 0;
+  border-radius: .3125rem;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.progress-bar__track-background {
+  position: absolute;
+  background-color: var(--color-gray);
+  height: 25%;
+  width: 100%;
+  border-radius: .3125rem;
+  z-index: 0;
+  cursor: pointer;
+}
+
 /* utils */
+
+.background-color--color-gray {
+  background-color: var(--color-gray);
+}
+
+.background-color--color-blue--light-dark {
+  background-color: var(--color-blue--light-dark);
+}
 
 .background-color--color-blue--light {
   background-color: var(--color-blue--light);
