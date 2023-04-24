@@ -141,7 +141,7 @@ function CodeEditor(props) {
     <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
       <div className={getCodeEditorClass()}>
         <CodeEditorWorkspace files={files} file={file} commands={commands} setFile={updateFile} setCurrentFile={setCurrentFile} setResult={updateResult} />
-        {/* <CodeEditorOutput output={output} /> */}
+        <CodeEditorOutput output={output} />
       </div>
     </FullscreenContext.Provider>
   );
