@@ -1,6 +1,7 @@
 import { createElement } from 'react';
 import Tree from './tree.js';
 import Node from './node.js';
+import anime from 'animejs/lib/anime.es.js';
 
 const trees = new Map();
 const elements = [];
