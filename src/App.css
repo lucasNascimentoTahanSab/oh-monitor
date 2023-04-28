@@ -454,14 +454,14 @@ li.exercise__question-statement:not(:last-child) {
 }
 
 .progress-bar::-webkit-slider-runnable-track {
-  background: var(--color-gray);
-  height: .5rem;
+  background: var(--color-blue--dark);
+  height: .125rem;
   border-radius: .3125rem;
 }
 
 .progress-bar::-moz-range-track {
-  background: var(--color-gray);
-  height: .5rem;
+  background: var(--color-blue--dark);
+  height: .125rem;
   border-radius: .3125rem;
 }
 
@@ -469,7 +469,7 @@ li.exercise__question-statement:not(:last-child) {
   width: .875rem;
   height: .875rem;
   border-radius: 50%;
-  margin-top: -3px;
+  margin-top: -6px;
   background-color: var(--color-blue--dark);
   -webkit-appearance: none;
   appearance: none;
@@ -479,7 +479,7 @@ li.exercise__question-statement:not(:last-child) {
   width: .875rem;
   height: .875rem;
   border-radius: 50%;
-  margin-top: -3px;
+  margin-top: -6px;
   background-color: var(--color-blue--dark);
   -webkit-appearance: none;
   appearance: none;
