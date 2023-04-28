@@ -533,6 +533,7 @@ li.exercise__question-statement:not(:last-child) {
 .animation-engine__subtree--right:only-child::before {
   content: "";
   position: absolute;
+  z-index: 1;
   width: .0625rem;
   height: 2rem;
   transform: translateY(-100%);
@@ -542,6 +543,7 @@ li.exercise__question-statement:not(:last-child) {
 .animation-engine__subtree--left:not(:only-child):before {
   content: "";
   position: absolute;
+  z-index: 1;
   top: 0;
   width: calc(25% + .25rem);
   height: 3rem;
@@ -552,6 +554,7 @@ li.exercise__question-statement:not(:last-child) {
 .animation-engine__subtree--right:not(:only-child):before {
   content: "";
   position: absolute;
+  z-index: 1;
   top: 0;
   width: calc(25% + .25rem);
   height: 3rem;
@@ -561,6 +564,7 @@ li.exercise__question-statement:not(:last-child) {
 
 .animation-engine__node {
   position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
