@@ -113,7 +113,11 @@ function CodeEditor(props) {
   function getCommands(justCommands) {
     if (!justCommands?.length) { return []; }
 
-    return justCommands.map(justCommand => new Command(justCommand.split(' ')));
+    return justCommands.map(justCommand => {
+      const justCommandsArray = justCommand.split('/');
+
+      return JSON.parse(justCommandsArray[1])
+    });
   }
 
   function getJustCommandsFromResult(result) {
