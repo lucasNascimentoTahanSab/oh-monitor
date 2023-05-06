@@ -17,7 +17,7 @@ function AnimationScreen(props) {
   return (
     <div className={`code-snippet__animation ${getAnimationScreenClass()}`}>
       <div className='animation-screen__screen'>
-        <AnimationEngine commands={props.commands} play={play} />
+        <AnimationEngine commands={props.commands} render={props.render} setRender={props.setRender} play={play} />
       </div>
       <div className='animation-screen__control'>
         <ButtonPlay height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={() => setPlay(!play)} />

@@ -7,10 +7,10 @@ import { util } from '../../../classes/util';
 import { FullscreenContext } from '../../Context/FullscreenContext/FullscreenContext';
 import { ReactComponent as Right } from '../../../svg/right.svg';
 import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
-import Command from '../../../classes/command';
 
 function CodeEditor(props) {
   const config = useContext(ConfigContext);
+  const [render, setRender] = useState(false);
   const [files, setFiles] = useState([]);
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
@@ -99,6 +99,7 @@ function CodeEditor(props) {
     setResult(result);
     updateOutput(result);
     updateCommands(result);
+    setRender(true);
   }
 
   function updateCommands(result) {
@@ -144,7 +145,15 @@ function CodeEditor(props) {
   return (
     <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
       <div className={getCodeEditorClass()}>
-        <CodeEditorWorkspace files={files} file={file} commands={commands} setFile={updateFile} setCurrentFile={setCurrentFile} setResult={updateResult} />
+        <CodeEditorWorkspace
+          render={render}
+          setRender={setRender}
+          files={files}
+          file={file}
+          commands={commands}
+          setFile={updateFile}
+          setCurrentFile={setCurrentFile}
+          setResult={updateResult} />
         <CodeEditorOutput output={output} />
       </div>
     </FullscreenContext.Provider>

@@ -1,30 +1,53 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import animate from '../../../classes/animate';
+import React, { useCallback, useEffect, useState } from 'react';
+import animation from '../../../classes/animation';
 
 function AnimationEngine(props) {
+  const [render, setRender] = useState(false);
+  const [play, setPlay] = useState(false);
   const [elements, setElements] = useState([]);
-  const animationEngineRef = useRef(null);
+  const [timeline, setTimeline] = useState(null);
 
-  const executeCommandsCallback = useCallback(executeCommands, [executeCommands]);
+  const updateRenderCallback = useCallback(updateRender, [updateRender]);
 
-  function executeCommands() {
-    animate.execute(props.commands);
+  function updateRender() {
+    setRender(props.render);
   }
 
-  useEffect(() => executeCommandsCallback(), [executeCommandsCallback, props.commands]);
+  useEffect(updateRenderCallback, [props.render, updateRenderCallback]);
 
-  const placeObjectsCallback = useCallback(placeObjects, [placeObjects]);
+  const updatePlayCallback = useCallback(updatePlay, [updatePlay]);
 
-  function placeObjects() {
-    if (!props.play) { return; }
-
-    setElements(animate.elements);
+  function updatePlay() {
+    setPlay(props.play);
   }
 
-  useEffect(placeObjectsCallback, [placeObjectsCallback]);
+  useEffect(updatePlayCallback, [props.play, updatePlayCallback]);
+
+  const placeElementsCallback = useCallback(placeElements, [placeElements]);
+
+  function placeElements() {
+    if (typeof props.setRender !== 'function') { return; }
+
+    setElements(animation.parse(props.commands));
+    setTimeline(animation.draw(props.commands));
+
+    props.setRender(false);
+  }
+
+  useEffect(() => { if (render) { placeElementsCallback() } }, [render, placeElementsCallback]);
+
+  const playTimelineCallback = useCallback(playTimeline, [playTimeline]);
+
+  function playTimeline() {
+    if (!play) { return; }
+
+    timeline?.play();
+  }
+
+  useEffect(playTimelineCallback, [play, playTimelineCallback]);
 
   return (
-    <div className='animation-engine no-select' ref={animationEngineRef}>{elements}</div>
+    <div className='animation-engine no-select'>{elements}</div>
   );
 }
 
