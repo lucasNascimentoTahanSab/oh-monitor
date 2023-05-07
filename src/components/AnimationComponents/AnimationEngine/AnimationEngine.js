@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import animation from '../../../classes/animation';
 
 function AnimationEngine(props) {
@@ -7,6 +7,7 @@ function AnimationEngine(props) {
   const [playing, setPlaying] = useState(false);
   const [snapshots, setSnapshots] = useState([]);
   const [elements, setElements] = useState([]);
+  const animationEngine = useRef(null);
 
   const updateRenderCallback = useCallback(updateRender, [updateRender]);
 
@@ -63,8 +64,18 @@ function AnimationEngine(props) {
 
   useEffect(playTimelineCallback, [play, playTimelineCallback]);
 
+  const setAnimationEngineCallback = useCallback(setAnimationEngine, [setAnimationEngine]);
+
+  function setAnimationEngine() {
+    if (typeof props.setAnimationEngine !== 'function') { return; }
+
+    props.setAnimationEngine(animationEngine);
+  }
+
+  useEffect(setAnimationEngineCallback, [setAnimationEngineCallback, animationEngine]);
+
   return (
-    <div className='animation-engine no-select'>{elements}</div>
+    <div className='animation-engine no-select' ref={animationEngine}>{elements}</div>
   );
 }
 

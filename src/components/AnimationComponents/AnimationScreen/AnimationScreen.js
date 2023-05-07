@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
 import AnimationEngine from '../AnimationEngine/AnimationEngine';
+import dragScreen from '../../../classes/drag';
 
 function AnimationScreen(props) {
   const [play, setPlay] = useState(false);
+  const [animationEngine, setAnimationEngine] = useState(null);
+  const animationScreen = useRef(null);
 
   function getAnimationScreenClass() {
     return props.theme === 'dark' ? 'background-color--color-blue--dark' : 'background-color--color-blue--light';
@@ -14,10 +17,21 @@ function AnimationScreen(props) {
     return props.theme === 'dark' ? 'progress-bar--light' : 'progress-bar--dark';
   }
 
+  function handleScreenMouseDown(event) {
+    if (typeof animationEngine?.current !== 'object') { return; }
+
+    dragScreen(event, animationScreen.current, animationEngine.current);
+  }
+
   return (
     <div className={`code-snippet__animation ${getAnimationScreenClass()}`}>
-      <div className='animation-screen__screen'>
-        <AnimationEngine commands={props.commands} render={props.render} setRender={props.setRender} play={play} />
+      <div className='animation-screen__screen' ref={animationScreen} onMouseDown={handleScreenMouseDown}>
+        <AnimationEngine
+          commands={props.commands}
+          render={props.render}
+          setRender={props.setRender}
+          play={play}
+          setAnimationEngine={setAnimationEngine} />
       </div>
       <div className='animation-screen__control'>
         <ButtonPlay height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={() => setPlay(!play)} />

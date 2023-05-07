@@ -266,10 +266,16 @@ li.exercise__question-statement:not(:last-child) {
 }
 
 .animation-screen__screen {
-  position: absolute;
+  position: relative;
   height: 100%;
   width: 100%;
   z-index: 1;
+  overflow: hidden;
+  cursor: grab;
+}
+
+.animation-screen__screen:active {
+  cursor: grabbing;
 }
 
 .animation-screen__control {
@@ -486,10 +492,14 @@ li.exercise__question-statement:not(:last-child) {
 }
 
 .animation-engine {
-  display: flex;
+  position: absolute;
+  transform: translate(0, 0);
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: visible;
+  -webkit-transition: all .1s;
+  -moz-transition: .1s;
+  transition: .1s;
 }
 
 .animation-engine * {
