@@ -492,6 +492,12 @@ li.exercise__question-statement:not(:last-child) {
   overflow: auto;
 }
 
+.animation-engine * {
+  -webkit-transition: all .25s ease;
+  -moz-transition: .25s ease;
+  transition: .25s ease;
+}
+
 .animation-engine::-webkit-scrollbar {
   display: none;
 }
@@ -576,7 +582,10 @@ li.exercise__question-statement:not(:last-child) {
   font-family: var(--font-family--ubuntu);
   font-weight: var(--font-weigth--bold);
   font-size: var(--font-size-14);
-  opacity: 0;
+}
+
+.animation-engine__node--focus {
+  background-color: var(--color-blue--light-dark);
 }
 
 /* utils */

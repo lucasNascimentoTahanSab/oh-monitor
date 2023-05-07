@@ -1,80 +1,131 @@
 import { createElement } from 'react';
 import Tree from './tree.js';
 import Node from './node.js';
-import anime from 'animejs/lib/anime.es.js';
 
 const trees = new Map();
-const elements = [];
-let timeline = null;
+const snapshots = [];
+const status = { origin: false, destiny: false };
 
-function draw(commands) {
-  timeline = anime.timeline({
-    duration: 1000,
-    autoplay: false
-  });
+function parse(commands) {
+  trees.clear();
+  snapshots.splice(0, snapshots.length);
 
-  commands.forEach(createAnimation);
+  commands.forEach(initializeTrees);
 
-  return timeline;
+  return snapshots;
 }
 
-function createAnimation(command) {
+function initializeTrees(command) {
   switch (command.operation) {
-    // case 'initialize':
-    //   createAnimationForInitialize(command);
-    //   break;
+    case 'initialize':
+      initializeTree(command);
+      snapshot();
+      break;
     case 'insert':
-      createAnimationForInsert(command);
+      insertObject(command);
+      snapshot();
       break;
-    case 'update':
-      createAnimationForUpdate(command);
-      break;
-    case 'delete':
-      createAnimationForDelete(command);
+    case 'walk':
+      walkthroughTree(command);
+      snapshot();
       break;
     default:
       break;
   }
 }
 
-function createAnimationForInitialize(command) {
-  timeline.add({
-    targets: `#_${command.address}`,
-    opacity: 1
-  });
+function walkthroughTree(command) {
+  const tree = trees.get(command.structure);
+
+  tree.root = walkthroughTreeRecursively(tree.root, command);
+
+  trees.set(command.structure, tree);
+
+  clearStatus();
 }
 
-function createAnimationForInsert(command) {
-  timeline.add({
-    targets: `#_${command.address}`,
-    opacity: 1
-  });
+function clearStatus() {
+  status.origin = false;
+  status.destiny = false;
 }
 
-function createAnimationForUpdate(command) {
-  timeline.add({});
+function walkthroughTreeRecursively(node, command) {
+  if (!node) { return node; }
+
+  if (node.value === command.origin) { node = originFound(node); }
+  if (node.value === command.destiny) { node = destinyFound(node); }
+
+  if (!status.origin && command.origin !== null) { node = findOrigin(node, command); }
+  if (!status.destiny && command.destiny !== null) { node = findDestiny(node, command); }
+
+  return node;
 }
 
-function createAnimationForDelete(command) {
-  timeline.add({
-    targets: `#_${command.address}`,
-    opacity: 0
-  });
+function findDestiny(node, command) {
+  if (command.destiny < node.value) { node.left = walkthroughTreeRecursively(node.left, command); }
+  else if (command.destiny > node.value) { node.right = walkthroughTreeRecursively(node.right, command); }
+
+  return node;
 }
 
-function parse(commands) {
-  trees.clear();
-  elements.splice(0, elements.length);
+function findOrigin(node, command) {
+  if (command.origin < node.value) { node.left = walkthroughTreeRecursively(node.left, command); }
+  else if (command.origin > node.value) { node.right = walkthroughTreeRecursively(node.right, command); }
 
-  commands.forEach(initializeTrees);
+  return node;
+}
 
-  build();
+function destinyFound(node) {
+  status.destiny = true;
 
-  return elements;
+  return focusNode(node);
+}
+
+function originFound(node) {
+  status.origin = true;
+
+  return unfocusNode(node);
+}
+
+function focusNode(node) {
+  node.focus = true;
+
+  return node;
+}
+
+function unfocusNode(node) {
+  node.focus = false;
+
+  return node;
+}
+
+function insertObject(command) {
+  const tree = trees.get(command.structure);
+
+  tree.root = insertObjectRecursively(tree.root, command);
+
+  trees.set(command.structure, tree);
+}
+
+function insertObjectRecursively(node, command) {
+  if (!node) { return new Node(command); }
+
+  if (command.value < node.value) { node.left = insertObjectRecursively(node.left, command); }
+  else if (command.value > node.value) { node.right = insertObjectRecursively(node.right, command); }
+
+  return node;
+}
+
+function initializeTree(command) {
+  trees.set(command.address, new Tree(command));
+}
+
+function snapshot() {
+  snapshots.push(build());
 }
 
 function build() {
-  Array.from(trees.values()).forEach(tree => elements.push(createTreeElement(tree)));
+  return Array.from(trees.values()).map(tree => createTreeElement(tree));
 }
 
 function createTreeElement(tree) {
@@ -122,43 +173,13 @@ function createLeftChildElement(node) {
 function createNodeElement(node) {
   if (!node) { return null; }
 
-  return createElement('span', { key: node.address, id: `_${node.address}`, className: 'animation-engine__node' }, node.value);
+  return createElement('span', { key: node.address, id: `_${node.address}`, className: `animation-engine__node ${getFocusOn(node)}` }, node.value);
 }
 
-function initializeTrees(command) {
-  switch (command.operation) {
-    case 'initialize':
-      initializeTree(command);
-      break;
-    case 'insert':
-      insertObject(command);
-      break;
-    default:
-      break;
-  }
+function getFocusOn(node) {
+  return node.focus ? 'animation-engine__node--focus' : '';
 }
 
-function insertObject(command) {
-  const tree = trees.get(command.structure);
-
-  tree.root = insertObjectRecursively(tree.root, command);
-
-  trees.set(command.structure, tree);
-}
-
-function insertObjectRecursively(node, command) {
-  if (!node) { return new Node(command); }
-
-  if (command.value < node.value) { node.left = insertObjectRecursively(node.left, command); }
-  else { node.right = insertObjectRecursively(node.right, command); }
-
-  return node;
-}
-
-function initializeTree(command) {
-  trees.set(command.address, new Tree(command));
-}
-
-const animation = { parse, draw };
+const animation = { parse };
 
 export default animation;

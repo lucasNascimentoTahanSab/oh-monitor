@@ -4,8 +4,9 @@ import animation from '../../../classes/animation';
 function AnimationEngine(props) {
   const [render, setRender] = useState(false);
   const [play, setPlay] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [snapshots, setSnapshots] = useState([]);
   const [elements, setElements] = useState([]);
-  const [timeline, setTimeline] = useState(null);
 
   const updateRenderCallback = useCallback(updateRender, [updateRender]);
 
@@ -23,25 +24,41 @@ function AnimationEngine(props) {
 
   useEffect(updatePlayCallback, [props.play, updatePlayCallback]);
 
-  const placeElementsCallback = useCallback(placeElements, [placeElements]);
+  const parseCommandsCallback = useCallback(parseCommands, [parseCommands]);
 
-  function placeElements() {
+  function parseCommands() {
     if (typeof props.setRender !== 'function') { return; }
 
-    setElements(animation.parse(props.commands));
-    setTimeline(animation.draw(props.commands));
+    setSnapshots(animation.parse(props.commands));
+    setElements([]);
 
     props.setRender(false);
   }
 
-  useEffect(() => { if (render) { placeElementsCallback() } }, [render, placeElementsCallback]);
+  useEffect(() => { if (render) { parseCommandsCallback() } }, [render, parseCommandsCallback]);
 
   const playTimelineCallback = useCallback(playTimeline, [playTimeline]);
 
   function playTimeline() {
+    if (!snapshots?.length) { return; }
     if (!play) { return; }
+    if (playing) { return; }
 
-    timeline?.play();
+    setTimeout(placeElements, 500, 0);
+
+    setPlaying(true);
+  }
+
+  function placeElements(snapshotNumber) {
+    if (snapshotNumber >= snapshots?.length) {
+      setPlaying(false);
+
+      return;
+    }
+
+    setElements(snapshots[snapshotNumber]);
+
+    setTimeout(placeElements, 500, snapshotNumber + 1);
   }
 
   useEffect(playTimelineCallback, [play, playTimelineCallback]);
