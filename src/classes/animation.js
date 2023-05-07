@@ -25,6 +25,14 @@ function initializeTrees(command) {
       insertObject(command);
       snapshot();
       break;
+    case 'delete':
+      deleteObject(command);
+      snapshot();
+      break;
+    case 'update':
+      updateObject(command);
+      snapshot();
+      break;
     case 'walk':
       walkthroughTree(command);
       snapshot();
@@ -95,6 +103,47 @@ function focusNode(node) {
 
 function unfocusNode(node) {
   node.focus = false;
+
+  return node;
+}
+
+function updateObject(command) {
+  const tree = trees.get(command.structure);
+
+  tree.root = updateObjectRecursively(tree.root, command);
+
+  trees.set(command.structure, tree);
+}
+
+function updateObjectRecursively(node, command) {
+  if (command.old < node.value) { node.left = updateObjectRecursively(node.left, command); }
+  else if (command.old > node.value) { node.right = updateObjectRecursively(node.right, command); }
+  else {
+    node.value = command.new;
+    node.focus = true;
+  }
+
+  return node;
+}
+
+function deleteObject(command) {
+  const tree = trees.get(command.structure);
+
+  tree.root = deleteObjectRecursively(tree.root, command);
+
+  trees.set(command.structure, tree);
+}
+
+function deleteObjectRecursively(node, command) {
+  if (!node) { return node; }
+
+  if (command.value < node.value) { node.left = deleteObjectRecursively(node.left, command); }
+  else if (command.value > node.value) { node.right = deleteObjectRecursively(node.right, command); }
+  else if (command.value === node.value && command.address !== node.address) { node.right = deleteObjectRecursively(node.right, command); }
+  else {
+    if (!node.left) { return node.right; }
+    if (!node.right) { return node.left; }
+  }
 
   return node;
 }
