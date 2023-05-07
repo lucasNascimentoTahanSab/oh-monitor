@@ -1,13 +1,21 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
 import AnimationEngine from '../AnimationEngine/AnimationEngine';
-import dragScreen from '../../../classes/drag';
+import Dragger from '../../../classes/dragger';
 
 function AnimationScreen(props) {
   const [play, setPlay] = useState(false);
+  const [dragger, setDragger] = useState(null);
   const [animationEngine, setAnimationEngine] = useState(null);
   const animationScreen = useRef(null);
+
+  useEffect(() => {
+    if (!animationScreen) { return; }
+    if (!animationEngine) { return; }
+
+    setDragger(new Dragger(animationScreen.current, animationEngine.current));
+  }, [animationEngine]);
 
   function getAnimationScreenClass() {
     return props.theme === 'dark' ? 'background-color--color-blue--dark' : 'background-color--color-blue--light';
@@ -20,7 +28,7 @@ function AnimationScreen(props) {
   function handleScreenMouseDown(event) {
     if (typeof animationEngine?.current !== 'object') { return; }
 
-    dragScreen(event, animationScreen.current, animationEngine.current);
+    dragger.drag(event);
   }
 
   return (
@@ -31,6 +39,7 @@ function AnimationScreen(props) {
           render={props.render}
           setRender={props.setRender}
           play={play}
+          setPlay={setPlay}
           setAnimationEngine={setAnimationEngine} />
       </div>
       <div className='animation-screen__control'>

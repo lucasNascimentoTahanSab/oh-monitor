@@ -41,6 +41,7 @@ function AnimationEngine(props) {
   const playTimelineCallback = useCallback(playTimeline, [playTimeline]);
 
   function playTimeline() {
+    if (typeof props.setPlay !== 'function') { return; }
     if (!snapshots?.length) { return; }
     if (!play) { return; }
     if (playing) { return; }
@@ -48,6 +49,8 @@ function AnimationEngine(props) {
     setTimeout(placeElements, 500, 0);
 
     setPlaying(true);
+
+    props.setPlay(false);
   }
 
   function placeElements(snapshotNumber) {
