@@ -38,16 +38,19 @@ function AnimationScreen(props) {
     dragger.drag(event);
   }
 
-  const playTimelineCallback = useCallback(playTimeline, [playTimeline, play]);
+  function toggleTimeline() {
+    if (play) { pauseTimeline(); }
+    else { playTimeline(); }
+  }
 
   function playTimeline() {
-    if (!play) { return; }
     if (playing) { return; }
 
-    setSnapshot(null);
+    setPlay(true);
     setPlaying(true);
-    setCurrentTime(0);
-    setInitialTime(Date.now());
+    setSnapshot(null);
+    setCurrentTime(currentTime >= finalTime ? 0 : currentTime);
+    setInitialTime(currentTime >= finalTime ? Date.now() : Date.now() - currentTime);
     setFinalTime(Date.now() + totalTime);
     setTimer(setInterval(countTimer, 1));
   }
@@ -134,11 +137,22 @@ function AnimationScreen(props) {
     return finalTimeValue;
   }
 
-  useEffect(playTimelineCallback, [playTimelineCallback]);
+  function pauseTimeline() {
+    if (!playing) { return; }
+
+    setPlay(false);
+    setPlaying(false);
+
+    clearInterval(timer);
+  }
 
   function configureSnapshots(result) {
     setSnapshots(result);
     setTotalTime(result?.length * config.animation.duration);
+  }
+
+  function onInputRangeChange(event) {
+    setPlaying(false);
   }
 
   return (
@@ -157,8 +171,8 @@ function AnimationScreen(props) {
           dragger={dragger} />
       </div>
       <div className='animation-screen__control'>
-        <ButtonPlay height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={() => setPlay(!play)} />
-        <InputRange theme={props.theme} snapshots={snapshots} max={totalTime} value={currentTime} />
+        <ButtonPlay height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={toggleTimeline} />
+        <InputRange theme={props.theme} snapshots={snapshots} max={totalTime} value={currentTime} onChange={onInputRangeChange} />
         <ButtonExpand height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} />
       </div>
     </div>
