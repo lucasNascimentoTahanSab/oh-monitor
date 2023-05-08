@@ -1,10 +1,12 @@
 import { createElement } from 'react';
 import Tree from './tree.js';
 import Node from './node.js';
+import TreeComponent from '../components/TreeComponents/TreeComponent/TreeComponent.js';
 
 const trees = new Map();
 const snapshots = [];
 const status = { origin: false, destiny: false };
+let focus = null;
 
 function parse(commands) {
   trees.clear();
@@ -19,7 +21,6 @@ function initializeTrees(command) {
   switch (command.operation) {
     case 'initialize':
       initializeTree(command);
-      snapshot();
       break;
     case 'insert':
       insertObject(command);
@@ -43,9 +44,9 @@ function initializeTrees(command) {
 }
 
 function walkthroughTree(command) {
-  const tree = trees.get(command.structure);
+  const tree = new Tree(trees.get(command.structure));
 
-  tree.root = walkthroughTreeRecursively(tree.root, command);
+  tree.root = walkthroughTreeRecursively(new Node(tree.root), command);
 
   trees.set(command.structure, tree);
 
@@ -60,25 +61,25 @@ function clearStatus() {
 function walkthroughTreeRecursively(node, command) {
   if (!node) { return node; }
 
-  if (node.value === command.origin) { node = originFound(node); }
-  if (node.value === command.destiny) { node = destinyFound(node); }
+  if (node.value === command.origin) { node = originFound(new Node(node)); }
+  if (node.value === command.destiny) { node = destinyFound(new Node(node)); }
 
-  if (!status.origin && command.origin !== null) { node = findOrigin(node, command); }
-  if (!status.destiny && command.destiny !== null) { node = findDestiny(node, command); }
+  if (!status.origin && command.origin !== null) { node = findOrigin(new Node(node), command); }
+  if (!status.destiny && command.destiny !== null) { node = findDestiny(new Node(node), command); }
 
   return node;
 }
 
 function findDestiny(node, command) {
-  if (command.destiny < node.value) { node.left = walkthroughTreeRecursively(node.left, command); }
-  else if (command.destiny > node.value) { node.right = walkthroughTreeRecursively(node.right, command); }
+  if (command.destiny < node.value) { node.left = walkthroughTreeRecursively(new Node(node.left), command); }
+  else if (command.destiny > node.value) { node.right = walkthroughTreeRecursively(new Node(node.right), command); }
 
   return node;
 }
 
 function findOrigin(node, command) {
-  if (command.origin < node.value) { node.left = walkthroughTreeRecursively(node.left, command); }
-  else if (command.origin > node.value) { node.right = walkthroughTreeRecursively(node.right, command); }
+  if (command.origin < node.value) { node.left = walkthroughTreeRecursively(new Node(node.left), command); }
+  else if (command.origin > node.value) { node.right = walkthroughTreeRecursively(new Node(node.right), command); }
 
   return node;
 }
@@ -96,40 +97,33 @@ function originFound(node) {
 }
 
 function focusNode(node) {
-  node.focus = true;
-
-  return node;
+  return new Node({ ...node, focus: true });
 }
 
 function unfocusNode(node) {
-  node.focus = false;
-
-  return node;
+  return new Node({ ...node, focus: false });
 }
 
 function updateObject(command) {
-  const tree = trees.get(command.structure);
+  const tree = new Tree(trees.get(command.structure));
 
-  tree.root = updateObjectRecursively(tree.root, command);
+  tree.root = updateObjectRecursively(new Node(tree.root), command);
 
   trees.set(command.structure, tree);
 }
 
 function updateObjectRecursively(node, command) {
-  if (command.old < node.value) { node.left = updateObjectRecursively(node.left, command); }
-  else if (command.old > node.value) { node.right = updateObjectRecursively(node.right, command); }
-  else {
-    node.value = command.new;
-    node.focus = true;
-  }
+  if (command.old < node.value) { node.left = updateObjectRecursively(new Node(node.left), command); }
+  else if (command.old > node.value) { node.right = updateObjectRecursively(new Node(node.right), command); }
+  else { node = new Node({ ...node, value: command.new, focus: true }); }
 
   return node;
 }
 
 function deleteObject(command) {
-  const tree = trees.get(command.structure);
+  const tree = new Tree(trees.get(command.structure));
 
-  tree.root = deleteObjectRecursively(tree.root, command);
+  tree.root = deleteObjectRecursively(new Node(tree.root), command);
 
   trees.set(command.structure, tree);
 }
@@ -137,9 +131,9 @@ function deleteObject(command) {
 function deleteObjectRecursively(node, command) {
   if (!node) { return node; }
 
-  if (command.value < node.value) { node.left = deleteObjectRecursively(node.left, command); }
-  else if (command.value > node.value) { node.right = deleteObjectRecursively(node.right, command); }
-  else if (command.value === node.value && command.address !== node.address) { node.right = deleteObjectRecursively(node.right, command); }
+  if (command.value < node.value) { node.left = deleteObjectRecursively(new Node(node.left), command); }
+  else if (command.value > node.value) { node.right = deleteObjectRecursively(new Node(node.right), command); }
+  else if (command.value === node.value && command.address !== node.address) { node.right = deleteObjectRecursively(new Node(node.right), command); }
   else {
     if (!node.left) { return node.right; }
     if (!node.right) { return node.left; }
@@ -149,7 +143,7 @@ function deleteObjectRecursively(node, command) {
 }
 
 function insertObject(command) {
-  const tree = trees.get(command.structure);
+  const tree = new Tree(trees.get(command.structure));
 
   tree.root = insertObjectRecursively(tree.root, command);
 
@@ -159,8 +153,8 @@ function insertObject(command) {
 function insertObjectRecursively(node, command) {
   if (!node) { return new Node(command); }
 
-  if (command.value < node.value) { node.left = insertObjectRecursively(node.left, command); }
-  else if (command.value > node.value) { node.right = insertObjectRecursively(node.right, command); }
+  if (command.value < node.value) { node.left = insertObjectRecursively(node.left ? new Node(node.left) : null, command); }
+  else if (command.value > node.value) { node.right = insertObjectRecursively(node.right ? new Node(node.right) : null, command); }
 
   return node;
 }
@@ -178,55 +172,7 @@ function build() {
 }
 
 function createTreeElement(tree) {
-  return createElement(
-    'div',
-    { key: tree.address, id: `_${tree.address}`, className: 'animation-engine__tree' },
-    createNodeElement(tree.root),
-    createChildrenElement(tree.root)
-  );
-}
-
-function createChildrenElement(node) {
-  if (!node?.left && !node?.right) { return null; }
-
-  return createElement(
-    'div',
-    { key: `${node.address}-children`, id: `_${node.address}-children`, className: 'animation-engine__children' },
-    createLeftChildElement(node),
-    createRightChildElement(node)
-  );
-}
-
-function createRightChildElement(node) {
-  if (!node?.right) { return null; }
-
-  return createElement(
-    'div',
-    { key: `${node.right.address}-subtree`, id: `_${node.right.address}-subtree`, className: 'animation-engine__subtree animation-engine__subtree--right' },
-    createNodeElement(node.right),
-    createChildrenElement(node.right)
-  );
-}
-
-function createLeftChildElement(node) {
-  if (!node?.left) { return null; }
-
-  return createElement(
-    'div',
-    { key: `${node.left.address}-subtree`, id: `_${node.left.address}-subtree`, className: 'animation-engine__subtree animation-engine__subtree--left' },
-    createNodeElement(node.left),
-    createChildrenElement(node.left)
-  );
-}
-
-function createNodeElement(node) {
-  if (!node) { return null; }
-
-  return createElement('span', { key: node.address, id: `_${node.address}`, className: `animation-engine__node ${getFocusOn(node)}` }, node.value);
-}
-
-function getFocusOn(node) {
-  return node.focus ? 'animation-engine__node--focus' : '';
+  return createElement(TreeComponent, { key: `_${tree.address}`, tree });
 }
 
 const animation = { parse };

@@ -40,7 +40,8 @@ function AnimationScreen(props) {
           setRender={props.setRender}
           play={play}
           setPlay={setPlay}
-          setAnimationEngine={setAnimationEngine} />
+          setAnimationEngine={setAnimationEngine}
+          dragger={dragger} />
       </div>
       <div className='animation-screen__control'>
         <ButtonPlay height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={() => setPlay(!play)} />

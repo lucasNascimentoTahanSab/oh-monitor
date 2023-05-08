@@ -13,7 +13,18 @@ export default class Dragger {
   get x() { return this._childInitialX + this._deltaX; }
   get y() { return this._childInitialY + this._deltaY; }
 
-  focus(screen, content) {
+  focus(element) {
+    const screenBoundaries = this.screen.getBoundingClientRect();
+
+    const screenCenterY = screenBoundaries.top + ((screenBoundaries.bottom - screenBoundaries.top) / 2);
+    const screenCenterX = screenBoundaries.left + ((screenBoundaries.right - screenBoundaries.left) / 2);
+
+    const elementBoundaries = element?.current?.getBoundingClientRect();
+
+    const elementCenterY = elementBoundaries?.top + ((elementBoundaries?.bottom - elementBoundaries?.top) / 2);
+    const elementCenterX = elementBoundaries?.left + ((elementBoundaries?.right - elementBoundaries?.left) / 2);
+
+    this._updateChildPosition(elementCenterX - screenCenterX, elementCenterY - screenCenterY);
   }
 
   drag(event) {

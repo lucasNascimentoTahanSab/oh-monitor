@@ -503,9 +503,9 @@ li.exercise__question-statement:not(:last-child) {
 }
 
 .animation-engine * {
-  -webkit-transition: all .25s ease;
-  -moz-transition: .25s ease;
-  transition: .25s ease;
+  -webkit-transition: all .375s ease;
+  -moz-transition: .375s ease;
+  transition: .375s ease;
 }
 
 .animation-engine::-webkit-scrollbar {

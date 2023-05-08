@@ -6,7 +6,8 @@ function AnimationEngine(props) {
   const [play, setPlay] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [snapshots, setSnapshots] = useState([]);
-  const [elements, setElements] = useState([]);
+  const [snapshot, setSnapshot] = useState(null);
+  const [dragger, setDragger] = useState(null);
   const animationEngine = useRef(null);
 
   const updateRenderCallback = useCallback(updateRender, [updateRender]);
@@ -31,7 +32,7 @@ function AnimationEngine(props) {
     if (typeof props.setRender !== 'function') { return; }
 
     setSnapshots(animation.parse(props.commands));
-    setElements([]);
+    setSnapshot(null);
 
     props.setRender(false);
   }
@@ -46,7 +47,7 @@ function AnimationEngine(props) {
     if (!play) { return; }
     if (playing) { return; }
 
-    setTimeout(placeElements, 500, 0);
+    setTimeout(placeElements, 375, 0);
 
     setPlaying(true);
 
@@ -60,9 +61,9 @@ function AnimationEngine(props) {
       return;
     }
 
-    setElements(snapshots[snapshotNumber]);
+    setSnapshot(snapshots[snapshotNumber]);
 
-    setTimeout(placeElements, 500, snapshotNumber + 1);
+    setTimeout(placeElements, 375, snapshotNumber + 1);
   }
 
   useEffect(playTimelineCallback, [play, playTimelineCallback]);
@@ -77,8 +78,17 @@ function AnimationEngine(props) {
 
   useEffect(setAnimationEngineCallback, [setAnimationEngineCallback, animationEngine]);
 
+  // useEffect(() => {
+  //   if (!dragger) { return; }
+  //   if (!snapshot?.focus) { return; }
+
+  //   dragger.focus(snapshot.focus);
+  // }, [dragger, snapshot?.focus]);
+
+  useEffect(() => { setDragger(props.dragger); }, [props.dragger]);
+
   return (
-    <div className='animation-engine no-select' ref={animationEngine}>{elements}</div>
+    <div className='animation-engine no-select' ref={animationEngine}>{snapshot}</div>
   );
 }
 

@@ -4,6 +4,6 @@ export default class Node {
     this.value = node?.value ?? null;
     this.left = node?.left ?? null;
     this.right = node?.right ?? null;
-    this.focus = true;
+    this.focus = node?.focus ?? true;
   }
 }
