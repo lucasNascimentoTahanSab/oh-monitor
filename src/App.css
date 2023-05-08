@@ -497,9 +497,9 @@ li.exercise__question-statement:not(:last-child) {
   width: 100%;
   height: 100%;
   overflow: visible;
-  -webkit-transition: all .1s;
-  -moz-transition: .1s;
-  transition: .1s;
+  -webkit-transition: all .375s;
+  -moz-transition: .375s;
+  transition: .375s;
 }
 
 .animation-engine * {

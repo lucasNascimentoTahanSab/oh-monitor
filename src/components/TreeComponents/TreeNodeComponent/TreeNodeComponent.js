@@ -1,19 +1,22 @@
-import React, { useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { DraggerContext } from '../../Context/DraggerContext/DraggerContext';
 
 function TreeNodeComponent(props) {
+  const [dragger,] = useContext(DraggerContext);
+  const [node, setNode] = useState(null);
   const focus = useRef(null);
 
-  function getFocus() {
-    return props.node?.focus ? 'animation-engine__node--focus' : '';
-  }
+  useEffect(() => { setNode(props.node) }, [props.node]);
 
-  function getRef() {
-    return props.node?.focus ? focus : null;
+  useEffect(() => { if (node?.focus && focus) { dragger?.focus(focus.current); } }, [node, dragger]);
+
+  function getFocus() {
+    return node?.focus ? 'animation-engine__node--focus' : '';
   }
 
   return (
-    <span id={`_${props.node?.address}`} className={`animation-engine__node ${getFocus()}`} ref={getRef()}>
-      {props.node?.value}
+    <span id={`_${node?.address}`} className={`animation-engine__node ${getFocus()}`} ref={focus}>
+      {node?.value}
     </span>
   );
 }

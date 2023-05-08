@@ -2,6 +2,11 @@ export default class Dragger {
   constructor(screen, content) {
     this.screen = screen;
     this.content = content;
+    this.element = null;
+    this._elementCenterX = null;
+    this._elementCenterY = null;
+    this._screenCenterX = null;
+    this._screenCenterY = null;
     this._childInitialX = null;
     this._childInitialY = null;
     this._mouseInitialX = null;
@@ -14,23 +19,36 @@ export default class Dragger {
   get y() { return this._childInitialY + this._deltaY; }
 
   focus(element) {
+    this.element = element;
+
+    this._setContentInitialPosition();
+    this._setScreenCenter();
+    this._setElementCenter();
+
+    this._deltaX = Math.floor(this._screenCenterX - this._elementCenterX);
+    this._deltaY = Math.floor(this._screenCenterY - this._elementCenterY);
+
+    this._updateContentPosition(this.x, this.y);
+  }
+
+  _setElementCenter() {
+    const elementBoundaries = this.element.getBoundingClientRect();
+
+    this._elementCenterX = elementBoundaries.left + ((elementBoundaries.right - elementBoundaries.left) / 2);
+    this._elementCenterY = elementBoundaries.top + ((elementBoundaries.bottom - elementBoundaries.top) / 2);
+  }
+
+  _setScreenCenter() {
     const screenBoundaries = this.screen.getBoundingClientRect();
 
-    const screenCenterY = screenBoundaries.top + ((screenBoundaries.bottom - screenBoundaries.top) / 2);
-    const screenCenterX = screenBoundaries.left + ((screenBoundaries.right - screenBoundaries.left) / 2);
-
-    const elementBoundaries = element?.current?.getBoundingClientRect();
-
-    const elementCenterY = elementBoundaries?.top + ((elementBoundaries?.bottom - elementBoundaries?.top) / 2);
-    const elementCenterX = elementBoundaries?.left + ((elementBoundaries?.right - elementBoundaries?.left) / 2);
-
-    this._updateChildPosition(elementCenterX - screenCenterX, elementCenterY - screenCenterY);
+    this._screenCenterX = screenBoundaries.left + ((screenBoundaries.right - screenBoundaries.left) / 2);
+    this._screenCenterY = screenBoundaries.top + ((screenBoundaries.bottom - screenBoundaries.top) / 2);
   }
 
   drag(event) {
     event.preventDefault();
 
-    this._setChildInitialPosition();
+    this._setContentInitialPosition();
     this._setMouseInitialPosition(event);
 
     this.screen.addEventListener('mousemove', this._handleScreenDraggerMouseMoveBind);
@@ -50,10 +68,10 @@ export default class Dragger {
     this._deltaY = event.pageY - this._mouseInitialY;
     this._deltaX = event.pageX - this._mouseInitialX;
 
-    this._updateChildPosition(this.x, this.y);
+    this._updateContentPosition(this.x, this.y);
   }
 
-  _updateChildPosition(x, y) {
+  _updateContentPosition(x, y) {
     this.content.style.transform = `translate(${x}px,${y}px)`;
   }
 
@@ -62,7 +80,7 @@ export default class Dragger {
     this._mouseInitialY = event.pageY;
   }
 
-  _setChildInitialPosition() {
+  _setContentInitialPosition() {
     const translate = this.content.style.transform.includes('translate')
       ? this.content.style.transform.replace('translate', '').replace('(', '').replace(')', '')
       : '';

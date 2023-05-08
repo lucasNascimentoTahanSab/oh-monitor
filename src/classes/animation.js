@@ -6,7 +6,6 @@ import TreeComponent from '../components/TreeComponents/TreeComponent/TreeCompon
 const trees = new Map();
 const snapshots = [];
 const status = { origin: false, destiny: false };
-let focus = null;
 
 function parse(commands) {
   trees.clear();

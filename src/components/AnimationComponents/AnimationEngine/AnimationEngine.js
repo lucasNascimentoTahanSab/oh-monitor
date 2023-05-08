@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { DraggerContext } from '../../Context/DraggerContext/DraggerContext.js';
 import animation from '../../../classes/animation';
 
 function AnimationEngine(props) {
@@ -47,6 +48,8 @@ function AnimationEngine(props) {
     if (!play) { return; }
     if (playing) { return; }
 
+    setSnapshot(null);
+
     setTimeout(placeElements, 375, 0);
 
     setPlaying(true);
@@ -78,17 +81,12 @@ function AnimationEngine(props) {
 
   useEffect(setAnimationEngineCallback, [setAnimationEngineCallback, animationEngine]);
 
-  // useEffect(() => {
-  //   if (!dragger) { return; }
-  //   if (!snapshot?.focus) { return; }
-
-  //   dragger.focus(snapshot.focus);
-  // }, [dragger, snapshot?.focus]);
-
   useEffect(() => { setDragger(props.dragger); }, [props.dragger]);
 
   return (
-    <div className='animation-engine no-select' ref={animationEngine}>{snapshot}</div>
+    <DraggerContext.Provider value={[dragger, setDragger]}>
+      <div className='animation-engine no-select' ref={animationEngine}>{snapshot}</div>
+    </DraggerContext.Provider>
   );
 }
 
