@@ -153,6 +153,9 @@ function AnimationScreen(props) {
 
   function onInputRangeChange(event) {
     setPlaying(false);
+    setCurrentTime(event.target.value);
+
+    placeElements(getNewSnapshotNumber(event.target.value));
   }
 
   return (
