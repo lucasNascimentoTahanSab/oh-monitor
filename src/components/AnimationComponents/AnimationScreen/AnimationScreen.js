@@ -1,14 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useContext, useRef, useState, useCallback } from 'react';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
 import AnimationEngine from '../AnimationEngine/AnimationEngine';
 import Dragger from '../../../classes/dragger';
+import InputRange from '../../InputComponents/InputRange/InputRange';
+import { ConfigContext } from '../../Context/ConfigContext/ConfigContext.js';
 
 function AnimationScreen(props) {
   const [play, setPlay] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const [dragger, setDragger] = useState(null);
+  const [snapshots, setSnapshots] = useState([]);
+  const [snapshot, setSnapshot] = useState([]);
   const [animationEngine, setAnimationEngine] = useState(null);
+  const [totalTime, setTotalTime] = useState(0);
+  const [initialTime, setInitialTime] = useState(0);
+  const [finalTime, setFinalTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [timer, setTimer] = useState(null);
   const animationScreen = useRef(null);
+  const config = useContext(ConfigContext);
 
   useEffect(() => {
     if (!animationScreen) { return; }
@@ -21,14 +32,113 @@ function AnimationScreen(props) {
     return props.theme === 'dark' ? 'background-color--color-blue--dark' : 'background-color--color-blue--light';
   }
 
-  function getThemeClass() {
-    return props.theme === 'dark' ? 'progress-bar--light' : 'progress-bar--dark';
-  }
-
   function handleScreenMouseDown(event) {
     if (typeof animationEngine?.current !== 'object') { return; }
 
     dragger.drag(event);
+  }
+
+  const playTimelineCallback = useCallback(playTimeline, [playTimeline, play]);
+
+  function playTimeline() {
+    if (!play) { return; }
+    if (playing) { return; }
+
+    setSnapshot(null);
+    setPlaying(true);
+    setCurrentTime(0);
+    setInitialTime(Date.now());
+    setFinalTime(Date.now() + totalTime);
+    setTimer(setInterval(countTimer, 1));
+  }
+
+  function countTimer() {
+    const finalTimeValue = getFinalTimeValue();
+
+    if (Date.now() <= finalTimeValue) {
+      const newCurrentTimeValue = getNewCurrentTimeValue();
+      const newSnapshotNumber = getNewSnapshotNumber(newCurrentTimeValue);
+
+      setCurrentTime(newCurrentTimeValue);
+      placeElements(newSnapshotNumber);
+    } else {
+      setPlay(false);
+      setPlaying(false);
+
+      clearInterval(getTimerValue());
+    }
+  }
+
+  function placeElements(snapshotNumber) {
+    if (snapshotNumber > snapshots?.length - 1) { return; }
+
+    setSnapshot(snapshots[snapshotNumber]);
+  }
+
+  function getNewSnapshotNumber(currentTimeValue) {
+    return Math.floor(currentTimeValue / config.animation.duration);
+  }
+
+  function getNewCurrentTimeValue() {
+    const initialTimeValue = getInitialTimeValue();
+    const currentTimeValue = getCurrentTimeValue();
+
+    return Date.now() - initialTimeValue ?? currentTimeValue;
+  }
+
+  function getTimerValue() {
+    let timerValue = 0;
+
+    setTimer(timer => {
+      timerValue = timer;
+
+      return timer;
+    });
+
+    return timerValue;
+  }
+
+  function getCurrentTimeValue() {
+    let currentTimeValue = 0;
+
+    setCurrentTime(currentTime => {
+      currentTimeValue = currentTime;
+
+      return currentTime;
+    });
+
+    return currentTimeValue;
+  }
+
+  function getInitialTimeValue() {
+    let initialTimeValue = 0;
+
+    setInitialTime(initialTime => {
+      initialTimeValue = initialTime;
+
+      return initialTime;
+    });
+
+    return initialTimeValue;
+  }
+
+  function getFinalTimeValue() {
+    let finalTimeValue = 0;
+
+    setFinalTime(finalTime => {
+      finalTimeValue = finalTime;
+
+      return finalTime;
+    });
+
+    return finalTimeValue;
+  }
+
+  useEffect(playTimelineCallback, [playTimelineCallback]);
+
+  function configureSnapshots(result) {
+    setSnapshots(result);
+    setTotalTime(result?.length * config.animation.duration);
   }
 
   return (
@@ -41,11 +151,14 @@ function AnimationScreen(props) {
           play={play}
           setPlay={setPlay}
           setAnimationEngine={setAnimationEngine}
+          setSnapshots={configureSnapshots}
+          snapshot={snapshot}
+          setSnapshot={setSnapshot}
           dragger={dragger} />
       </div>
       <div className='animation-screen__control'>
         <ButtonPlay height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={() => setPlay(!play)} />
-        <input className={`progress-bar ${getThemeClass()}`} type='range' min={0} max={100} step={1} defaultValue={0} />
+        <InputRange theme={props.theme} snapshots={snapshots} max={totalTime} value={currentTime} />
         <ButtonExpand height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} />
       </div>
     </div>

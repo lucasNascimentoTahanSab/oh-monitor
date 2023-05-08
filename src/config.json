@@ -9,5 +9,8 @@
       "extension": "java",
       "sort": "desc"
     }
+  },
+  "animation": {
+    "duration": 325
   }
 }
