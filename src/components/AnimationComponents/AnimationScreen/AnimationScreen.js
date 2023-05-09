@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useContext, useRef, useState } from 'react';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
 import AnimationEngine from '../AnimationEngine/AnimationEngine';
@@ -17,6 +17,7 @@ function AnimationScreen(props) {
   const [initialTime, setInitialTime] = useState(0);
   const [finalTime, setFinalTime] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  const [finished, setFinished] = useState(false);
   const [timer, setTimer] = useState(null);
   const animationScreen = useRef(null);
   const config = useContext(ConfigContext);
@@ -45,31 +46,36 @@ function AnimationScreen(props) {
 
   function playTimeline() {
     if (playing) { return; }
+    if (timer) { clearInterval(timer); }
 
     setPlay(true);
     setPlaying(true);
-    setSnapshot(null);
-    setCurrentTime(currentTime >= finalTime ? 0 : currentTime);
-    setInitialTime(currentTime >= finalTime ? Date.now() : Date.now() - currentTime);
-    setFinalTime(Date.now() + totalTime);
+    setSnapshot(finished ? null : snapshot);
+    setCurrentTime(finished ? 0 : currentTime);
+    setInitialTime(finished ? Date.now() : Date.now() - currentTime);
+    setFinalTime(finished ? Date.now() + totalTime : (Date.now() - currentTime) + totalTime);
     setTimer(setInterval(countTimer, 1));
+    setFinished(false);
   }
 
   function countTimer() {
     const finalTimeValue = getFinalTimeValue();
 
-    if (Date.now() <= finalTimeValue) {
-      const newCurrentTimeValue = getNewCurrentTimeValue();
-      const newSnapshotNumber = getNewSnapshotNumber(newCurrentTimeValue);
-
-      setCurrentTime(newCurrentTimeValue);
-      placeElements(newSnapshotNumber);
-    } else {
+    if (!getPlaying()) {
+      clearInterval(getTimerValue());
+    } else if (Date.now() > finalTimeValue) {
       setPlay(false);
       setPlaying(false);
+      setFinished(true);
 
       clearInterval(getTimerValue());
     }
+
+    const newCurrentTimeValue = getNewCurrentTimeValue();
+    const newSnapshotNumber = getNewSnapshotNumber(newCurrentTimeValue);
+
+    setCurrentTime(newCurrentTimeValue);
+    placeElements(newSnapshotNumber);
   }
 
   function placeElements(snapshotNumber) {
@@ -84,13 +90,15 @@ function AnimationScreen(props) {
 
   function getNewCurrentTimeValue() {
     const initialTimeValue = getInitialTimeValue();
+    const finalTimeValue = getFinalTimeValue();
     const currentTimeValue = getCurrentTimeValue();
+    const newCurrentTimeValue = Date.now() - initialTimeValue ?? currentTimeValue;
 
-    return Date.now() - initialTimeValue ?? currentTimeValue;
+    return newCurrentTimeValue > finalTimeValue ? finalTimeValue : newCurrentTimeValue;
   }
 
   function getTimerValue() {
-    let timerValue = 0;
+    let timerValue = timer;
 
     setTimer(timer => {
       timerValue = timer;
@@ -102,7 +110,7 @@ function AnimationScreen(props) {
   }
 
   function getCurrentTimeValue() {
-    let currentTimeValue = 0;
+    let currentTimeValue = currentTime;
 
     setCurrentTime(currentTime => {
       currentTimeValue = currentTime;
@@ -114,7 +122,7 @@ function AnimationScreen(props) {
   }
 
   function getInitialTimeValue() {
-    let initialTimeValue = 0;
+    let initialTimeValue = initialTime;
 
     setInitialTime(initialTime => {
       initialTimeValue = initialTime;
@@ -125,8 +133,20 @@ function AnimationScreen(props) {
     return initialTimeValue;
   }
 
+  function getPlaying() {
+    let playingValue = playing;
+
+    setPlaying(playing => {
+      playingValue = playing;
+
+      return playing;
+    });
+
+    return playingValue;
+  }
+
   function getFinalTimeValue() {
-    let finalTimeValue = 0;
+    let finalTimeValue = finalTime;
 
     setFinalTime(finalTime => {
       finalTimeValue = finalTime;
@@ -155,7 +175,15 @@ function AnimationScreen(props) {
     setPlaying(false);
     setCurrentTime(event.target.value);
 
+    if (event.target.value === totalTime) { setFinished(true); }
+
     placeElements(getNewSnapshotNumber(event.target.value));
+  }
+
+  function onInputTouchEnd(event) {
+    if (!play) { return; }
+
+    playTimeline();
   }
 
   return (
@@ -175,7 +203,7 @@ function AnimationScreen(props) {
       </div>
       <div className='animation-screen__control'>
         <ButtonPlay height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={toggleTimeline} />
-        <InputRange theme={props.theme} snapshots={snapshots} max={totalTime} value={currentTime} onChange={onInputRangeChange} />
+        <InputRange theme={props.theme} snapshots={snapshots} max={totalTime} value={currentTime} onChange={onInputRangeChange} onTouchEnd={onInputTouchEnd} />
         <ButtonExpand height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} />
       </div>
     </div>

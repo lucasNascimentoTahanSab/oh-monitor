@@ -19,8 +19,22 @@ function InputRange(props) {
     props.onChange(event);
   }
 
+  function hangeInputTouchEnd(event) {
+    if (typeof props.onTouchEnd !== 'function') { return; }
+
+    props.onTouchEnd(event);
+  }
+
   return (
-    <input className={`progress-bar ${getThemeClass()}`} type='range' min={0} max={props.max} step={1} value={props.value} onChange={handleInputChange} />
+    <input
+      className={`progress-bar ${getThemeClass()}`}
+      type='range'
+      step={1}
+      min={0}
+      max={props.max}
+      value={props.value}
+      onChange={handleInputChange}
+      onMouseUp={hangeInputTouchEnd} />
   );
 }
 
