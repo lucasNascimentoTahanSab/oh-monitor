@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import resize from '../../../classes/resize';
 
-function CodeEditorOutput(props) {
+function CodeEditorPrompt(props) {
   const contentRef = useRef();
 
   function getOutput() {
@@ -22,4 +22,4 @@ function CodeEditorOutput(props) {
   );
 }
 
-export default CodeEditorOutput;
+export default CodeEditorPrompt;

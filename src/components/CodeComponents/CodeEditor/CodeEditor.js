@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, createElement, useContext } from 'react';
 import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
-import CodeEditorOutput from '../CodeEditorOutput/CodeEditorOutput';
+import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt';
 import File from '../../../classes/file';
 import { callouts } from '../../../classes/callout';
 import { util } from '../../../classes/util';
@@ -154,7 +154,7 @@ function CodeEditor(props) {
           setFile={updateFile}
           setCurrentFile={setCurrentFile}
           setResult={updateResult} />
-        <CodeEditorOutput output={output} />
+        <CodeEditorPrompt output={output} />
       </div>
     </FullscreenContext.Provider>
   );
