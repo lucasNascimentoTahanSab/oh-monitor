@@ -6,7 +6,16 @@ function CodeEditorMenu(props) {
   function getMenuItems() {
     if (!props.files?.length) { return null; }
 
-    return props.files.map(file => <CodeEditorMenuItem key={file.uuid} file={file} group='radio-group-bst' setCurrentFile={props.setCurrentFile} />);
+    return props.files.map(file =>
+      <CodeEditorMenuItem
+        key={file.uuid}
+        item={file}
+        group={`radio-group-${file.uuid}`}
+        setCurrentItem={props.setCurrentFile}
+        selectorClassName='menu__item-radio'
+        labelClassName='menu__item-label'
+      />
+    );
   }
 
   return (

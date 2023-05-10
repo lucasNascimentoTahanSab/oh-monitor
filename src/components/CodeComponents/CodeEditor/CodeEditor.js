@@ -47,7 +47,7 @@ function CodeEditor(props) {
     );
   }
 
-  const callbackGetFile = useCallback(() => setFile(util.getCurrentFile(files)), [files]);
+  const callbackGetFile = useCallback(() => setFile(util.getCurrentItem(files)), [files]);
 
   useEffect(() => { if (files.length) { callbackGetFile(); } }, [files, callbackGetFile]);
 
@@ -59,7 +59,7 @@ function CodeEditor(props) {
   }
 
   function selectFileByUuid(uuid) {
-    const newFile = util.getFileByUuid(files, uuid);
+    const newFile = util.getItemByUuid(files, uuid);
 
     if (!newFile) { return; }
 
@@ -67,7 +67,7 @@ function CodeEditor(props) {
   }
 
   function unselectCurrentFile() {
-    const currentFile = util.getCurrentFile(files);
+    const currentFile = util.getCurrentItem(files);
 
     if (!currentFile) { return; }
 

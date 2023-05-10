@@ -1,22 +1,45 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import resize from '../../../classes/resize';
+import CodeEditorPromptMenu from '../CodeEditorPromptMenu/CodeEditorPromptMenu.js';
+import { util } from '../../../classes/util';
+import CodeEditorPromptContent from '../CodeEditorPromptContent/CodeEditorPromptContent';
 
 function CodeEditorPrompt(props) {
-  const contentRef = useRef();
+  const [menuItems, setMenuItems] = useState([
+    { uuid: 'SAÍDA', name: 'SAÍDA', current: true },
+    { uuid: 'ENTRADA', name: 'ENTRADA', current: false }
+  ]);
+  const [contentRef, setContentRef] = useState(null);
 
-  function getOutput() {
-    if (!props.output?.length) { return null; }
+  function setCurrentItem(uuid) {
+    unselectCurrentItem();
+    selectItemByUuid(uuid);
 
-    return props.output.map(item => item);
+    setMenuItems([...menuItems]);
+  }
+
+  function selectItemByUuid(uuid) {
+    const newItem = util.getItemByUuid(menuItems, uuid);
+
+    if (!newItem) { return; }
+
+    newItem.current = true;
+  }
+
+  function unselectCurrentItem() {
+    const currentitem = util.getCurrentItem(menuItems);
+
+    if (!currentitem) { return; }
+
+    currentitem.current = false;
   }
 
   return (
-    <div className='code-editor__output'>
-      <div className='code-editor__output-resizer' onMouseDown={event => resize(event, contentRef.current)}></div>
-      <div className='code-editor__output-content' ref={contentRef}>
-        <div className='code-editor__output-inner'>
-          {getOutput()}
-        </div>
+    <div className='prompt'>
+      <div className='prompt__resizer' onMouseDown={event => resize(event, contentRef.current)}></div>
+      <div className='prompt__content'>
+        <CodeEditorPromptMenu items={menuItems} setCurrentItem={setCurrentItem} />
+        <CodeEditorPromptContent content={props.output} setContentRef={setContentRef} />
       </div>
     </div>
   );

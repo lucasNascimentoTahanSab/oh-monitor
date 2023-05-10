@@ -1,16 +1,16 @@
 import React from 'react';
 
 function CodeEditorMenuItem(props) {
-  function setCurrentFile() {
-    if (typeof props.setCurrentFile !== 'function') { return; }
+  function setCurrentItem() {
+    if (typeof props.setCurrentItem !== 'function') { return; }
 
-    props.setCurrentFile(props.file?.uuid);
+    props.setCurrentItem(props.item?.uuid);
   }
 
   return (
     <div className='menu__item'>
-      <input id={props.file?.uuid} className='menu__item-radio' type='radio' name={props.group} checked={props.file?.current} onChange={setCurrentFile} />
-      <label className='menu__item-label' htmlFor={props.file?.uuid}>{props.file?.name}</label>
+      <input id={props.item?.uuid} className={props.selectorClassName} type='radio' name={props.group} checked={props.item?.current} onChange={setCurrentItem} />
+      <label className={props.labelClassName} htmlFor={props.item?.uuid}>{props.item?.name}</label>
     </div>
   );
 }

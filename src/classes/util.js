@@ -16,15 +16,15 @@ export const util = {
 
     return String.fromCharCode(index + 65);
   },
-  getCurrentFile(files) {
-    if (!files?.length) { return null; }
+  getCurrentItem(items) {
+    if (!items?.length) { return null; }
 
-    return files.find(file => file.current);
+    return items.find(item => item.current);
   },
-  getFileByUuid(files, uuid) {
-    if (!files?.length) { return null; }
+  getItemByUuid(items, uuid) {
+    if (!items?.length) { return null; }
 
-    return files.find(file => file.uuid === uuid);
+    return items.find(item => item.uuid === uuid);
   },
   getItemIndexByUuid(items, uuid) {
     if (!items?.length) { return null; }
