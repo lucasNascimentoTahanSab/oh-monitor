@@ -59,23 +59,33 @@ function AnimationScreen(props) {
   }
 
   function countTimer() {
-    const finalTimeValue = getFinalTimeValue();
+    if (!getPlaying()) { clearIntervalWhenNotPlaying(); }
+    else if (timeIsOver()) { clearIntervalWhenTimeIsOver(); }
+    else { setCurrentTimeWhenPlaying(); }
+  }
 
-    if (!getPlaying()) {
-      clearInterval(getTimerValue());
-    } else if (Date.now() > finalTimeValue) {
-      setPlay(false);
-      setPlaying(false);
-      setFinished(true);
-
-      clearInterval(getTimerValue());
-    }
-
+  function setCurrentTimeWhenPlaying() {
     const newCurrentTimeValue = getNewCurrentTimeValue();
     const newSnapshotNumber = getNewSnapshotNumber(newCurrentTimeValue);
 
     setCurrentTime(newCurrentTimeValue);
     placeElements(newSnapshotNumber);
+  }
+
+  function clearIntervalWhenTimeIsOver() {
+    setPlay(false);
+    setPlaying(false);
+    setFinished(true);
+
+    clearInterval(getTimerValue());
+  }
+
+  function timeIsOver() {
+    return Date.now() > getFinalTimeValue();
+  }
+
+  function clearIntervalWhenNotPlaying() {
+    clearInterval(getTimerValue());
   }
 
   function placeElements(snapshotNumber) {
