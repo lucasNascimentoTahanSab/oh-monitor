@@ -1,6 +1,10 @@
+/**
+ * @file Módulo responsável pela elaboração de requisições à API GitHub.
+ * @copyright Lucas N. T. Sab 2023 
+ */
 require('dotenv').config();
 
-module.exports = {
+const GH_REQUEST = {
   getRequest(url) {
     return {
       method: 'GET',
@@ -12,10 +16,10 @@ module.exports = {
       }
     };
   },
-  getRequestFor(url) {
+  getRequestFor(download) {
     return {
       method: 'GET',
-      url,
+      url: download,
       headers: {
         'Authorization': process.env.GH_TOKEN,
         'Accept': 'application/vnd.github+json',
@@ -24,3 +28,5 @@ module.exports = {
     };
   }
 };
+
+module.exports = GH_REQUEST;

@@ -1,11 +1,16 @@
-require('dotenv').config();
-const { build } = require('./codeXBuilder');
+/**
+ * @file Módulo responsável pela elaboração de requisições à API CodeX.
+ * @copyright Lucas N. T. Sab 2023 
+ */
+const CX_BUILDER = require('./codeXBuilder');
 
-module.exports = {
+require('dotenv').config();
+
+const CX_REQUEST = {
   async getRequest(req) {
     const encodedParams = new URLSearchParams();
 
-    encodedParams.append('code', await build(req.body.files, req.body.config));
+    encodedParams.append('code', await CX_BUILDER.build(req.body.files, req.body.config));
     encodedParams.append('language', req.body.config?.language);
 
     return {
@@ -20,3 +25,5 @@ module.exports = {
     };
   }
 };
+
+module.exports = CX_REQUEST;
