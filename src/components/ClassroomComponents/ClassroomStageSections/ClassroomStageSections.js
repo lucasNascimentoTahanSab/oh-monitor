@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { TabContext } from '../../Context/TabContext/TabContext';
+import TabContext from '../../Context/TabContext/TabContext';
 import ClassroomStageSection from '../ClassroomStageSection/ClassroomStageSection';
 
 function ClassroomStageSections(props) {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen';
-import { callouts } from '../../../classes/callout';
+import callouts from '../../../classes/callout';
 import config from '../../../config.json';
 
 function CodeSnippet(props) {

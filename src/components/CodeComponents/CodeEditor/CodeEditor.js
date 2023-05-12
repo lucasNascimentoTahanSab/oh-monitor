@@ -2,7 +2,7 @@ import React, { useEffect, useState, createElement } from 'react';
 import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
 import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt';
 import File from '../../../classes/file';
-import { callouts } from '../../../classes/callout';
+import callouts from '../../../classes/callout';
 import util from '../../../classes/util';
 import { FullscreenContext } from '../../Context/FullscreenContext/FullscreenContext';
 import { ReactComponent as Right } from '../../../svg/right.svg';

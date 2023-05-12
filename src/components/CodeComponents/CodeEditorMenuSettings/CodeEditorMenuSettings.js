@@ -6,7 +6,7 @@ import React, { useContext } from 'react';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay';
 import { FullscreenContext } from '../../Context/FullscreenContext/FullscreenContext';
-import { callouts } from '../../../classes/callout';
+import callouts from '../../../classes/callout';
 import config from '../../../config.json';
 import util from '../../../classes/util';
 

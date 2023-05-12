@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { TabContext } from '../../Context/TabContext/TabContext';
-import { ExerciseContext } from '../../Context/ExerciseContext/ExerciseContext';
+import TabContext from '../../Context/TabContext/TabContext';
+import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
 import { ReactComponent as Asterisk } from '../../../svg/asterisk.svg';
 import util from '../../../classes/util';
 

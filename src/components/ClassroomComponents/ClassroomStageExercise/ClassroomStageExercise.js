@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ExerciseContext } from '../../Context/ExerciseContext/ExerciseContext';
+import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
 import ClassroomStageExerciseAnswer from '../ClassroomStageExerciseAnswer/ClassroomStageExerciseAnswer';
 
 function ClassroomStageExercise(props) {

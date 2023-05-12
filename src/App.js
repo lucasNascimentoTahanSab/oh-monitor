@@ -1,3 +1,7 @@
+/**
+ * @file Módulo responsável pela exibição da aplicação.
+ * @copyright Lucas N. T. Sab 2023
+ */
 import './App.css';
 import Classroom from './components/ClassroomComponents/Classroom/Classroom';
 

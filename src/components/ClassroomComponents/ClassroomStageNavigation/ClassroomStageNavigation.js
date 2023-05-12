@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import ClassroomStageNavigationItem from '../ClassroomStageNavigationItem/ClassroomStageNavigationItem';
-import { TabContext } from '../../Context/TabContext/TabContext';
+import TabContext from '../../Context/TabContext/TabContext';
 
 function ClassroomStageNavigation(props) {
   const [tab,] = useContext(TabContext);

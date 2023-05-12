@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ExerciseContext } from '../../Context/ExerciseContext/ExerciseContext';
+import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
 import ClassroomStageExercises from '../ClassroomStageExercises/ClassroomStageExercises';
 import ClassroomStageSections from '../ClassroomStageSections/ClassroomStageSections';
 

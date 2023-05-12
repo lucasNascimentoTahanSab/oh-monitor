@@ -5,7 +5,7 @@
 import { requests } from "./calloutRequest";
 import { endpoints } from "./calloutEndpoint";
 
-export const callouts = {
+const callouts = {
   code: {
     post: async body => (
       new Promise((resolve, reject) => {
@@ -34,3 +34,5 @@ export const callouts = {
     )
   }
 };
+
+export default callouts;
