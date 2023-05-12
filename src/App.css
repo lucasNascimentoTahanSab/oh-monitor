@@ -449,19 +449,22 @@ li.exercise__question-statement:not(:last-child) {
   height: 0;
 }
 
-.prompt__content-inner>* {
+.prompt__content-inner-container {
+  display: flex;
+  flex-direction: column;
+  gap: .3125rem;
+  margin: .625rem;
+}
+
+.prompt__content-inner-container>* {
   font-family: var(--font-family--ubuntu);
   font-size: var(--font-size-14);
   color: var(--color-white);
   white-space: pre-wrap;
 }
 
-.prompt__content-inner::-webkit-scrollbar {
+.prompt__content-inner-container::-webkit-scrollbar {
   width: .5rem;
-}
-
-.prompt__content-inner-container {
-  margin: .625rem;
 }
 
 .classroom-stage__navigation {

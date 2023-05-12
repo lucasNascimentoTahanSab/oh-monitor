@@ -10,16 +10,10 @@ function CodeEditorPromptContent(props) {
 
   useEffect(() => setContentRefCallback(contentRef), [setContentRefCallback]);
 
-  function getContent() {
-    if (!content?.length) { return null; }
-
-    return content.map(item => item);
-  }
-
   return (
     <div className='prompt__content-inner' ref={contentRef}>
       <div className='prompt__content-inner-container'>
-        {getContent()}
+        {content}
       </div>
     </div>
   );
