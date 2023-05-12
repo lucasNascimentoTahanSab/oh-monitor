@@ -1,6 +1,10 @@
+/**
+ * @file Módulo responsável pela elaboração de requisições à API Strapi.
+ * @copyright Lucas N. T. Sab 2023 
+ */
 require('dotenv').config();
 
-module.exports = {
+const ST_REQUEST = {
   getSubjectRequest(req) {
     return {
       method: 'GET',
@@ -9,3 +13,5 @@ module.exports = {
     };
   }
 };
+
+module.exports = ST_REQUEST;

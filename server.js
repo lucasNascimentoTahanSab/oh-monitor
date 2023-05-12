@@ -1,8 +1,12 @@
+/**
+ * @file Módulo responsável pelo intermédio de comunicações backend da aplicação com serviços externos.
+ * @copyright Lucas N. T. Sab 2023 
+ */
 const express = require('express');
 const path = require('path');
-const codeXRouter = require('./routes/codeX/codeXRouter');
-const strapiRouter = require('./routes/strapi/strapiRouter');
-const { gitHubRouter } = require('./routes/gitHub/gitHubRouter');
+const CX = require('./routes/codeX/codeXRouter');
+const ST = require('./routes/strapi/strapiRouter');
+const GH = require('./routes/gitHub/gitHubRouter');
 
 require('dotenv').config();
 
@@ -12,8 +16,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/code', codeXRouter);
-app.use('/api/content', strapiRouter);
-app.use('/api/repo', gitHubRouter);
+app.use('/api/code', CX.router);
+app.use('/api/content', ST.router);
+app.use('/api/repo', GH.router);
 
 app.listen(process.env.PORT);
