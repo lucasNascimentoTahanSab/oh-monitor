@@ -1,6 +1,6 @@
 import Exercise from './exercise'
 
-export const util = {
+const util = {
   getMainTab(subject) {
     if (!subject?.attributes?.tabs?.data?.length) { return null; }
 
@@ -16,7 +16,7 @@ export const util = {
 
     return String.fromCharCode(index + 65);
   },
-  getCurrentItem(items) {
+  getCurrentItem: items => {
     if (!items?.length) { return null; }
 
     return items.find(item => item.current);
@@ -31,9 +31,53 @@ export const util = {
 
     return items.map(item => item.uuid).indexOf(uuid);
   },
-  handle(event, method) {
+  handle(method, ...params) {
     if (typeof method !== 'function') { return; }
 
-    method(event);
+    method(...params);
+  },
+  setCurrentItem(items, setItems) {
+    return function (uuid) {
+      unselectCurrentFile();
+      selectFileByUuid(uuid);
+
+      setItems([...items]);
+
+      function selectFileByUuid(uuid) {
+        const newFile = util.getItemByUuid(items, uuid);
+
+        if (!newFile) { return; }
+
+        newFile.current = true;
+      }
+
+      function unselectCurrentFile() {
+        const currentFile = util.getCurrentItem(items);
+
+        if (!currentFile) { return; }
+
+        currentFile.current = false;
+      }
+    }
+  },
+  updateItem(items, setItems) {
+    return function (item, setItem) {
+      if (!items.length) { return; }
+
+      updateItems(item);
+      setItem(item);
+
+      function updateItems(item) {
+        const index = util.getItemIndexByUuid(items, item.uuid);
+
+        if (index === -1) { return; }
+
+        items[index] = item;
+
+        setItems(items);
+      }
+    }
   }
 };
+
+export default util;

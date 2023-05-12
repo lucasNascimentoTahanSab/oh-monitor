@@ -1,38 +1,32 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+/**
+ * @file Módulo responsável pela exibição do editor de código.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React, { useEffect, useRef, useState } from 'react';
 import Editor from '@monaco-editor/react';
-import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
+import config from '../../../config.json';
+import util from '../../../classes/util';
 
 function CodeEditorFile(props) {
-  const config = useContext(ConfigContext);
   const [file, setFile] = useState(null);
   const editorRef = useRef(null);
 
-  const setFileCallback = useCallback(file => setFile(file), [setFile]);
-
-  useEffect(() => { setFileCallback(props.file) }, [setFileCallback, props.file, file]);
+  useEffect(() => { setFile(props.file) }, [props.file]);
 
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
-  }
-
-  function handleEditorChange(code) {
-    if (typeof props.setFile !== 'function') { return; }
-
-    props.setFile({ ...props.file, code });
   }
 
   return (
     <div className='code-editor__file'>
       <Editor
         height={'34.6875rem'}
-        defaultLanguage={config?.language}
+        defaultLanguage={config.language}
         value={file?.code}
         theme='vs-dark'
         onMount={handleEditorDidMount}
-        onChange={handleEditorChange}
-        options={{
-          readOnly: file?.disabled
-        }}
+        onChange={code => util.handle(props.setFile, { ...props.file, code })}
+        options={{ readOnly: file?.disabled }}
       />
     </div>
   );

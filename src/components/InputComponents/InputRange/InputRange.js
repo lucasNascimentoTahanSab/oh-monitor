@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React from 'react';
-import { util } from '../../../classes/util';
+import util from '../../../classes/util';
 
 function InputRange(props) {
   function getThemeClass() {
@@ -18,8 +18,8 @@ function InputRange(props) {
       min={0}
       max={props.max}
       value={props.value}
-      onChange={event => util.handle(event, props.onChange)}
-      onMouseUp={event => util.handle(event, props.onMouseUp)} />
+      onChange={event => util.handle(props.onChange, event)}
+      onMouseUp={event => util.handle(props.onMouseUp, event)} />
   );
 }
 

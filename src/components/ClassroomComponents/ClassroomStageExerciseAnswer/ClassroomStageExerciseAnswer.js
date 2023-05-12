@@ -1,5 +1,5 @@
 import React from 'react';
-import { util } from '../../../classes/util';
+import util from '../../../classes/util';
 
 function ClassroomStageExerciseAnswer(props) {
   function onAnswerClick() {

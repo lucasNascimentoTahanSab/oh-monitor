@@ -1,15 +1,14 @@
-import React, { useCallback, useEffect, useState, createElement, useContext } from 'react';
+import React, { useEffect, useState, createElement } from 'react';
 import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
 import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt';
 import File from '../../../classes/file';
 import { callouts } from '../../../classes/callout';
-import { util } from '../../../classes/util';
+import util from '../../../classes/util';
 import { FullscreenContext } from '../../Context/FullscreenContext/FullscreenContext';
 import { ReactComponent as Right } from '../../../svg/right.svg';
-import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
+import config from '../../../config.json';
 
 function CodeEditor(props) {
-  const config = useContext(ConfigContext);
   const [render, setRender] = useState(false);
   const [files, setFiles] = useState([]);
   const [file, setFile] = useState(null);
@@ -37,62 +36,17 @@ function CodeEditor(props) {
   }
 
   async function retriveFileFromRepo(file) {
-    return new File(
-      file.attributes,
-      (await callouts.repo.getFile(
-        file.attributes?.path,
-        config?.language,
-        config?.languages?.[config.language]?.extension)
-      )?.data
-    );
+    return new File(file.attributes, (await getFile(file))?.data);
   }
 
-  const callbackGetFile = useCallback(() => setFile(util.getCurrentItem(files)), [files]);
-
-  useEffect(() => { if (files.length) { callbackGetFile(); } }, [files, callbackGetFile]);
-
-  function setCurrentFile(uuid) {
-    unselectCurrentFile();
-    selectFileByUuid(uuid);
-
-    setFiles([...files]);
+  async function getFile(file) {
+    return await callouts.repo.getFile(file.attributes?.path, config.language, config.languages[config.language].extension);
   }
 
-  function selectFileByUuid(uuid) {
-    const newFile = util.getItemByUuid(files, uuid);
-
-    if (!newFile) { return; }
-
-    newFile.current = true;
-  }
-
-  function unselectCurrentFile() {
-    const currentFile = util.getCurrentItem(files);
-
-    if (!currentFile) { return; }
-
-    currentFile.current = false;
-  }
+  useEffect(() => { if (files.length) { setFile(util.getCurrentItem(files)); } }, [files]);
 
   function getCodeEditorClass() {
     return fullscreen ? 'code-editor code-editor--fullscreen' : 'code-editor';
-  }
-
-  function updateFile(file) {
-    if (!files.length) { return; }
-
-    updateFiles(file);
-    setFile(file);
-  }
-
-  function updateFiles(file) {
-    const index = util.getItemIndexByUuid(files, file.uuid);
-
-    if (index === -1) { return; }
-
-    files[index] = file;
-
-    setFiles(files);
   }
 
   function updateResult(result) {
@@ -150,9 +104,9 @@ function CodeEditor(props) {
           setRender={setRender}
           files={files}
           file={file}
+          setFile={file => util.updateItem(files, setFiles)(file, setFile)}
+          setCurrentFile={util.setCurrentItem(files, setFiles)}
           commands={commands}
-          setFile={updateFile}
-          setCurrentFile={setCurrentFile}
           setResult={updateResult} />
         <CodeEditorPrompt output={output} />
       </div>

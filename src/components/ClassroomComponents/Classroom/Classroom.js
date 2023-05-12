@@ -4,7 +4,7 @@ import { ExerciseContext } from '../../Context/ExerciseContext/ExerciseContext';
 import ClassroomSidebar from '../ClassroomSidebar/ClassroomSidebar';
 import { callouts } from '../../../classes/callout';
 import ClassroomStage from '../ClassroomStage/ClassroomStage';
-import { util } from '../../../classes/util';
+import util from '../../../classes/util';
 
 function Classroom(props) {
   const [subject, setSubject] = useState(null);

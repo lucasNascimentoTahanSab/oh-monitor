@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { TabContext } from '../../Context/TabContext/TabContext';
 import { ExerciseContext } from '../../Context/ExerciseContext/ExerciseContext';
 import { ReactComponent as Asterisk } from '../../../svg/asterisk.svg';
-import { util } from '../../../classes/util';
+import util from '../../../classes/util';
 
 function ClassroomSidebarItem(props) {
   const [tab, setTab] = useContext(TabContext);

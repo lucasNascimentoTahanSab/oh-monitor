@@ -1,10 +1,10 @@
-import React, { useEffect, useContext, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
 import AnimationEngine from '../AnimationEngine/AnimationEngine';
 import Dragger from '../../../classes/dragger';
 import InputRange from '../../InputComponents/InputRange/InputRange';
-import { ConfigContext } from '../../Context/ConfigContext/ConfigContext.js';
+import config from '../../../config.json';
 
 function AnimationScreen(props) {
   const [play, setPlay] = useState(false);
@@ -20,7 +20,6 @@ function AnimationScreen(props) {
   const [finished, setFinished] = useState(false);
   const [timer, setTimer] = useState(null);
   const animationScreen = useRef(null);
-  const config = useContext(ConfigContext);
 
   useEffect(() => {
     if (!animationScreen) { return; }

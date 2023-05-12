@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import resize from '../../../classes/resize';
 import CodeEditorPromptMenu from '../CodeEditorPromptMenu/CodeEditorPromptMenu.js';
-import { util } from '../../../classes/util';
+import util from '../../../classes/util';
 import CodeEditorPromptContent from '../CodeEditorPromptContent/CodeEditorPromptContent';
 
 function CodeEditorPrompt(props) {

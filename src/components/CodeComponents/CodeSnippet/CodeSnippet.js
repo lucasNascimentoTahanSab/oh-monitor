@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen';
 import { callouts } from '../../../classes/callout';
-import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
+import config from '../../../config.json';
 
 function CodeSnippet(props) {
-  const config = useContext(ConfigContext);
   const [snippet, setSnippet] = useState(null);
 
   useEffect(() => { if (!snippet) { getSnippet(); } });
@@ -14,8 +13,8 @@ function CodeSnippet(props) {
     setSnippet(
       (await callouts.repo.getFile(
         props.element?.attributes?.value,
-        config?.language,
-        config?.languages?.[config.language]?.extension)
+        config.language,
+        config.languages[config.language].extension)
       )?.data ?? snippet
     );
   }
