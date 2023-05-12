@@ -30,5 +30,10 @@ export const util = {
     if (!items?.length) { return null; }
 
     return items.map(item => item.uuid).indexOf(uuid);
+  },
+  handle(event, method) {
+    if (typeof method !== 'function') { return; }
+
+    method(event);
   }
 };

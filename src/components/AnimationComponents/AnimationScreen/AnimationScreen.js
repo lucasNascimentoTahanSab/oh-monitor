@@ -190,7 +190,7 @@ function AnimationScreen(props) {
     placeElements(getNewSnapshotNumber(event.target.value));
   }
 
-  function onInputTouchEnd(event) {
+  function onInputMouseUp(event) {
     if (!play) { return; }
 
     playTimeline();
@@ -213,7 +213,7 @@ function AnimationScreen(props) {
       </div>
       <div className='animation-screen__control'>
         <ButtonPlay height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={toggleTimeline} />
-        <InputRange theme={props.theme} snapshots={snapshots} max={totalTime} value={currentTime} onChange={onInputRangeChange} onTouchEnd={onInputTouchEnd} />
+        <InputRange theme={props.theme} snapshots={snapshots} max={totalTime} value={currentTime} onChange={onInputRangeChange} onMouseUp={onInputMouseUp} />
         <ButtonExpand height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} />
       </div>
     </div>
