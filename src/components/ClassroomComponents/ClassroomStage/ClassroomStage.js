@@ -1,25 +1,19 @@
 import React, { useContext } from 'react';
-import ClassroomStageContent from '../ClassroomStageContent/ClassroomStageContent';
-import ClassroomStageNavigation from '../ClassroomStageNavigation/ClassroomStageNavigation';
-import TabContext from '../../Context/TabContext/TabContext';
+import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
+import ClassroomStageExercises from '../ClassroomStageExercises/ClassroomStageExercises';
+import ClassroomStageSections from '../ClassroomStageSections/ClassroomStageSections';
 
 function ClassroomStage(props) {
-  const [tab,] = useContext(TabContext);
+  const [exercises,] = useContext(ExerciseContext);
 
-  function getStageClass() {
-    return tab?.attributes?.navigation?.data?.attributes?.navigationItems?.data?.length
-      ? 'classroom-stage'
-      : 'classroom-stage--without-navigation';
-  }
-
-  function getNavigation() {
-    return tab?.attributes?.navigation?.data?.attributes?.navigationItems?.data?.length ? <ClassroomStageNavigation /> : null;
+  function getExercises() {
+    return exercises?.length ? <ClassroomStageExercises /> : null;
   }
 
   return (
-    <div className={getStageClass()}>
-      <ClassroomStageContent />
-      {getNavigation()}
+    <div className='section classroom-screen__content'>
+      <ClassroomStageSections />
+      {getExercises()}
     </div>
   );
 }

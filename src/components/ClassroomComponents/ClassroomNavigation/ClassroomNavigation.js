@@ -1,15 +1,15 @@
 import React, { useContext } from 'react';
-import ClassroomStageNavigationItem from '../ClassroomStageNavigationItem/ClassroomStageNavigationItem';
+import ClassroomNavigationItem from '../ClassroomNavigationItem/ClassroomNavigationItem';
 import TabContext from '../../Context/TabContext/TabContext';
 
-function ClassroomStageNavigation(props) {
+function ClassroomNavigation(props) {
   const [tab,] = useContext(TabContext);
 
   function getNavigationItems() {
     if (!tab?.attributes?.navigation?.data?.attributes?.navigationItems?.data?.length) { return null; }
 
     return tab.attributes.navigation.data.attributes.navigationItems.data.map(navigationItem =>
-      <ClassroomStageNavigationItem key={navigationItem.attributes?.uuid} navigationItem={navigationItem} />
+      <ClassroomNavigationItem key={navigationItem.attributes?.uuid} navigationItem={navigationItem} />
     );
   }
 
@@ -20,4 +20,4 @@ function ClassroomStageNavigation(props) {
   );
 }
 
-export default ClassroomStageNavigation;
+export default ClassroomNavigation;

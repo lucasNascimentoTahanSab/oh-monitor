@@ -1,21 +1,21 @@
 import React from 'react';
 import ButtonDropdown from '../../ButtonComponents/ButtonDropdown/ButtonDropdown';
 
-function ClassroomStageNavigationItem(props) {
+function ClassroomNavigationItem(props) {
   function getNavigationItemButton() {
     return props.navigationItem?.attributes?.navigationItems?.data?.length
       ? (
-        <div className='overflow-ellipsis'>
+        <div>
           <a className='navigation-item' href={`#${props.navigationItem?.attributes?.uuidParent ?? '#'}`}>
-            <ButtonDropdown width='.875rem' height='.875rem' fill='#808B96' />
-            <span className='navigation-item__name'>{props.navigationItem?.attributes?.title}</span>
+            <ButtonDropdown width='.875rem' height='.875rem' fill='#84C7E6' />
+            <span className='navigation-item__name overflow-ellipsis'>{props.navigationItem?.attributes?.title}</span>
           </a>
         </div>
       )
       : (
-        <div className='overflow-ellipsis'>
+        <div>
           <a className='navigation-item' href={`#${props.navigationItem?.attributes?.uuidParent ?? ''}`}>
-            <span className='navigation-item__name'>{props.navigationItem?.attributes?.title}</span>
+            <span className='navigation-item__name overflow-ellipsis'>{props.navigationItem?.attributes?.title}</span>
           </a>
         </div>
       );
@@ -34,7 +34,7 @@ function ClassroomStageNavigationItem(props) {
   function getNavigationItems() {
     return props.navigationItem?.attributes?.navigationItems?.data?.length
       ? props.navigationItem.attributes.navigationItems.data.map(navigationItem =>
-        <ClassroomStageNavigationItem key={navigationItem.attributes?.uuid} navigationItem={navigationItem} />
+        <ClassroomNavigationItem key={navigationItem.attributes?.uuid} navigationItem={navigationItem} />
       )
       : null;
   }
@@ -47,4 +47,4 @@ function ClassroomStageNavigationItem(props) {
   );
 }
 
-export default ClassroomStageNavigationItem;
+export default ClassroomNavigationItem;

@@ -10,7 +10,7 @@ function CodeEditorMenu(props) {
       <CodeEditorMenuItem
         key={file.uuid}
         item={file}
-        group={`radio-group-${file.uuid}`}
+        group='code-editor-menu-radio-group'
         setCurrentItem={props.setCurrentFile}
         selectorClassName='menu__item-radio'
         labelClassName='menu__item-label'

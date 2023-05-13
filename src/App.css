@@ -80,22 +80,38 @@ button {
 
 .section {
   padding: 3.125rem;
+  height: 100vh;
 }
 
 .classroom {
   display: grid;
-  grid-template-columns: .18fr .82fr;
+  grid-template-columns: 1fr 2fr 1fr;
 }
 
 .sidebar {
+  display: flex;
+  gap: .625rem;
+}
+
+.sidebar__progress {
+  position: relative;
+  width: .5rem;
+  background-color: var(--color-blue--light);
+}
+
+.sidebar__progress-fill {
+  position: absolute;
+  width: .5rem;
+  background-color: var(--color-blue--light-dark);
+  transition: .25s;
+}
+
+.sidebar__items {
   position: relative;
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: .9375rem;
-  background-color: var(--color-blue--dark);
-  height: 100vh;
-  max-width: 100%;
+  gap: 2rem;
   overflow: hidden;
 }
 
@@ -110,32 +126,20 @@ button {
   padding: 0;
 }
 
-.sidebar-item__name:hover:not(.sidebar-item--selected) {
-  color: var(--color-blue--light-medium);
-}
-
 .sidebar-item__name {
   font-family: var(--font-family--ubuntu);
   font-size: var(--font-size-14);
   font-weight: var(--font-weigth--bold);
-  color: var(--color-blue--light);
+  color: var(--color-blue--light-medium);
   transition: .25s;
+}
+
+.sidebar-item__name:hover:not(.sidebar-item--selected) {
+  color: var(--color-blue--light-dark);
 }
 
 .sidebar-item--selected {
   color: var(--color-blue--light-dark);
-}
-
-.classroom-stage {
-  display: grid;
-  grid-template-columns: .68fr .32fr;
-  height: 100vh;
-}
-
-.classroom-stage--without-navigation {
-  display: grid;
-  grid-template-columns: 1fr;
-  height: 100vh;
 }
 
 .classroom-screen__content {
@@ -143,6 +147,7 @@ button {
   flex-direction: column;
   gap: 1.875rem;
   overflow: auto;
+  height: 100vh;
 }
 
 .classroom__content {
@@ -486,7 +491,11 @@ li.exercise__question-statement:not(:last-child) {
 
 .navigation-item__name {
   font-weight: var(--font-weigth--bold);
-  color: var(--color-gray);
+  color: var(--color-blue--light-medium);
+}
+
+.navigation-item__name:hover {
+  color: var(--color-blue--light-dark);
 }
 
 .navigation-item__navigation-items {
@@ -675,20 +684,16 @@ li.exercise__question-statement:not(:last-child) {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 1rem;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: var(--color-blue--light);
+  width: .75rem;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--color-gray);
+  background: var(--color-blue--light-medium);
+  border-radius: .5rem;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gray--medium);
+  background: var(--color-blue--light-dark);
 }

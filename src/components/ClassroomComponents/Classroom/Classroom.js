@@ -8,6 +8,7 @@ import TabContext from '../../Context/TabContext/TabContext';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
 import ClassroomSidebar from '../ClassroomSidebar/ClassroomSidebar';
 import ClassroomStage from '../ClassroomStage/ClassroomStage';
+import ClassroomNavigation from '../ClassroomNavigation/ClassroomNavigation';
 import callouts from '../../../classes/callout';
 import util from '../../../classes/util';
 
@@ -56,6 +57,7 @@ function Classroom(props) {
         <div className='classroom'>
           <ClassroomSidebar tabs={subject?.attributes?.tabs} />
           <ClassroomStage />
+          <ClassroomNavigation />
         </div>
       </ExerciseContext.Provider>
     </TabContext.Provider>
