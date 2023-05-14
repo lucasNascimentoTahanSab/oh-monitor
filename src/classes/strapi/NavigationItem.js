@@ -7,6 +7,9 @@ export default class NavigationItem {
     this.updatedAt = navigationItem?.attributes?.updatedAt ?? navigationItem?.updatedAt ?? null;
     this.publishedAt = navigationItem?.attributes?.publishedAt ?? navigationItem?.publishedAt ?? null;
     this.uuidParent = navigationItem?.attributes?.uuidParent ?? navigationItem?.uuidParent ?? null;
+    this.uuidParentNavigationItem = navigationItem?.attributes?.uuidParentNavigationItem ?? navigationItem?.uuidParentNavigationItem ?? null;
+    this.current = navigationItem?.attributes?.current ?? navigationItem?.current ?? false;
+    this.open = navigationItem?.attributes?.open ?? navigationItem?.open ?? false;
     this.navigationItems = this._getNavigationItems(navigationItem?.attributes?.navigationItems?.data ?? navigationItem?.navigationItems);
   }
 

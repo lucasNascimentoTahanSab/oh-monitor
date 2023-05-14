@@ -1,22 +1,23 @@
-import Exercise from './exercise'
-
 const util = {
-  getMainTab(subject) {
-    if (!subject?.attributes?.tabs?.data?.length) { return null; }
+  getCurrentTab(subject) {
+    if (!subject?.tabs?.length) { return null; }
 
-    return subject.attributes.tabs.data.find(tab => tab.attributes?.main);
+    return subject.tabs.find(tab => tab?.current);
   },
-  getExercises(tab) {
-    if (!tab?.attributes?.exercises?.data?.length) { return []; }
+  matchObjects(origin, destiny) {
+    if (typeof origin !== 'object') { return; }
+    if (typeof destiny !== 'object') { return; }
 
-    return tab.attributes.exercises.data.map(exercise => new Exercise(exercise));
+    Array.from(Object.keys(origin)).forEach(key => destiny[key] = origin[key]);
+
+    return destiny;
   },
   getLetterByIndex(index) {
     if (typeof index !== 'number') { return String.fromCharCode(65); }
 
     return String.fromCharCode(index + 65);
   },
-  getCurrentItem: items => {
+  getCurrentItem(items) {
     if (!items?.length) { return null; }
 
     return items.find(item => item.current);
@@ -38,25 +39,20 @@ const util = {
   },
   setCurrentItem(items, setItems) {
     return function (uuid) {
-      unselectCurrentFile();
-      selectFileByUuid(uuid);
+      unselectCurrentItem();
+      selectItemByUuid(uuid);
+      setItems(items);
 
-      setItems([...items]);
+      function selectItemByUuid(uuid) {
+        const newItem = util.getItemByUuid(items, uuid);
 
-      function selectFileByUuid(uuid) {
-        const newFile = util.getItemByUuid(items, uuid);
-
-        if (!newFile) { return; }
-
-        newFile.current = true;
+        if (newItem) { newItem.current = true; }
       }
 
-      function unselectCurrentFile() {
-        const currentFile = util.getCurrentItem(items);
+      function unselectCurrentItem() {
+        const currentItem = util.getCurrentItem(items);
 
-        if (!currentFile) { return; }
-
-        currentFile.current = false;
+        if (currentItem) { currentItem.current = false; }
       }
     }
   },
@@ -66,6 +62,7 @@ const util = {
 
       updateItems(item);
       setItem(item);
+      setItems(items);
 
       function updateItems(item) {
         const index = util.getItemIndexByUuid(items, item.uuid);
@@ -73,8 +70,24 @@ const util = {
         if (index === -1) { return; }
 
         items[index] = item;
+      }
+    }
+  },
+  match(origin, destiny) {
+    if (typeof origin !== 'object') { return; }
+    if (typeof destiny !== 'object') { return; }
 
-        setItems(items);
+    Array.from(Object.keys(origin)).forEach(key => destiny[key] = origin[key]);
+  },
+  toggleOpen(items, setItems) {
+    return function (uuid) {
+      openItemByUuid(uuid);
+      setItems(items);
+
+      function openItemByUuid(uuid) {
+        const item = util.getItemByUuid(items, uuid);
+
+        if (item) { item.open = !item.open; }
       }
     }
   }

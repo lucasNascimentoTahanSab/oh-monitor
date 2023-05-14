@@ -2,18 +2,25 @@
  * @file Módulo responsável pela exibição da seção de navegação pela sala de aula.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import ClassroomSidebarItem from '../ClassroomSidebarItem/ClassroomSidebarItem';
+import TabsContext from '../../Context/TabsContext/TabsContext';
 
 function ClassroomSidebar(props) {
+  const [tabs,] = useContext(TabsContext);
   const fillRef = useRef(null);
 
+  /**
+   * Método responsável pela obtenção dos ClassroomSidebarItems a serem exibidos.
+   * 
+   * @returns {array}
+   */
   function getSidebarItems() {
-    if (!props.tabs?.data?.length) { return null; }
+    if (!tabs?.length) { return null; }
 
-    return props.tabs.data.map((tab, index) =>
+    return tabs.map((tab, index) =>
       <ClassroomSidebarItem
-        key={tab.attributes?.uuid}
+        key={tab.uuid}
         tab={tab}
         index={index}
         group='classroom-sidebar-radio-group'
@@ -22,8 +29,14 @@ function ClassroomSidebar(props) {
     );
   }
 
+  /**
+   * Método responsável pela atualização da barra de progresso de acordo com estágio
+   * escolhido para exibição.
+   * 
+   * @param {number} index 
+   */
   function updateProgress(index) {
-    fillRef.current.style.height = `${Math.ceil(((index + 1) / props.tabs.data.length) * 100)}%`;
+    fillRef.current.style.height = `${Math.ceil(((index + 1) / tabs.length) * 100)}%`;
   }
 
   return (

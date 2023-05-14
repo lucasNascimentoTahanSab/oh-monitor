@@ -348,6 +348,7 @@ li.exercise__question-statement:not(:last-child) {
 
 .menu__item {
   display: flex;
+  gap: .375rem;
   align-items: center;
   cursor: pointer;
 }
@@ -500,6 +501,7 @@ li.exercise__question-statement:not(:last-child) {
 
 .navigation-item__navigation-items {
   padding: .3125rem 0 0 1.1875rem;
+  transition: .5s;
 }
 
 .progress-bar {
@@ -680,6 +682,10 @@ li.exercise__question-statement:not(:last-child) {
   /* IE 10 and IE 11 */
   user-select: none;
   /* Standard syntax */
+}
+
+.erase {
+  display: none;
 }
 
 /* width */

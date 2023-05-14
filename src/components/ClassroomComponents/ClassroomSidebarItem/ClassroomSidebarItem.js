@@ -1,35 +1,49 @@
-import React, { useContext, useEffect } from 'react';
-import TabContext from '../../Context/TabContext/TabContext';
-import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
+/**
+ * @file Módulo responsável pela exibição da barra lateral esquerda de navegação para 
+ * diferentes estágios da sala de aula.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React, { useContext, useEffect, useState } from 'react';
+import TabsContext from '../../Context/TabsContext/TabsContext';
 import util from '../../../classes/util';
 
 function ClassroomSidebarItem(props) {
-  const [tab, setTab] = useContext(TabContext);
-  const [, setExercises] = useContext(ExerciseContext);
+  const [tabs, setTabs] = useContext(TabsContext);
+  const [tab, setTab] = useState(null);
 
-  useEffect(() => { if (isCurrentTabSelected()) { props.onChange(props.index); } });
+  useEffect(() => setTab(props.tab), [props.tab]);
 
+  /**
+   * Hook responsável pela atualização da barra de progresso de acordo com estágio
+   * selecionado.
+   */
+  useEffect(() => { if (tab?.current) { props.onChange(props.index); } }, [tab, props]);
+
+  function getChecked() {
+    return tab?.current ?? false;
+  }
+
+  /**
+   * Método responsável por atualizar a guia atual e conteúdos relacionados.
+   * 
+   * @returns 
+   */
   function setCurrentTab() {
     if (typeof props.onChange !== 'function') { return; }
 
-    setTab(props.tab);
-    setExercises(util.getExercises(props.tab));
-
     props.onChange(props.index);
-  }
 
-  function isCurrentTabSelected() {
-    return props.tab?.attributes?.uuid === tab?.attributes?.uuid;
+    util.setCurrentItem(tabs, setTabs)(tab.uuid);
   }
 
   function getItemClass() {
-    return `sidebar-item__name no-select overflow-ellipsis ${isCurrentTabSelected() ? 'sidebar-item--selected' : ''}`;
+    return `sidebar-item__name no-select overflow-ellipsis ${tab?.current ? 'sidebar-item--selected' : ''}`;
   }
 
   return (
     <div className='menu__item'>
-      <input id={props.tab?.attributes?.uuid} className='menu__item-radio' type='radio' name={props.group} checked={isCurrentTabSelected()} onChange={setCurrentTab} />
-      <label className={getItemClass()} htmlFor={props.tab?.attributes?.uuid}>{props.tab?.attributes?.title}</label>
+      <input id={tab?.uuid} className='menu__item-radio' type='radio' name={props.group} checked={getChecked()} onChange={setCurrentTab} />
+      <label className={getItemClass()} htmlFor={tab?.uuid}>{tab?.title}</label>
     </div>
   );
 }
