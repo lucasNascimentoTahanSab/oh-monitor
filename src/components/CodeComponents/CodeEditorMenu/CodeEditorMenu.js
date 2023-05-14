@@ -34,7 +34,7 @@ function CodeEditorMenu(props) {
   return (
     <div className='code-editor__menu'>
       <div className='code-editor__menu-tabs'>{getMenuItems()}</div>
-      <CodeEditorMenuSettings files={files} setResult={props.setResult} />
+      <CodeEditorMenuSettings />
     </div>
   );
 }

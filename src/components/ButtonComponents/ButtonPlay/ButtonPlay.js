@@ -7,7 +7,7 @@ import Util from '../../../classes/Util';
 
 function ButtonPlay(props) {
   function getShape() {
-    return props.playing ? getPause() : getPlay();
+    return props.loading ? getLoading() : (props.playing ? getPause() : getPlay());
   }
 
   function getPlay() {
@@ -31,6 +31,12 @@ function ButtonPlay(props) {
           </clipPath>
         </defs>
       </svg>
+    );
+  }
+
+  function getLoading() {
+    return (
+      <div class="button-play--loading"><div></div><div></div><div></div><div></div></div>
     );
   }
 

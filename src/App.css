@@ -650,6 +650,47 @@ li.exercise__question-statement:not(:last-child) {
   background-color: var(--color-blue--light-dark);
 }
 
+.button-play--loading {
+  display: inline-block;
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+}
+
+.button-play--loading div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border: .15625rem solid var(--color-blue--light-dark);
+  border-radius: 50%;
+  animation: button-play--loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: var(--color-blue--light-dark) transparent transparent transparent;
+}
+
+.button-play--loading div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.button-play--loading div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.button-play--loading div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes button-play--loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* utils */
 
 .background-color--color-gray {
