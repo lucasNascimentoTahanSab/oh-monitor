@@ -1,19 +1,32 @@
-import React from 'react';
+/**
+ * @file Módulo responsável pela exibição do menu do editor de código.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React, { useContext } from 'react';
 import CodeEditorMenuItem from '../CodeEditorMenuItem/CodeEditorMenuItem';
 import CodeEditorMenuSettings from '../CodeEditorMenuSettings/CodeEditorMenuSettings';
+import FilesContext from '../../Context/FilesContext/FilesContext';
+import Util from '../../../classes/Util';
 
 function CodeEditorMenu(props) {
-  function getMenuItems() {
-    if (!props.files?.length) { return null; }
+  const [files, setFiles] = useContext(FilesContext);
 
-    return props.files.map(file =>
+  /**
+   * Método responsável pela obtenção dos itens do menu a serem exibidos.
+   * 
+   * @returns {array}
+   */
+  function getMenuItems() {
+    if (!files?.size) { return null; }
+
+    return Array.from(files.values()).map(file =>
       <CodeEditorMenuItem
         key={file.uuid}
         item={file}
         group='code-editor-menu-radio-group'
-        setCurrentItem={props.setCurrentFile}
         selectorClassName='menu__item-radio'
         labelClassName='menu__item-label'
+        onChange={Util.setCurrentItemInMap(files, setFiles)}
       />
     );
   }
@@ -21,7 +34,7 @@ function CodeEditorMenu(props) {
   return (
     <div className='code-editor__menu'>
       <div className='code-editor__menu-tabs'>{getMenuItems()}</div>
-      <CodeEditorMenuSettings files={props.files} setResult={props.setResult} />
+      <CodeEditorMenuSettings files={files} setResult={props.setResult} />
     </div>
   );
 }

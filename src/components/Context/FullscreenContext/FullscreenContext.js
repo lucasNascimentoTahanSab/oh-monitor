@@ -1,3 +1,5 @@
 import { createContext } from 'react';
 
-export const FullscreenContext = createContext(null);
+const FullscreenContext = createContext(null);
+
+export default FullscreenContext;

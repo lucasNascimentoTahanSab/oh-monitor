@@ -93,7 +93,7 @@ export default class Util {
    * 
    * @param {array} items 
    * @param {function} setItems 
-   * @returns 
+   * @returns {function}
    */
   static setCurrentItem(items, setItems) {
     if (typeof setItems !== 'function') { return function () { }; }
@@ -119,12 +119,42 @@ export default class Util {
   }
 
   /**
+   * Método responsável pela seleção de um item num mapa recebido.
+   * 
+   * @param {Map} items 
+   * @param {function} setItems 
+   * @returns {function}
+   */
+  static setCurrentItemInMap(items, setItems) {
+    if (typeof setItems !== 'function') { return function () { }; }
+    if (!items?.size) { return function () { }; }
+
+    return function (uuid) {
+      unselectCurrentItem();
+      selectItemByUuid(uuid);
+      setItems(items);
+
+      function selectItemByUuid(uuid) {
+        const newItem = items.get(uuid);
+
+        if (newItem) { newItem.current = true; }
+      }
+
+      function unselectCurrentItem() {
+        const currentItem = Util.getCurrentItem(Array.from(items.values()));
+
+        if (currentItem) { currentItem.current = false; }
+      }
+    }
+  }
+
+  /**
    * Método responsável pela atualização de um item dentro de um conjunto de outros itens
    * recebidos.
    * 
    * @param {array} items 
    * @param {function} setItems 
-   * @returns 
+   * @returns {function}
    */
   static updateItemIn(items, setItems) {
     if (typeof setItems !== 'function') { return function () { }; }
@@ -140,12 +170,12 @@ export default class Util {
   }
 
   /**
-   * Método responsável pela atualização de um item dentro de um conjunto de outros itens
+   * Método responsável pela atualização de um item dentro de um mapa de outros itens
    * recebidos.
    * 
-   * @param {array} items 
+   * @param {Map} items 
    * @param {function} setItems 
-   * @returns 
+   * @returns {function}
    */
   static updateItemInMap(items, setItems) {
     if (typeof setItems !== 'function') { return function () { }; }
@@ -165,7 +195,7 @@ export default class Util {
    * 
    * @param {array} items 
    * @param {function} setItems 
-   * @returns 
+   * @returns {function}
    */
   static toggleOpen(items, setItems) {
     if (typeof setItems !== 'function') { return function () { }; }
@@ -179,6 +209,30 @@ export default class Util {
         const item = Util.getItemByUuid(items, uuid);
 
         if (item) { item.open = !item.open; }
+      }
+    }
+  }
+
+  /**
+   * Método responsável pela atualização do código em arquivo dentre os arquivos
+   * recebidos.
+   * 
+   * @param {Map} files 
+   * @param {function} setFiles 
+   * @returns {function}
+   */
+  static updateFileIn(files, setFiles) {
+    if (typeof setFiles !== 'function') { return function () { }; }
+    if (!files?.size) { return function () { }; }
+
+    return function (uuid, content) {
+      updateFileContent(uuid, content);
+      setFiles(files);
+
+      function updateFileContent(uuid, content) {
+        const file = files.get(uuid);
+
+        if (file) { file.content = content; }
       }
     }
   }

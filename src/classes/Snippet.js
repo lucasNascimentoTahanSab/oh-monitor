@@ -4,7 +4,7 @@ export default class Snippet extends Element {
   constructor(snippet, content) {
     super(snippet);
 
-    this.content = content ?? null;
-    this.commands = [];
+    this.content = snippet?.content ?? content ?? null;
+    this.commands = snippet?.commands ?? [];
   }
 }

@@ -3,12 +3,10 @@
  * diferentes estágios da sala de aula.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useContext, useEffect, useState } from 'react';
-import TabsContext from '../../Context/TabsContext/TabsContext';
+import React, { useEffect, useState } from 'react';
 import Util from '../../../classes/Util';
 
 function ClassroomSidebarItem(props) {
-  const [tabs, setTabs] = useContext(TabsContext);
   const [tab, setTab] = useState(null);
 
   useEffect(() => setTab(props.tab), [props.tab]);
@@ -28,12 +26,9 @@ function ClassroomSidebarItem(props) {
    * 
    * @returns 
    */
-  function setCurrentTab() {
-    if (typeof props.onChange !== 'function') { return; }
-
-    props.onChange(props.index);
-
-    Util.setCurrentItem(tabs, setTabs)(tab.uuid);
+  function setCurrentitem() {
+    Util.handle(props.onChange, props.index);
+    Util.handle(props.setCurrentItem, tab.uuid);
   }
 
   function getItemClass() {
@@ -42,7 +37,7 @@ function ClassroomSidebarItem(props) {
 
   return (
     <div className='menu__item'>
-      <input id={tab?.uuid} className='menu__item-radio' type='radio' name={props.group} checked={getChecked()} onChange={setCurrentTab} />
+      <input id={tab?.uuid} className='menu__item-radio' type='radio' name={props.group} checked={getChecked()} onChange={setCurrentitem} />
       <label className={getItemClass()} htmlFor={tab?.uuid}>{tab?.title}</label>
     </div>
   );

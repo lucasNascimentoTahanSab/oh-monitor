@@ -5,9 +5,10 @@
 import React, { useContext, useRef } from 'react';
 import ClassroomSidebarItem from '../ClassroomSidebarItem/ClassroomSidebarItem';
 import TabsContext from '../../Context/TabsContext/TabsContext';
+import Util from '../../../classes/Util';
 
 function ClassroomSidebar(props) {
-  const [tabs,] = useContext(TabsContext);
+  const [tabs, setTabs] = useContext(TabsContext);
   const fillRef = useRef(null);
 
   /**
@@ -25,6 +26,7 @@ function ClassroomSidebar(props) {
         index={index}
         group='classroom-sidebar-radio-group'
         onChange={updateProgress}
+        setCurrentItem={Util.setCurrentItem(tabs, setTabs)}
       />
     );
   }

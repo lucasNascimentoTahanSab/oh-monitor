@@ -5,10 +5,10 @@
 import React, { useContext } from 'react';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay';
-import { FullscreenContext } from '../../Context/FullscreenContext/FullscreenContext';
+import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext';
+import Util from '../../../classes/Util';
 import callouts from '../../../classes/callout';
 import config from '../../../config.json';
-import util from '../../../classes/util';
 
 function CodeEditorMenuSettings(props) {
   const [fullscreen, setFullscreen] = useContext(FullscreenContext);
@@ -25,7 +25,7 @@ function CodeEditorMenuSettings(props) {
 
   return (
     <div className='code-editor__menu-settings'>
-      <ButtonPlay height='.875rem' width='.875rem' color='#3498DB' onClick={async () => util.handle(props.setResult, await sendCode())} />
+      <ButtonPlay height='.875rem' width='.875rem' color='#3498DB' onClick={async () => Util.handle(props.setResult, await sendCode())} />
       <ButtonExpand height='.875rem' width='.875rem' color='#3498DB' onClick={() => setFullscreen(!fullscreen)} />
     </div>
   );
