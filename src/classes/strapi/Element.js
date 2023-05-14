@@ -1,3 +1,5 @@
+import Code from "./Code";
+
 export default class Element {
   constructor(element) {
     this.id = element?.id ?? null;
@@ -9,6 +11,13 @@ export default class Element {
     this.displayAnimationScreen = element?.attributes?.displayAnimationScreen ?? element?.displayAnimationScreen ?? false;
     this.uuid = element?.attributes?.uuid ?? element?.uuid ?? null;
     this.elements = this._getElements(element?.attributes?.elements?.data ?? element?.elements);
+    this.codes = this._getCodes(element?.attributes?.codes?.data ?? element?.codes);
+  }
+
+  _getCodes(codes) {
+    if (!codes?.length) { return []; }
+
+    return codes.map(code => new Code(code));
   }
 
   _getElements(elements) {

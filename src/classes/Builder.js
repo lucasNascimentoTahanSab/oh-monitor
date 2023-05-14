@@ -4,6 +4,7 @@
  */
 import { createElement } from 'react';
 import CodeSnippet from '../components/CodeComponents/CodeSnippet/CodeSnippet';
+import CodeEditor from '../components/CodeComponents/CodeEditor/CodeEditor';
 
 export default class Builder {
   /**
@@ -25,9 +26,15 @@ export default class Builder {
         return Builder._getBlockElement(element);
       case 'snippet':
         return Builder._getCodeSnippet(element);
+      case 'code':
+        return Builder._getCodeEditor(element);
       default:
         break;
     }
+  }
+
+  static _getCodeEditor(element) {
+    return createElement(CodeEditor, { key: element.uuid, element });
   }
 
   static _getCodeSnippet(element) {
@@ -39,7 +46,7 @@ export default class Builder {
   }
 
   /**
-   * Método responsável pela montagem de elemento com elementos internos.
+   * Método responsável pela montagem de elementos internos.
    * 
    * @param {object} element 
    * @returns {array}

@@ -140,6 +140,27 @@ export default class Util {
   }
 
   /**
+   * Método responsável pela atualização de um item dentro de um conjunto de outros itens
+   * recebidos.
+   * 
+   * @param {array} items 
+   * @param {function} setItems 
+   * @returns 
+   */
+  static updateItemInMap(items, setItems) {
+    if (typeof setItems !== 'function') { return function () { }; }
+    if (!items?.size) { return function () { }; }
+
+    return function (item) {
+      if (typeof item !== 'object') { return; }
+
+      Util.matchObjects(item, items.get(item.uuid));
+
+      setItems(items);
+    }
+  }
+
+  /**
    * Método responsável por alternar o valor de open no item de uuid recebido.
    * 
    * @param {array} items 

@@ -8,6 +8,7 @@ import AnimationScreen from '../../AnimationComponents/AnimationScreen/Animation
 import callouts from '../../../classes/callout';
 import config from '../../../config.json';
 import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext';
+import Snippet from '../../../classes/Snippet';
 
 function CodeSnippet(props) {
   const [snippets, setSnippets] = useContext(SnippetsContext);
@@ -23,17 +24,8 @@ function CodeSnippet(props) {
    * primária, caso já tenha sido carregado.
    */
   async function getSnippet() {
-    const newSnippet = snippets.has(element?.value) ? snippets.get(element?.value) : (await calloutSnippet())?.data;
-
-    if (!snippets.has(element?.value)) { updateSnippets(newSnippet); }
-
-    setSnippet(newSnippet);
-  }
-
-  function updateSnippets(newSnippet) {
-    snippets.set(element?.value, newSnippet);
-
-    setSnippets(snippets);
+    if (snippets.has(element.uuid)) { setSnippet(snippets.get(element.uuid)); }
+    else { setSnippet(new Snippet(element, (await calloutSnippet())?.data)); }
   }
 
   async function calloutSnippet() {
@@ -45,7 +37,22 @@ function CodeSnippet(props) {
    * código já tenha sido carregado, sua recuperação é feita por meio de SnippetsContext
    * ao invés de uma chamada à integração.
    */
-  useEffect(() => { if (!snippet && element) { getSnippetCallback(); } }, [snippet, element, getSnippetCallback]);
+  useEffect(() => { if (!snippet && element) { getSnippetCallback(); } });
+
+  const getSnippetsCallback = useCallback(getSnippets, [getSnippets]);
+
+  function getSnippets() {
+    if (snippets.has(element.uuid)) { return; }
+
+    snippets.set(element.uuid, snippet);
+
+    setSnippets(snippets);
+  }
+
+  /**
+   * Hook responsável pela atualização dos code snippets mapeados.
+   */
+  useEffect(() => { if (snippet) { getSnippetsCallback() } }, [snippet, getSnippetsCallback]);
 
   function displayAnimationScreen() {
     return element?.displayAnimationScreen ? (<AnimationScreen theme='dark' />) : null;
@@ -57,7 +64,7 @@ function CodeSnippet(props) {
         <Editor
           theme='vs-dark'
           defaultLanguage={config.language}
-          value={snippet}
+          value={snippet?.content}
           options={{
             readOnly: true,
             minimap: { enabled: false },

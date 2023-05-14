@@ -1,4 +1,3 @@
-import Code from "./Code";
 import Element from "./Element";
 
 export default class Section {
@@ -10,13 +9,6 @@ export default class Section {
     this.publishedAt = section?.attributes?.publishedAt ?? section?.publishedAt ?? null;
     this.uuid = section?.attributes?.uuid ?? section?.uuid ?? null;
     this.elements = this._getElements(section?.attributes?.elements?.data ?? section?.elements);
-    this.codes = this._getCodes(section?.attributes?.codes?.data ?? section?.codes);
-  }
-
-  _getCodes(codes) {
-    if (!codes?.length) { return []; }
-
-    return codes.map(code => new Code(code));
   }
 
   _getElements(elements) {

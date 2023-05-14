@@ -2,16 +2,14 @@
  * @file Módulo responsável pela exibição do editor de código.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useRef } from 'react';
 import Editor from '@monaco-editor/react';
+import FileContext from '../../Context/FileContext/FileContext';
 import config from '../../../config.json';
-import util from '../../../classes/util';
 
 function CodeEditorFile(props) {
-  const [file, setFile] = useState(null);
+  const [currentFile, setCurrentFile] = useContext(FileContext);
   const editorRef = useRef(null);
-
-  useEffect(() => { setFile(props.file) }, [props.file]);
 
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
@@ -22,11 +20,11 @@ function CodeEditorFile(props) {
       <Editor
         height={'34.6875rem'}
         defaultLanguage={config.language}
-        value={file?.code}
+        value={currentFile?.content}
         theme='vs-dark'
         onMount={handleEditorDidMount}
-        onChange={code => util.handle(props.setFile, { ...props.file, code })}
-        options={{ readOnly: file?.disabled }}
+        onChange={content => setCurrentFile({ ...currentFile, content })}
+        options={{ readOnly: currentFile?.disabled }}
       />
     </div>
   );
