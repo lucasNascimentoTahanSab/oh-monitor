@@ -8,9 +8,9 @@ import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext';
 import Util from '../../../classes/Util';
 
 function ClassroomStageExercise(props) {
+  const [exercises, setExercises] = useContext(ExercisesContext);
   const [exercise, setExercise] = useState(null);
   const [answers, setAnswers] = useState(null);
-  const [exercises, setExercises] = useContext(ExercisesContext);
 
   useEffect(() => setExercise(props.exercise), [props.exercise]);
 

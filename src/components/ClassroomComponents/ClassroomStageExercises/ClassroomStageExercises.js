@@ -9,8 +9,8 @@ import TabContext from '../../Context/TabContext/TabContext';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext';
 
 function ClassroomStageExercises(props) {
-  const [exercises, setExercises] = useState([]);
   const [currentTab, setCurrentTab] = useContext(TabContext);
+  const [exercises, setExercises] = useState([]);
 
   useEffect(() => setExercises(currentTab?.exercises), [currentTab]);
 
