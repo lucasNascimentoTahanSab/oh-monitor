@@ -6,7 +6,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ButtonArrow from '../../ButtonComponents/ButtonArrow/ButtonArrow';
 import NavigationItemsContext from '../../Context/NavigationItemsContext/NavigationItemsContext';
-import util from '../../../classes/util';
+import Util from '../../../classes/Util';
 
 function ClassroomNavigationItem(props) {
   const [navigationItems, setNavigationItems] = useContext(NavigationItemsContext);
@@ -37,7 +37,7 @@ function ClassroomNavigationItem(props) {
           height='.875rem'
           fill={`${navigationItem?.current ? '#3498DB' : '#84C7E6'}`}
           open={navigationItem?.open}
-          onClick={() => util.toggleOpen(navigationItems, setNavigationItems)(navigationItem.uuid)} />
+          onClick={() => Util.toggleOpen(navigationItems, setNavigationItems)(navigationItem.uuid)} />
         <span className={getItemClass()}>{navigationItem?.title}</span>
       </div>
     );
@@ -58,7 +58,7 @@ function ClassroomNavigationItem(props) {
           type='radio'
           name={props.group}
           checked={getChecked()}
-          onChange={() => util.handle(props.onChange, navigationItem)} />
+          onChange={() => Util.handle(props.onChange, navigationItem)} />
         <label className={getItemClass()} htmlFor={navigationItem?.uuid}>{navigationItem?.title}</label>
       </div>
     );

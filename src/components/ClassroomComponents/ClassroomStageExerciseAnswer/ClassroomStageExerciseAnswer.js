@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useEffect, useState } from 'react';
-import util from '../../../classes/util';
+import Util from '../../../classes/Util';
 
 function ClassroomStageExerciseAnswer(props) {
   const [answer, setAnswer] = useState(null);
@@ -21,11 +21,11 @@ function ClassroomStageExerciseAnswer(props) {
         className='menu__item-radio'
         type='radio'
         name={props.group}
-        onClick={() => util.handle(props.selectAnswer, answer.uuid)}
+        onClick={() => Util.handle(props.selectAnswer, answer.uuid)}
       >
       </input>
       <label className='exercise__answer-text' htmlFor={`${answer?.uuid}-input`}>
-        <span className={getLetterClass()}>{util.getLetterByIndex(props.index)}</span>
+        <span className={getLetterClass()}>{Util.getLetterByIndex(props.index)}</span>
         {answer?.statement}
       </label>
     </li>

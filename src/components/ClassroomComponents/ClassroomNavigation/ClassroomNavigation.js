@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import ClassroomNavigationItem from '../ClassroomNavigationItem/ClassroomNavigationItem';
 import TabContext from '../../Context/TabContext/TabContext';
 import NavigationItemsContext from '../../Context/NavigationItemsContext/NavigationItemsContext';
-import util from '../../../classes/util';
+import Util from '../../../classes/Util';
 
 function ClassroomNavigation(props) {
   const [currentTab, setCurrentTab] = useContext(TabContext);
@@ -60,8 +60,8 @@ function ClassroomNavigation(props) {
    * quando existente.
    */
   function selectNavigationItem(navigationItem) {
-    const newNavigationItem = util.getItemByUuid(navigationItems, navigationItem.uuidParentNavigationItem);
-    const newItem = util.getItemByUuid(newNavigationItem?.navigationItems ?? navigationItems, navigationItem.uuid);
+    const newNavigationItem = Util.getItemByUuid(navigationItems, navigationItem.uuidParentNavigationItem);
+    const newItem = Util.getItemByUuid(newNavigationItem?.navigationItems ?? navigationItems, navigationItem.uuid);
 
     if (newNavigationItem) { newNavigationItem.current = true; }
     if (newItem) { newItem.current = true; }
@@ -72,8 +72,8 @@ function ClassroomNavigation(props) {
    * item.
    */
   function unselectNavigationItem() {
-    const currentNavigationItem = util.getCurrentItem(navigationItems);
-    const currentItem = util.getCurrentItem(currentNavigationItem?.navigationItems);
+    const currentNavigationItem = Util.getCurrentItem(navigationItems);
+    const currentItem = Util.getCurrentItem(currentNavigationItem?.navigationItems);
 
     if (currentNavigationItem) { currentNavigationItem.current = false; }
     if (currentItem) { currentItem.current = false; }

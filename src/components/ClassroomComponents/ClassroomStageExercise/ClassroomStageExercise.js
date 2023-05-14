@@ -5,7 +5,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ClassroomStageExerciseAnswer from '../ClassroomStageExerciseAnswer/ClassroomStageExerciseAnswer';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext';
-import util from '../../../classes/util';
+import Util from '../../../classes/Util';
 
 function ClassroomStageExercise(props) {
   const [exercise, setExercise] = useState(null);
@@ -30,7 +30,7 @@ function ClassroomStageExercise(props) {
         answer={answer}
         index={index}
         group={`${exercise.uuid}-classroom-stage-exercise-radio-group`}
-        selectAnswer={util.setSelectedItem(answers, updateAnswers)} />
+        selectAnswer={Util.setCurrentItem(answers, updateAnswers)} />
     );
   }
 
@@ -40,9 +40,7 @@ function ClassroomStageExercise(props) {
    * @param {array} answers 
    */
   function updateAnswers(answers) {
-    util.matchObjects(util.getItemByUuid(exercises, exercise.uuid), { ...exercise, answers });
-
-    setExercises(exercises);
+    Util.updateItemIn(exercises, setExercises)({ ...exercise, answers });
   }
 
   return (

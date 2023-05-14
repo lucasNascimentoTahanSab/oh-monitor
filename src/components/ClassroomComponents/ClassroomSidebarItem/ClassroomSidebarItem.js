@@ -5,7 +5,7 @@
  */
 import React, { useContext, useEffect, useState } from 'react';
 import TabsContext from '../../Context/TabsContext/TabsContext';
-import util from '../../../classes/util';
+import Util from '../../../classes/Util';
 
 function ClassroomSidebarItem(props) {
   const [tabs, setTabs] = useContext(TabsContext);
@@ -33,7 +33,7 @@ function ClassroomSidebarItem(props) {
 
     props.onChange(props.index);
 
-    util.setCurrentItem(tabs, setTabs)(tab.uuid);
+    Util.setCurrentItem(tabs, setTabs)(tab.uuid);
   }
 
   function getItemClass() {

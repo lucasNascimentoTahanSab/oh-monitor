@@ -3,11 +3,11 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React from 'react';
-import util from '../../../classes/util';
+import Util from '../../../classes/Util';
 
 function ButtonConfirmation(props) {
   return (
-    <button className='button--confirmation' onClick={event => util.handle(props.onClick, event)}>
+    <button className='button--confirmation' onClick={event => Util.handle(props.onClick, event)}>
       {props.value}
     </button>
   );
