@@ -1,9 +1,4 @@
 const util = {
-  getCurrentTab(subject) {
-    if (!subject?.tabs?.length) { return null; }
-
-    return subject.tabs.find(tab => tab?.current);
-  },
   matchObjects(origin, destiny) {
     if (typeof origin !== 'object') { return; }
     if (typeof destiny !== 'object') { return; }
@@ -56,6 +51,25 @@ const util = {
       }
     }
   },
+  setSelectedItem(items, setItems) {
+    return function (uuid) {
+      unselectCurrentItem();
+      selectItemByUuid(uuid);
+      setItems(items);
+
+      function selectItemByUuid(uuid) {
+        const newItem = util.getItemByUuid(items, uuid);
+
+        if (newItem) { newItem.current = true; }
+      }
+
+      function unselectCurrentItem() {
+        const currentItem = util.getCurrentItem(items);
+
+        if (currentItem) { currentItem.current = false; }
+      }
+    }
+  },
   updateItem(items, setItems) {
     return function (item, setItem) {
       if (!items.length) { return; }
@@ -72,12 +86,6 @@ const util = {
         items[index] = item;
       }
     }
-  },
-  match(origin, destiny) {
-    if (typeof origin !== 'object') { return; }
-    if (typeof destiny !== 'object') { return; }
-
-    Array.from(Object.keys(origin)).forEach(key => destiny[key] = origin[key]);
   },
   toggleOpen(items, setItems) {
     return function (uuid) {
