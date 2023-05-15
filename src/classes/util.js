@@ -102,7 +102,7 @@ export default class Util {
     return function (uuid) {
       unselectCurrentItem();
       selectItemByUuid(uuid);
-      setItems(items);
+      setItems([...items]);
 
       function selectItemByUuid(uuid) {
         const newItem = Util.getItemByUuid(items, uuid);
@@ -132,7 +132,7 @@ export default class Util {
     return function (uuid) {
       unselectCurrentItem();
       selectItemByUuid(uuid);
-      setItems(items);
+      setItems(new Map(items));
 
       function selectItemByUuid(uuid) {
         const newItem = items.get(uuid);
@@ -165,7 +165,7 @@ export default class Util {
 
       Util.matchObjects(item, Util.getItemByUuid(items, item.uuid));
 
-      setItems(items);
+      setItems([...items]);
     }
   }
 
@@ -186,7 +186,7 @@ export default class Util {
 
       Util.matchObjects(item, items.get(item.uuid));
 
-      setItems(items);
+      setItems(new Map(items));
     }
   }
 
@@ -203,7 +203,7 @@ export default class Util {
 
     return function (uuid) {
       openItemByUuid(uuid);
-      setItems(items);
+      setItems([...items]);
 
       function openItemByUuid(uuid) {
         const item = Util.getItemByUuid(items, uuid);
@@ -227,7 +227,7 @@ export default class Util {
 
     return function (uuid, content) {
       updateFileContent(uuid, content);
-      setFiles(files);
+      setFiles(new Map(files));
 
       function updateFileContent(uuid, content) {
         const file = files.get(uuid);

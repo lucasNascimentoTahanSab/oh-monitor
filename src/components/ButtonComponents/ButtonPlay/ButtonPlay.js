@@ -36,7 +36,7 @@ function ButtonPlay(props) {
 
   function getLoading() {
     return (
-      <div class="button-play--loading"><div></div><div></div><div></div><div></div></div>
+      <div className="button-play--loading"><div></div><div></div><div></div><div></div></div>
     );
   }
 
