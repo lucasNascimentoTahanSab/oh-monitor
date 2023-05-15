@@ -14,6 +14,7 @@ function CodeEditorPrompt(props) {
   const [menuItems, setMenuItems] = useState([]);
   const [currentMenuItem, setCurrentMenuItem] = useState([]);
   const [contentRef, setContentRef] = useState(null);
+  const [resizer, setResizer] = useState(null);
 
   /**
    * Hook responsável por inicializar itens do menu no terminal.
@@ -23,6 +24,8 @@ function CodeEditorPrompt(props) {
   function getMenuItems() {
     setMenuItems(config.prompt.menu.map(item => new PromptMenuItem(item)));
   }
+
+  useEffect(() => { if (contentRef) { setResizer(new Resizer(contentRef.current)) } }, [contentRef]);
 
   /**
    * Método responsável pela atualização dos itens do menu no terminal e item
@@ -37,7 +40,7 @@ function CodeEditorPrompt(props) {
 
   return (
     <div className='prompt'>
-      <div className='prompt__resizer' onMouseDown={event => (new Resizer(contentRef.current)).resize(event)}></div>
+      <div className='prompt__resizer' onMouseDown={event => resizer.resize(event)}></div>
       <div className='prompt__content'>
         <CodeEditorPromptMenu items={menuItems} setCurrentItem={Util.setCurrentItem(menuItems, updateMenuItems)} />
         <CodeEditorPromptContent current={currentMenuItem} setContentRef={setContentRef} />
