@@ -24,16 +24,14 @@ export default class Resizer {
     this._setContentMousePosition(event);
 
     window.addEventListener('mousemove', this._handleResizerMouseMoveBind);
-    window.addEventListener('mouseup', this._handleResizerMouseUpBind);
+    window.addEventListener('mouseup', this._handleResizerMouseUp.bind(this));
   }
-
-  _handleResizerMouseMoveBind = event => this._handleResizerMouseMove(event);
-
-  _handleResizerMouseUpBind = event => this._handleResizerMouseUp(event);
 
   _handleResizerMouseUp() {
     window.removeEventListener('mousemove', this._handleResizerMouseMoveBind);
   }
+
+  _handleResizerMouseMoveBind = event => this._handleResizerMouseMove(event);
 
   /**
    * Método responsável por atualizar dimensões e posições de objeto em cena de 

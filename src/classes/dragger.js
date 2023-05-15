@@ -1,3 +1,7 @@
+/**
+ * @file Módulo responsável por possibilitar movimentação em tela por meio de arrasta e solta.
+ * @copyright Lucas N. T. Sab 2023
+ */
 export default class Dragger {
   constructor(screen, content) {
     this.screen = screen;
@@ -18,6 +22,12 @@ export default class Dragger {
   get x() { return this._childInitialX + this._deltaX; }
   get y() { return this._childInitialY + this._deltaY; }
 
+  /**
+   * Método responsável por foco em elemento recebido, deslocando a tela para posicioná-lo
+   * ao centro.
+   * 
+   * @param {object} element 
+   */
   focus(element) {
     this.element = element;
 
@@ -31,6 +41,10 @@ export default class Dragger {
     this._updateContentPosition(this.x, this.y);
   }
 
+  /**
+   * Método responsável por calcular ponto central do elemento para direcioná-lo ao centro
+   * da tela.
+   */
   _setElementCenter() {
     const elementBoundaries = this.element.getBoundingClientRect();
 
@@ -38,6 +52,9 @@ export default class Dragger {
     this._elementCenterY = elementBoundaries.top + ((elementBoundaries.bottom - elementBoundaries.top) / 2);
   }
 
+  /**
+   * Método responsável por calcular ponto central da tela para onde direcionar o elemento.
+   */
   _setScreenCenter() {
     const screenBoundaries = this.screen.getBoundingClientRect();
 
@@ -45,6 +62,11 @@ export default class Dragger {
     this._screenCenterY = screenBoundaries.top + ((screenBoundaries.bottom - screenBoundaries.top) / 2);
   }
 
+  /**
+   * Método responsável por movimentar a tela por meio de arrasta e solta.
+   * 
+   * @param {object} event 
+   */
   drag(event) {
     event.preventDefault();
 
@@ -60,8 +82,13 @@ export default class Dragger {
     this.screen.removeEventListener('mousemove', this._handleScreenDraggerMouseMoveBind);
   }
 
-  _handleScreenDraggerMouseMoveBind = (event) => { this._handleScreenDraggerMouseMove(event); }
+  _handleScreenDraggerMouseMoveBind = event => this._handleScreenDraggerMouseMove(event); s
 
+  /**
+   * Método responsável por atualizar posição da tela de acordo com deslocamento do mouse.
+   * 
+   * @param {object} event 
+   */
   _handleScreenDraggerMouseMove(event) {
     event.preventDefault();
 
