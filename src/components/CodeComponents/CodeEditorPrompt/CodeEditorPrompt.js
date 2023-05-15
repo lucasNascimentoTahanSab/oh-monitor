@@ -22,7 +22,10 @@ function CodeEditorPrompt(props) {
   useEffect(() => { if (!menuItems.length) { getMenuItems() } }, [menuItems]);
 
   function getMenuItems() {
-    setMenuItems(config.prompt.menu.map(item => new PromptMenuItem(item)));
+    const newMenuItems = config.prompt.menu.map(item => new PromptMenuItem(item));
+
+    setMenuItems(newMenuItems);
+    setCurrentMenuItem(Util.getCurrentItem(newMenuItems));
   }
 
   useEffect(() => { if (contentRef) { setResizer(new Resizer(contentRef.current)) } }, [contentRef]);

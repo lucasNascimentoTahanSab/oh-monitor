@@ -5,13 +5,17 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen';
-import callouts from '../../../classes/callout';
-import config from '../../../config.json';
+import PackageContext from '../../Context/PackageContext/PackageContext';
+import RenderContext from '../../Context/RenderContext/RenderContext';
 import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext';
 import Snippet from '../../../classes/Snippet';
+import callouts from '../../../classes/callout';
+import config from '../../../config.json';
 
 function CodeSnippet(props) {
   const [snippets, setSnippets] = useContext(SnippetsContext);
+  const [render, setRender] = useState(false);
+  const [currentPackage, setCurrentPackage] = useState(null);
   const [snippet, setSnippet] = useState(null);
   const [element, setElement] = useState(null);
 
@@ -59,21 +63,25 @@ function CodeSnippet(props) {
   }
 
   return (
-    <div className='code-snippet'>
-      <div className='code-snippet__editor'>
-        <Editor
-          theme='vs-dark'
-          defaultLanguage={config.language}
-          value={snippet?.content}
-          options={{
-            readOnly: true,
-            minimap: { enabled: false },
-            padding: { bottom: 10, top: 10 }
-          }}
-        />
-      </div>
-      {displayAnimationScreen()}
-    </div>
+    <PackageContext.Provider value={[currentPackage, setCurrentPackage]}>
+      <RenderContext.Provider value={[render, setRender]}>
+        <div className='code-snippet'>
+          <div className='code-snippet__editor'>
+            <Editor
+              theme='vs-dark'
+              defaultLanguage={config.language}
+              value={snippet?.content}
+              options={{
+                readOnly: true,
+                minimap: { enabled: false },
+                padding: { bottom: 10, top: 10 }
+              }}
+            />
+          </div>
+          {displayAnimationScreen()}
+        </div>
+      </RenderContext.Provider>
+    </PackageContext.Provider>
   );
 }
 

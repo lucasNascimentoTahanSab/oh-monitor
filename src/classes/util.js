@@ -236,4 +236,25 @@ export default class Util {
       }
     }
   }
+
+  /**
+   * Método responsável pela obtenção do valor atual de um React state recbido.
+   * 
+   * @param {object} state 
+   * @param {function} setState 
+   * @returns {object}
+   */
+  static getCurrentStateValue(state, setState) {
+    if (typeof setState !== 'function') { return null; }
+
+    let stateValue = state;
+
+    setState(state => {
+      stateValue = state;
+
+      return state;
+    });
+
+    return stateValue;
+  }
 }

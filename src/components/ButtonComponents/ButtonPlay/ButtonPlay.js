@@ -21,7 +21,7 @@ function ButtonPlay(props) {
   function getPause() {
     return (
       <svg width={props.width} height={props.height} viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_406_3688)">
+        <g clipPath="url(#clip0_406_3688)">
           <path d="M6.25 0H1.875V15H6.25V0Z" fill={props.color} />
           <path d="M13.1251 0H8.75006V15H13.1251V0Z" fill={props.color} />
         </g>

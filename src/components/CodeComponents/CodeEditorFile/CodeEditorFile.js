@@ -4,8 +4,8 @@
  */
 import React, { useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
-import config from '../../../config.json';
 import Util from '../../../classes/Util';
+import config from '../../../config.json';
 
 function CodeEditorFile(props) {
   const [file, setFile] = useState(null);

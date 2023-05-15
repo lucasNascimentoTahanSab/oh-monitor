@@ -7,8 +7,8 @@ import OutputContext from '../../Context/OutputContext/OutputContext';
 import InputContext from '../../Context/InputContext/InputContext';
 
 function CodeEditorPromptContent(props) {
-  const [output, setOutput] = useContext(OutputContext);
-  const [input, setInput] = useContext(InputContext);
+  const [output,] = useContext(OutputContext);
+  const [input,] = useContext(InputContext);
   const [current, setCurrent] = useState(null);
   const contentRef = useRef();
 
