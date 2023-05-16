@@ -7,12 +7,22 @@ import BSTChildrenComponent from '../BSTChildrenComponent/BSTChildrenComponent';
 import BSTNodeComponent from '../BSTNodeComponent/BSTNodeComponent';
 
 function BSTComponent(props) {
+  /**
+   * Método responsável pela obtenção do nó raiz para exibição em BST.
+   * 
+   * @returns {array}
+   */
   function getNodeElement() {
     if (!props.tree?.root) { return null; }
 
     return <BSTNodeComponent key={`_${props.tree.root.address}`} node={props.tree.root} />;
   }
 
+  /**
+   * Método responsável pela obtenção dos filhos do nó raiz para exibição em BST.
+   * 
+   * @returns {array}
+   */
   function getChildrenElement() {
     if (!props.tree?.root?.left && !props.tree?.root?.right) { return null; }
 
