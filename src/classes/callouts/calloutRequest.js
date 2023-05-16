@@ -13,6 +13,9 @@ export const requests = {
   content: {
     getSubject: () => ({
       method: 'GET'
+    }),
+    getCorrectAnswers: () => ({
+      method: 'GET'
     })
   },
   repo: {

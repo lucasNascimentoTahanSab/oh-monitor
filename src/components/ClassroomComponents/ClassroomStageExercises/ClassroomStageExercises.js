@@ -7,10 +7,13 @@ import ClassroomStageExercise from '../ClassroomStageExercise/ClassroomStageExer
 import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js';
+import callouts from '../../../classes/callouts/callout.js';
 
 function ClassroomStageExercises() {
   const [currentTab, setCurrentTab] = useContext(TabContext);
   const [exercises, setExercises] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
 
   useEffect(() => setExercises(currentTab?.exercises), [currentTab]);
 
@@ -35,6 +38,38 @@ function ClassroomStageExercises() {
     setCurrentTab({ ...currentTab, exercises });
   }
 
+  function onSend() {
+    if (!exercises?.length) { return; }
+
+    const chosenAnswers = getChosenAnswers();
+
+    if (!chosenAnswers?.length) { return; }
+
+    setLoading(true);
+    send(chosenAnswers);
+  }
+
+  function send(chosenAnswers) {
+    callouts.content.getCorrectAnswers(chosenAnswers).then(getResult).catch(getResult);
+  }
+
+  function getResult(result) {
+    setResult(result);
+    setLoading(false);
+  }
+
+  function getChosenAnswers() {
+    return exercises.reduce(getChosenAnswer, []);
+  }
+
+  function getChosenAnswer(uuids, exercise) {
+    const chosenAnswer = exercise.answers.find(answer => answer.current);
+
+    if (chosenAnswer) { uuids.push(chosenAnswer.uuid); }
+
+    return uuids;
+  }
+
   return (
     <ExercisesContext.Provider value={[exercises, updateExercises]}>
       <section className='classroom__content'>
@@ -45,7 +80,7 @@ function ClassroomStageExercises() {
           </ol>
         </div>
         <div className='exercise__confirmation'>
-          <ButtonConfirmation value='Enviar' />
+          <ButtonConfirmation value='Enviar' onClick={onSend} loading={loading} />
         </div>
       </section>
     </ExercisesContext.Provider>

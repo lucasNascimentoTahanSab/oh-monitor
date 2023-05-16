@@ -22,7 +22,14 @@ const callouts = {
           .then(response => resolve(response.json()))
           .catch(error => reject(error))
       })
-    )
+    ),
+    getCorrectAnswers: async uuids => (
+      new Promise((resolve, reject) => {
+        fetch(endpoints.content.getCorrectAnswers(uuids), requests.content.getCorrectAnswers())
+          .then(response => resolve(response.json()))
+          .catch(error => reject(error))
+      })
+    ),
   },
   repo: {
     getFile: async (path, language, extension) => (
