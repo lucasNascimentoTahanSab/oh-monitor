@@ -6,7 +6,7 @@ import React, { useContext } from 'react';
 import CodeEditorMenuItem from '../CodeEditorMenuItem/CodeEditorMenuItem';
 import CodeEditorMenuSettings from '../CodeEditorMenuSettings/CodeEditorMenuSettings';
 import FilesContext from '../../Context/FilesContext/FilesContext';
-import Util from '../../../classes/Util';
+import Util from '../../../classes/util/Util';
 
 function CodeEditorMenu(props) {
   const [files, setFiles] = useContext(FilesContext);

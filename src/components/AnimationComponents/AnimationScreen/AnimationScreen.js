@@ -7,9 +7,9 @@ import AnimationEngine from '../AnimationEngine/AnimationEngine';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
 import InputRange from '../../InputComponents/InputRange/InputRange';
-import Dragger from '../../../classes/Dragger';
+import Util from '../../../classes/util/Util';
+import Dragger from '../../../classes/util/Dragger';
 import config from '../../../config.json';
-import Util from '../../../classes/Util';
 
 function AnimationScreen(props) {
   const [play, setPlay] = useState(false);

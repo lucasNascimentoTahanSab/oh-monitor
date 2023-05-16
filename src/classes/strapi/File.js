@@ -1,4 +1,4 @@
-import Code from "./strapi/Code";
+import Code from "./Code";
 
 export default class File extends Code {
   constructor(file, content) {

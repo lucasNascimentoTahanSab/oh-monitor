@@ -5,7 +5,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ClassroomStageExerciseAnswer from '../ClassroomStageExerciseAnswer/ClassroomStageExerciseAnswer';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext';
-import Util from '../../../classes/Util';
+import Util from '../../../classes/util/Util';
 
 function ClassroomStageExercise(props) {
   const [exercises, setExercises] = useContext(ExercisesContext);

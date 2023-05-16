@@ -12,8 +12,8 @@ import TabsContext from '../../Context/TabsContext/TabsContext';
 import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext';
 import PackagesContext from '../../Context/PackagesContext/PackagesContext';
 import Subject from '../../../classes/strapi/Subject';
-import Util from '../../../classes/Util';
-import callouts from '../../../classes/callout';
+import Util from '../../../classes/util/Util';
+import callouts from '../../../classes/callouts/callout';
 
 function Classroom(props) {
   const [subject, setSubject] = useState(null);

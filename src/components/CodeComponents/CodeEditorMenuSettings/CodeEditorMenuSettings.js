@@ -8,7 +8,7 @@ import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay';
 import FilesContext from '../../Context/FilesContext/FilesContext';
 import ResultContext from '../../Context/ResultContext/ResultContext';
 import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext';
-import callouts from '../../../classes/callout';
+import callouts from '../../../classes/callouts/callout';
 import config from '../../../config.json';
 
 function CodeEditorMenuSettings(props) {

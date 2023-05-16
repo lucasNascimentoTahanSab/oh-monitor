@@ -3,8 +3,8 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import { createElement } from 'react';
-import CodeSnippet from '../components/CodeComponents/CodeSnippet/CodeSnippet';
-import CodeEditor from '../components/CodeComponents/CodeEditor/CodeEditor';
+import CodeSnippet from '../../components/CodeComponents/CodeSnippet/CodeSnippet';
+import CodeEditor from '../../components/CodeComponents/CodeEditor/CodeEditor';
 
 export default class Builder {
   /**

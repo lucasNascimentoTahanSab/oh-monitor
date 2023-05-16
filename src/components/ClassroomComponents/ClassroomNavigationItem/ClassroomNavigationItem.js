@@ -6,7 +6,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ButtonArrow from '../../ButtonComponents/ButtonArrow/ButtonArrow';
 import NavigationItemsContext from '../../Context/NavigationItemsContext/NavigationItemsContext';
-import Util from '../../../classes/Util';
+import Util from '../../../classes/util/Util';
 
 function ClassroomNavigationItem(props) {
   const [navigationItems, setNavigationItems] = useContext(NavigationItemsContext);

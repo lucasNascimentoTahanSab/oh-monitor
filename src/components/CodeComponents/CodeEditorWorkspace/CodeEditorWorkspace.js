@@ -9,7 +9,7 @@ import CodeEditorFile from '../CodeEditorFile/CodeEditorFile';
 import CodeEditorMenu from '../CodeEditorMenu/CodeEditorMenu';
 import FilesContext from '../../Context/FilesContext/FilesContext';
 import FileContext from '../../Context/FileContext/FileContext';
-import Util from '../../../classes/Util';
+import Util from '../../../classes/util/Util';
 
 function CodeEditorWorkspace(props) {
   const [files, setFiles] = useContext(FilesContext);

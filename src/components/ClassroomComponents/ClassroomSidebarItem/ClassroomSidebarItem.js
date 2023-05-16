@@ -4,7 +4,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useEffect, useState } from 'react';
-import Util from '../../../classes/Util';
+import Util from '../../../classes/util/Util';
 
 function ClassroomSidebarItem(props) {
   const [tab, setTab] = useState(null);

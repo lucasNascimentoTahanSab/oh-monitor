@@ -16,10 +16,10 @@ import ResultContext from '../../Context/ResultContext/ResultContext';
 import OutputContext from '../../Context/OutputContext/OutputContext';
 import InputContext from '../../Context/InputContext/InputContext';
 import RenderContext from '../../Context/RenderContext/RenderContext';
-import Package from '../../../classes/Package';
-import File from '../../../classes/File';
-import Util from '../../../classes/Util';
-import callouts from '../../../classes/callout';
+import Package from '../../../classes/strapi/Package';
+import File from '../../../classes/strapi/File';
+import Util from '../../../classes/util/Util';
+import callouts from '../../../classes/callouts/callout';
 import config from '../../../config.json';
 
 function CodeEditor(props) {

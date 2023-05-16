@@ -5,7 +5,7 @@
 import React, { useContext, useRef } from 'react';
 import ClassroomSidebarItem from '../ClassroomSidebarItem/ClassroomSidebarItem';
 import TabsContext from '../../Context/TabsContext/TabsContext';
-import Util from '../../../classes/Util';
+import Util from '../../../classes/util/Util';
 
 function ClassroomSidebar(props) {
   const [tabs, setTabs] = useContext(TabsContext);

@@ -8,8 +8,8 @@ import AnimationScreen from '../../AnimationComponents/AnimationScreen/Animation
 import PackageContext from '../../Context/PackageContext/PackageContext';
 import RenderContext from '../../Context/RenderContext/RenderContext';
 import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext';
-import Snippet from '../../../classes/Snippet';
-import callouts from '../../../classes/callout';
+import Snippet from '../../../classes/strapi/Snippet';
+import callouts from '../../../classes/callouts/callout';
 import config from '../../../config.json';
 
 function CodeSnippet(props) {
