@@ -4,7 +4,7 @@
  */
 import { createElement } from 'react';
 import TreeComponent from '../../components/TreeComponents/TreeComponent/TreeComponent.js';
-import Drawing from '../drawer/Drawing.js';
+import Drawing from './Drawing.js';
 import Tree from '../tree/Tree.js';
 import Node from '../tree/Node.js';
 
