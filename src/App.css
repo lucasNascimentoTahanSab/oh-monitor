@@ -232,6 +232,9 @@ li.exercise__question-statement:not(:last-child) {
 }
 
 .button--confirmation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--color-blue--light-dark);
   color: var(--color-white);
   font-family: var(--font-family--ubuntu);
@@ -666,6 +669,11 @@ li.exercise__question-statement:not(:last-child) {
   border-radius: 50%;
   animation: button-play--loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: var(--color-blue--light-dark) transparent transparent transparent;
+}
+
+.button-play--loading--white div {
+  border: .15625rem solid var(--color-white);
+  border-color: var(--color-white) transparent transparent transparent;
 }
 
 .button-play--loading div:nth-child(1) {
