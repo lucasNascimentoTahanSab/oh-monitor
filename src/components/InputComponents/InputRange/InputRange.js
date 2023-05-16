@@ -1,28 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
+/**
+ * @file Módulo responsável pela exibição e controle de barra de progresso.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React from 'react';
+import Util from '../../../classes/Util';
 
 function InputRange(props) {
-  const [snapshots, setSnapshots] = useState([]);
-  const [snapshot, setSnapshot] = useState(null);
-  const config = useContext(ConfigContext);
-
-  useEffect(() => { setSnapshots(props.snapshots) }, [props.snapshots]);
-  useEffect(() => { setSnapshot(props.snapshot) }, [props.snapshot]);
-
   function getThemeClass() {
     return props.theme === 'dark' ? 'progress-bar--light' : 'progress-bar--dark';
-  }
-
-  function handleInputChange(event) {
-    if (typeof props.onChange !== 'function') { return; }
-
-    props.onChange(event);
-  }
-
-  function hangeInputTouchEnd(event) {
-    if (typeof props.onTouchEnd !== 'function') { return; }
-
-    props.onTouchEnd(event);
   }
 
   return (
@@ -33,8 +18,8 @@ function InputRange(props) {
       min={0}
       max={props.max}
       value={props.value}
-      onChange={handleInputChange}
-      onMouseUp={hangeInputTouchEnd} />
+      onChange={event => Util.handle(props.onChange, event)}
+      onMouseUp={event => Util.handle(props.onMouseUp, event)} />
   );
 }
 

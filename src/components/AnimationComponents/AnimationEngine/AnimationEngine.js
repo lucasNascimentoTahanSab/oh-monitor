@@ -1,44 +1,47 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { DraggerContext } from '../../Context/DraggerContext/DraggerContext.js';
-import animation from '../../../classes/animation';
+/**
+ * @file Módulo responsável pela exibição da animação montada em Animation.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import PackageContext from '../../Context/PackageContext/PackageContext.js';
+import RenderContext from '../../Context/RenderContext/RenderContext.js';
+import DraggerContext from '../../Context/DraggerContext/DraggerContext.js';
+import Drawer from '../../../classes/drawer/Drawer.js';
+import Util from '../../../classes/Util.js';
 
 function AnimationEngine(props) {
-  const [render, setRender] = useState(false);
-  const [snapshot, setSnapshot] = useState(null);
+  const [currentPackage,] = useContext(PackageContext);
+  const [render, setRender] = useContext(RenderContext);
   const [dragger, setDragger] = useState(null);
+  const [snapshot, setSnapshot] = useState(null);
   const animationEngine = useRef(null);
-
-  const setAnimationEngineCallback = useCallback(setAnimationEngine, [setAnimationEngine]);
-
-  function setAnimationEngine() {
-    if (typeof props.setAnimationEngine !== 'function') { return; }
-
-    props.setAnimationEngine(animationEngine);
-  }
-
-  useEffect(setAnimationEngineCallback, [setAnimationEngineCallback, animationEngine]);
 
   useEffect(() => { setDragger(props.dragger); }, [props.dragger]);
 
-  useEffect(() => { setRender(props.render) }, [props.render]);
+  useEffect(() => { setSnapshot(props.snapshot) }, [props.snapshot]);
+
+  /**
+   * Hook responsável por configurar tela em dragger.
+   */
+  useEffect(() => { Util.handle(props.setAnimationEngine, animationEngine); }, [props.setAnimationEngine, animationEngine]);
 
   const parseCommandsCallback = useCallback(parseCommands, [parseCommands]);
 
   function parseCommands() {
-    if (typeof props.setRender !== 'function') { return; }
-    if (typeof props.setSnapshots !== 'function') { return; }
-    if (typeof props.setSnapshot !== 'function') { return; }
+    const result = Drawer.draw('BST').with(currentPackage.commands);
 
-    const result = animation.parse(props.commands);
+    Util.handle(props.setSnapshots, result);
+    Util.handle(props.setSnapshot, null);
+    Util.handle(props.setReset, true);
 
-    props.setRender(false);
-    props.setSnapshots(result);
-    props.setSnapshot(null);
+    setRender(false);
   }
 
+  /**
+   * Hook responsável por disparar construção da animação a ser apresentada quando
+   * comandos gerados.
+   */
   useEffect(() => { if (render) { parseCommandsCallback() } }, [render, parseCommandsCallback]);
-
-  useEffect(() => { setSnapshot(props.snapshot) }, [props.snapshot]);
 
   return (
     <DraggerContext.Provider value={[dragger, setDragger]}>

@@ -1,40 +1,42 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+/**
+ * @file Módulo responsável pela exibição do editor de código.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React, { useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
-import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
+import Util from '../../../classes/Util';
+import config from '../../../config.json';
 
 function CodeEditorFile(props) {
-  const config = useContext(ConfigContext);
   const [file, setFile] = useState(null);
-  const editorRef = useRef(null);
 
-  const setFileCallback = useCallback(file => setFile(file), [setFile]);
-
-  useEffect(() => { setFileCallback(props.file) }, [setFileCallback, props.file, file]);
-
-  function handleEditorDidMount(editor, monaco) {
-    editorRef.current = editor;
-  }
-
-  function handleEditorChange(code) {
-    if (typeof props.setFile !== 'function') { return; }
-
-    props.setFile({ ...props.file, code });
-  }
+  useEffect(() => setFile(props.file), [props.file]);
 
   return (
-    <div className='code-editor__file'>
-      <Editor
-        height={'34.6875rem'}
-        defaultLanguage={config?.language}
-        value={file?.code}
-        theme='vs-dark'
-        onMount={handleEditorDidMount}
-        onChange={handleEditorChange}
-        options={{
-          readOnly: file?.disabled
-        }}
-      />
-    </div>
+    <Editor
+      className='code-editor__file'
+      defaultLanguage={config.language}
+      value={file?.content}
+      theme='vs-dark'
+      // Para atualização do arquivo atual é considerado o UUID do arquivo recebido ao invés
+      // do arquivo já configurado, evitando incongruências entre atualizações por conta de
+      // limitações do editor.
+      onChange={content => Util.handle(props.onChange, props.file?.uuid, content)}
+      options={{
+        readOnly: file?.disabled,
+        bracketPairColorization: { enabled: true },
+        dropIntoEditor: { enabled: true },
+        mouseWheelZoom: true,
+        quickSuggestions: {
+          comments: 'on',
+          other: 'on',
+          strings: 'on'
+        },
+        selectOnLineNumbers: true,
+        selectionHighlight: true,
+        snippetSuggestions: 'top',
+      }}
+    />
   );
 }
 

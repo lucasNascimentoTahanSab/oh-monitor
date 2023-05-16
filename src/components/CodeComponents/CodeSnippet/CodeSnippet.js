@@ -1,45 +1,87 @@
-import React, { useContext, useEffect, useState } from 'react';
+/**
+ * @file Módulo responsável pela exibição de code snippet em editor de código.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen';
-import { callouts } from '../../../classes/callout';
-import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
+import PackageContext from '../../Context/PackageContext/PackageContext';
+import RenderContext from '../../Context/RenderContext/RenderContext';
+import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext';
+import Snippet from '../../../classes/Snippet';
+import callouts from '../../../classes/callout';
+import config from '../../../config.json';
 
 function CodeSnippet(props) {
-  const config = useContext(ConfigContext);
+  const [snippets, setSnippets] = useContext(SnippetsContext);
+  const [render, setRender] = useState(false);
+  const [currentPackage, setCurrentPackage] = useState(null);
   const [snippet, setSnippet] = useState(null);
+  const [element, setElement] = useState(null);
 
-  useEffect(() => { if (!snippet) { getSnippet(); } });
+  useEffect(() => setElement(props.element), [props.element]);
 
+  const getSnippetCallback = useCallback(getSnippet, [getSnippet]);
+
+  /**
+   * Método responsável pela atualização do code snippet por repositório ou memória
+   * primária, caso já tenha sido carregado.
+   */
   async function getSnippet() {
-    setSnippet(
-      (await callouts.repo.getFile(
-        props.element?.attributes?.value,
-        config?.language,
-        config?.languages?.[config.language]?.extension)
-      )?.data ?? snippet
-    );
+    if (snippets.has(element.uuid)) { setSnippet(snippets.get(element.uuid)); }
+    else { setSnippet(new Snippet(element, (await calloutSnippet())?.data)); }
   }
 
+  async function calloutSnippet() {
+    return await callouts.repo.getFile(element?.value, config.language, config.languages[config.language].extension)
+  }
+
+  /**
+   * Hook responsável por atualizar editor de código com code snippet desejado. Caso o 
+   * código já tenha sido carregado, sua recuperação é feita por meio de SnippetsContext
+   * ao invés de uma chamada à integração.
+   */
+  useEffect(() => { if (!snippet && element) { getSnippetCallback(); } });
+
+  const getSnippetsCallback = useCallback(getSnippets, [getSnippets]);
+
+  function getSnippets() {
+    if (snippets.has(element.uuid)) { return; }
+
+    snippets.set(element.uuid, snippet);
+
+    setSnippets(snippets);
+  }
+
+  /**
+   * Hook responsável pela atualização dos code snippets mapeados.
+   */
+  useEffect(() => { if (snippet) { getSnippetsCallback() } }, [snippet, getSnippetsCallback]);
+
   function displayAnimationScreen() {
-    return props.element?.attributes?.displayAnimationScreen ? (<AnimationScreen theme='dark' />) : null;
+    return element?.displayAnimationScreen ? (<AnimationScreen theme='dark' />) : null;
   }
 
   return (
-    <div className='code-snippet'>
-      <div className='code-snippet__editor'>
-        <Editor
-          theme='vs-dark'
-          defaultLanguage={config?.language}
-          value={snippet}
-          options={{
-            readOnly: true,
-            minimap: { enabled: false },
-            padding: { bottom: 10, top: 10 }
-          }}
-        />
-      </div>
-      {displayAnimationScreen()}
-    </div>
+    <PackageContext.Provider value={[currentPackage, setCurrentPackage]}>
+      <RenderContext.Provider value={[render, setRender]}>
+        <div className='code-snippet'>
+          <div className='code-snippet__editor'>
+            <Editor
+              theme='vs-dark'
+              defaultLanguage={config.language}
+              value={snippet?.content}
+              options={{
+                readOnly: true,
+                minimap: { enabled: false },
+                padding: { bottom: 10, top: 10 }
+              }}
+            />
+          </div>
+          {displayAnimationScreen()}
+        </div>
+      </RenderContext.Provider>
+    </PackageContext.Provider>
   );
 }
 

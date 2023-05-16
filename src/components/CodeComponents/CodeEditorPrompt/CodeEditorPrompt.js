@@ -1,45 +1,52 @@
-import React, { useState } from 'react';
-import resize from '../../../classes/resize';
+/**
+ * @file Módulo responsável pela exibição do terminal em editor de códigos.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React, { useEffect, useState } from 'react';
 import CodeEditorPromptMenu from '../CodeEditorPromptMenu/CodeEditorPromptMenu.js';
-import { util } from '../../../classes/util';
 import CodeEditorPromptContent from '../CodeEditorPromptContent/CodeEditorPromptContent';
+import PromptMenuItem from '../../../classes/PromptMenuItem.js';
+import Util from '../../../classes/Util';
+import Resizer from '../../../classes/Resizer.js';
+import config from '../../../config.json';
 
 function CodeEditorPrompt(props) {
-  const [menuItems, setMenuItems] = useState([
-    { uuid: 'SAÍDA', name: 'SAÍDA', current: true },
-    { uuid: 'ENTRADA', name: 'ENTRADA', current: false }
-  ]);
+  const [menuItems, setMenuItems] = useState([]);
+  const [currentMenuItem, setCurrentMenuItem] = useState([]);
   const [contentRef, setContentRef] = useState(null);
+  const [resizer, setResizer] = useState(null);
 
-  function setCurrentItem(uuid) {
-    unselectCurrentItem();
-    selectItemByUuid(uuid);
+  /**
+   * Hook responsável por inicializar itens do menu no terminal.
+   */
+  useEffect(() => { if (!menuItems.length) { getMenuItems() } }, [menuItems]);
 
-    setMenuItems([...menuItems]);
+  function getMenuItems() {
+    const newMenuItems = config.prompt.menu.map(item => new PromptMenuItem(item));
+
+    setMenuItems(newMenuItems);
+    setCurrentMenuItem(Util.getCurrentItem(newMenuItems));
   }
 
-  function selectItemByUuid(uuid) {
-    const newItem = util.getItemByUuid(menuItems, uuid);
+  useEffect(() => { if (contentRef) { setResizer(new Resizer(contentRef.current)) } }, [contentRef]);
 
-    if (!newItem) { return; }
-
-    newItem.current = true;
-  }
-
-  function unselectCurrentItem() {
-    const currentitem = util.getCurrentItem(menuItems);
-
-    if (!currentitem) { return; }
-
-    currentitem.current = false;
+  /**
+   * Método responsável pela atualização dos itens do menu no terminal e item
+   * selecionado.
+   * 
+   * @param {array} menuItems 
+   */
+  function updateMenuItems(menuItems) {
+    setCurrentMenuItem(Util.getCurrentItem(menuItems));
+    setMenuItems(menuItems);
   }
 
   return (
     <div className='prompt'>
-      <div className='prompt__resizer' onMouseDown={event => resize(event, contentRef.current)}></div>
+      <div className='prompt__resizer' onMouseDown={event => resizer.resize(event)}></div>
       <div className='prompt__content'>
-        <CodeEditorPromptMenu items={menuItems} setCurrentItem={setCurrentItem} />
-        <CodeEditorPromptContent content={props.output} setContentRef={setContentRef} />
+        <CodeEditorPromptMenu items={menuItems} setCurrentItem={Util.setCurrentItem(menuItems, updateMenuItems)} />
+        <CodeEditorPromptContent current={currentMenuItem} setContentRef={setContentRef} />
       </div>
     </div>
   );

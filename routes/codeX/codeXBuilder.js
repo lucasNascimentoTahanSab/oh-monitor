@@ -21,8 +21,8 @@ const GH = require('../gitHub/gitHubRouter.js');
  */
 async function build(files, config) {
   return (await Promise.all(sortFilesByOrder(files, config)?.map(async file => {
-    return file.alternativePath ? (await getAlternativeFile(getAlternativeFileEndpoint(file, config)))?.data : file.code;
-  }))).reduce((code, data) => `${code}${data}\n`, '');
+    return file.alternativePath ? (await getAlternativeFile(getAlternativeFileEndpoint(file, config)))?.data : file.content;
+  }))).reduce((content, data) => `${content}${data}\n`, '');
 }
 
 function getAlternativeFileEndpoint(file, config) {

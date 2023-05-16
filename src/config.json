@@ -12,5 +12,23 @@
   },
   "animation": {
     "duration": 325
+  },
+  "prompt": {
+    "menu": [
+      {
+        "uuid": "output",
+        "name": "SAÍDA",
+        "current": true,
+        "allowOutput": true,
+        "allowInput": false
+      },
+      {
+        "uuid": "input",
+        "name": "ENTRADA",
+        "current": false,
+        "allowOutput": false,
+        "allowInput": true
+      }
+    ]
   }
 }

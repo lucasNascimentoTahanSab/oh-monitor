@@ -1,63 +1,51 @@
-import React, { useContext } from 'react';
-import { ExerciseContext } from '../../Context/ExerciseContext/ExerciseContext';
+/**
+ * @file Módulo responsável pela exibição do exercício em sala de aula.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React, { useContext, useEffect, useState } from 'react';
 import ClassroomStageExerciseAnswer from '../ClassroomStageExerciseAnswer/ClassroomStageExerciseAnswer';
+import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext';
+import Util from '../../../classes/Util';
 
 function ClassroomStageExercise(props) {
-  const [exercises, setExercises] = useContext(ExerciseContext);
+  const [exercises, setExercises] = useContext(ExercisesContext);
+  const [exercise, setExercise] = useState(null);
+  const [answers, setAnswers] = useState(null);
 
-  function selectAnswer(uuid) {
-    const exercise = getExerciseByUuid(props.exercise?.uuid);
+  useEffect(() => setExercise(props.exercise), [props.exercise]);
 
-    unselectCurrentAnswer(exercise);
-    selectAnswerByUuid(uuid, exercise);
-    setExercises([...exercises]);
-  }
+  useEffect(() => setAnswers(props.exercise?.answers), [props.exercise]);
 
-  function selectAnswerByUuid(uuid, exercise) {
-    const answer = getAnswerByUuid(uuid, exercise);
-
-    if (!answer) { return; }
-
-    answer.selected = true;
-  }
-
-  function getAnswerByUuid(uuid, exercise) {
-    if (!exercise?.answers?.length) { return null; }
-
-    return exercise.answers.find(answer => answer.uuid === uuid);
-  }
-
-  function unselectCurrentAnswer(exercise) {
-    const currentAnswer = getCurrentAnswer(exercise);
-
-    if (!currentAnswer) { return; }
-
-    currentAnswer.selected = false;
-  }
-
-  function getCurrentAnswer(exercise) {
-    if (!exercise?.answers?.length) { return null; }
-
-    return exercise.answers.find(answer => answer.selected);
-  }
-
-  function getExerciseByUuid(uuid) {
-    if (!exercises?.length) { return null; }
-
-    return exercises.find(exercise => exercise.uuid === uuid);
-  }
-
+  /**
+   * Método responsável pela exibição das respostas para o exercício em questão.
+   * 
+   * @returns {array}
+   */
   function getExerciseAnswers() {
-    if (!props.exercise?.answers?.length) { return null; }
+    if (!exercise?.answers?.length) { return null; }
 
-    return props.exercise.answers.map((answer, index) =>
-      <ClassroomStageExerciseAnswer key={answer.uuid} answer={answer} index={index} selectAnswer={selectAnswer} />
+    return exercise.answers.map((answer, index) =>
+      <ClassroomStageExerciseAnswer
+        key={answer.uuid}
+        answer={answer}
+        index={index}
+        group={`${exercise.uuid}-classroom-stage-exercise-radio-group`}
+        selectAnswer={Util.setCurrentItem(answers, updateAnswers)} />
     );
   }
 
+  /**
+   * Método responsável pela atualização das respostas em exercícios propostas.
+   * 
+   * @param {array} answers 
+   */
+  function updateAnswers(answers) {
+    Util.updateItemIn(exercises, setExercises)({ ...exercise, answers });
+  }
+
   return (
-    <li id={props.exercise?.uuid} className='exercise__question-statement'>
-      <span>{props.exercise?.statement}</span>
+    <li id={exercise?.uuid} className='exercise__question-statement'>
+      <span>{exercise?.statement}</span>
       <ul className='exercise__question-answers'>
         {getExerciseAnswers()}
       </ul>

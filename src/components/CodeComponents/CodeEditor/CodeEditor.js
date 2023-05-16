@@ -1,162 +1,253 @@
-import React, { useCallback, useEffect, useState, createElement, useContext } from 'react';
+/**
+ * @file Módulo responsável pela exibição do editor de código. Agrega, além do editor, menu,
+ * tela para animação, terminal e demais configurações relacionadas. 
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React, { createElement, useEffect, useState, useContext, useCallback } from 'react';
+import { ReactComponent as Right } from '../../../svg/right.svg';
 import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
 import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt';
-import File from '../../../classes/file';
-import { callouts } from '../../../classes/callout';
-import { util } from '../../../classes/util';
-import { FullscreenContext } from '../../Context/FullscreenContext/FullscreenContext';
-import { ReactComponent as Right } from '../../../svg/right.svg';
-import { ConfigContext } from '../../Context/ConfigContext/ConfigContext';
+import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext';
+import FilesContext from '../../Context/FilesContext/FilesContext';
+import FileContext from '../../Context/FileContext/FileContext';
+import PackagesContext from '../../Context/PackagesContext/PackagesContext';
+import PackageContext from '../../Context/PackageContext/PackageContext';
+import ResultContext from '../../Context/ResultContext/ResultContext';
+import OutputContext from '../../Context/OutputContext/OutputContext';
+import InputContext from '../../Context/InputContext/InputContext';
+import RenderContext from '../../Context/RenderContext/RenderContext';
+import Package from '../../../classes/Package';
+import File from '../../../classes/File';
+import Util from '../../../classes/Util';
+import callouts from '../../../classes/callout';
+import config from '../../../config.json';
 
 function CodeEditor(props) {
-  const config = useContext(ConfigContext);
-  const [render, setRender] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [file, setFile] = useState(null);
+  const [packages, setPackages] = useContext(PackagesContext);
+  const [currentPackage, setCurrentPackage] = useState(null);
+  const [files, setFiles] = useState(new Map());
+  const [currentFile, setCurrentFile] = useState(null);
+  const [element, setElement] = useState(null);
   const [result, setResult] = useState(null);
-  const [output, setOutput] = useState([
-    createElement(Right, {
-      key: 0,
-      style: { height: '1rem', width: '1rem', minHeight: '1rem' },
-      alt: 'Arrow pointing to the right.'
-    })
-  ]);
-  const [commands, setCommands] = useState([]);
+  const [output, setOutput] = useState([getRightArrow()]);
+  const [input, setInput] = useState([getRightArrow()]);
+  const [render, setRender] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
 
-  useEffect(() => { if (!files.length) { getFiles(); } });
+  useEffect(() => setElement(props.element), [props.element]);
 
+  const getFilesCallback = useCallback(getFiles, [getFiles]);
+
+  /**
+   * Método responsável pela obtenção dos arquivos de código a partir dos metadados recebidos.
+   * 
+   * @returns 
+   */
   async function getFiles() {
-    if (!props.files?.length) { return; }
+    if (!element?.codes?.length) { return; }
+    if (files.size) { return; }
 
-    setFiles(await retriveFilesFromRepo());
+    const retrievedFiles = await retriveFilesFromRepo();
+
+    setFilesMap(retrievedFiles);
+    updateFiles(files);
   }
 
+  /**
+   * Método responsável pela atualização dos arquivos assim como arquivo atual.
+   * 
+   * @param {Map} files 
+   */
+  function updateFiles(files) {
+    setCurrentFile(Util.getCurrentItem(Array.from(files.values())));
+    setFiles(new Map(files));
+
+    updatePackages(files);
+  }
+
+  /**
+   * Método responsável pela atualização dos editores de código assim como o
+   * editor atual.
+   */
+  function updatePackages(files) {
+    const updatedPackage = new Package(packages.get(element.uuid), files);
+
+    packages.set(element.uuid, updatedPackage);
+
+    setCurrentPackage(updatedPackage);
+    setPackages(new Map(packages));
+  }
+
+  /**
+   * Método responsável pela configuração de mapa para os arquivos de código recuperados, 
+   * separados por endereço.
+   * 
+   * @param {array} retrievedFiles 
+   */
+  function setFilesMap(retrievedFiles) {
+    retrievedFiles.forEach(file => files.set(file.uuid, file));
+  }
+
+  /**
+   * Método responsável pela requisição dos arquivos informados ao repositório ou recuperação
+   * em memória primária quando previamente carregados.
+   * 
+   * @returns {Promise}
+   */
   async function retriveFilesFromRepo() {
-    return Promise.all(props.files.map(retriveFileFromRepo));
+    return Promise.all(element.codes.map(getFile));
   }
 
-  async function retriveFileFromRepo(file) {
-    return new File(
-      file.attributes,
-      (await callouts.repo.getFile(
-        file.attributes?.path,
-        config?.language,
-        config?.languages?.[config.language]?.extension)
-      )?.data
-    );
+  async function getFile(file) {
+    return packagesHasFile(file) ? getFileFromCodes(file) : new File(file, (await calloutFile(file))?.data);
   }
 
-  const callbackGetFile = useCallback(() => setFile(util.getCurrentItem(files)), [files]);
-
-  useEffect(() => { if (files.length) { callbackGetFile(); } }, [files, callbackGetFile]);
-
-  function setCurrentFile(uuid) {
-    unselectCurrentFile();
-    selectFileByUuid(uuid);
-
-    setFiles([...files]);
+  async function calloutFile(file) {
+    return await callouts.repo.getFile(file.path, config.language, config.languages[config.language].extension);
   }
 
-  function selectFileByUuid(uuid) {
-    const newFile = util.getItemByUuid(files, uuid);
-
-    if (!newFile) { return; }
-
-    newFile.current = true;
+  function packagesHasFile(file) {
+    return packages.has(element.uuid) && packages.get(element.uuid)?.files?.has(file.uuid);
   }
 
-  function unselectCurrentFile() {
-    const currentFile = util.getCurrentItem(files);
+  function getFileFromCodes(file) {
+    return packages.get(element.uuid)?.files?.get(file.uuid);
+  }
 
-    if (!currentFile) { return; }
+  /**
+   * Hook responsável pela requisição dos arquivos em repositório ou obtenção em memória
+   * quando previamente carregados, configurando arquivo principal.
+   */
+  useEffect(() => { if (!currentFile && element) { getFilesCallback() } }, [currentFile, element, getFilesCallback]);
 
-    currentFile.current = false;
+  /**
+   * Método responsável pela atualização do arquivo recebido dentre os demais arquivos.
+   * 
+   * @param {object} file 
+   */
+  function updateCurrentFile(file) {
+    Util.updateItemInMap(files, updateFiles)(file);
+  }
+
+  /**
+   * Método responsável por configurar saída e comandos de acordo com resultado obtido
+   * em execução.
+   * 
+   * @param {object} result 
+   */
+  function updateResult(result) {
+    currentPackage.output = getOutput(result);
+    currentPackage.commands = getCommands(result);
+
+    updateOutputContent();
+    updateCurrentPackage();
+    setResult(result);
+    setRender(true);
+  }
+
+  function updateCurrentPackage() {
+    Util.updateItemInMap(packages, setPackages)(currentPackage);
+  }
+
+  /**
+   * Método responsável pela atualização das saídas a serem exibidas em terminal do editor
+   * de códigos.
+   */
+  function updateOutputContent() {
+    setOutput([getRightArrow(), getOutputContent()]);
+  }
+
+  /**
+   * Método responsável pela obtenção das saídas a serem exebidas em terminal.
+   * 
+   * @returns {array}
+   */
+  function getOutputContent() {
+    if (!currentPackage.output) { return []; }
+
+    return currentPackage.output.map(item => [getItem(item), getRightArrow()]);
+  }
+
+  function getItem(item) {
+    return createElement('p', { key: `${currentPackage.uuid}_content_${currentPackage.output.length}` }, item);
+  }
+
+  function getRightArrow() {
+    return createElement(Right, {
+      key: `${currentPackage?.uuid ?? ''}_right_${currentPackage?.output?.length ?? ''}`,
+      style: { height: '1rem', width: '1rem', minHeight: '1rem' },
+      alt: 'Arrow pointing to the right.'
+    });
+  }
+
+  /**
+   * Método responsável pela obtenção dos comandos gerados a partir do resultado obtido.
+   * 
+   * @param {object} result 
+   * @returns {array}
+   */
+  function getCommands(result) {
+    if (!result || result.error) { return currentPackage.commands; }
+    if (!result.output) { return currentPackage.commands; }
+
+    const justCommands = getJustCommandsFromResult(result);
+
+    return getFilteredCommands(justCommands);
+  }
+
+  function getFilteredCommands(justCommands) {
+    if (!justCommands?.length) { return []; }
+
+    // Os comandos são, por padrão, postos após o divisor (/).
+    return justCommands.map(justCommand => JSON.parse(justCommand.split('/')[1]));
+  }
+
+  function getJustCommandsFromResult(result) {
+    // A expressão regular considera apenas saídas que iniciem pelo UUID especificado.
+    return result.output.split('\n')?.filter(line => line.match(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*/g));
+  }
+
+  /**
+   * Método responsável por atualizar a saída do editor de código a partir do resultado 
+   * obtido.
+   * 
+   * @param {object} result 
+   * @returns {array}
+   */
+  function getOutput(result) {
+    if (!result) { return currentPackage.output; }
+
+    if (result.error) { currentPackage.output.push(result.error); }
+    else { currentPackage.output.push(result.output.replaceAll(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*\n/g, '')); }
+
+    return currentPackage.output;
   }
 
   function getCodeEditorClass() {
     return fullscreen ? 'code-editor code-editor--fullscreen' : 'code-editor';
   }
 
-  function updateFile(file) {
-    if (!files.length) { return; }
-
-    updateFiles(file);
-    setFile(file);
-  }
-
-  function updateFiles(file) {
-    const index = util.getItemIndexByUuid(files, file.uuid);
-
-    if (index === -1) { return; }
-
-    files[index] = file;
-
-    setFiles(files);
-  }
-
-  function updateResult(result) {
-    setResult(result);
-    updateOutput(result);
-    updateCommands(result);
-    setRender(true);
-  }
-
-  function updateCommands(result) {
-    if (!result || result.error) { return; }
-    if (!result.output) { return; }
-
-    const justCommands = getJustCommandsFromResult(result);
-
-    setCommands(getCommands(justCommands));
-  }
-
-  function getCommands(justCommands) {
-    if (!justCommands?.length) { return []; }
-
-    return justCommands.map(justCommand => {
-      const justCommandsArray = justCommand.split('/');
-
-      return JSON.parse(justCommandsArray[1])
-    });
-  }
-
-  function getJustCommandsFromResult(result) {
-    return result.output.split('\n')?.filter(line => line.match(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*/g));
-  }
-
-  function updateOutput(result) {
-    if (!result) { return; }
-
-    output.push(createElement(
-      'p',
-      { key: output.length },
-      result.error ? result.error : result.output.replaceAll(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*\n/g, ''))
-    );
-    output.push(createElement(Right, {
-      key: output.length,
-      style: { height: '1rem', width: '1rem', minHeight: '1rem' },
-      alt: 'Arrow pointing to the right.'
-    }));
-
-    setOutput(output);
-  }
-
   return (
-    <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
-      <div className={getCodeEditorClass()}>
-        <CodeEditorWorkspace
-          render={render}
-          setRender={setRender}
-          files={files}
-          file={file}
-          commands={commands}
-          setFile={updateFile}
-          setCurrentFile={setCurrentFile}
-          setResult={updateResult} />
-        <CodeEditorPrompt output={output} />
-      </div>
-    </FullscreenContext.Provider>
+    <PackageContext.Provider value={[currentPackage, setCurrentPackage]}>
+      <FilesContext.Provider value={[files, updateFiles]}>
+        <FileContext.Provider value={[currentFile, updateCurrentFile]}>
+          <ResultContext.Provider value={[result, updateResult]}>
+            <OutputContext.Provider value={[output, setOutput]}>
+              <InputContext.Provider value={[input, setInput]}>
+                <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
+                  <RenderContext.Provider value={[render, setRender]}>
+                    <div className={getCodeEditorClass()}>
+                      <CodeEditorWorkspace />
+                      <CodeEditorPrompt />
+                    </div>
+                  </RenderContext.Provider>
+                </FullscreenContext.Provider>
+              </InputContext.Provider>
+            </OutputContext.Provider>
+          </ResultContext.Provider>
+        </FileContext.Provider>
+      </FilesContext.Provider>
+    </PackageContext.Provider>
   );
 }
 

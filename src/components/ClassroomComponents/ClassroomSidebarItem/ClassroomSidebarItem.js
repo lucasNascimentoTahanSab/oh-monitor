@@ -1,40 +1,45 @@
-import React, { useContext } from 'react';
-import { TabContext } from '../../Context/TabContext/TabContext';
-import { ExerciseContext } from '../../Context/ExerciseContext/ExerciseContext';
-import { ReactComponent as Asterisk } from '../../../svg/asterisk.svg';
-import { util } from '../../../classes/util';
+/**
+ * @file Módulo responsável pela exibição da barra lateral esquerda de navegação para 
+ * diferentes estágios da sala de aula.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React, { useEffect, useState } from 'react';
+import Util from '../../../classes/Util';
 
 function ClassroomSidebarItem(props) {
-  const [tab, setTab] = useContext(TabContext);
-  const [, setExercises] = useContext(ExerciseContext);
+  const [tab, setTab] = useState(null);
 
-  function onItemClick() {
-    setTab(props.tab);
-    setExercises(util.getExercises(props.tab));
+  useEffect(() => setTab(props.tab), [props.tab]);
+
+  /**
+   * Hook responsável pela atualização da barra de progresso de acordo com estágio
+   * selecionado.
+   */
+  useEffect(() => { if (tab?.current) { props.onChange(props.index); } }, [tab, props]);
+
+  function getChecked() {
+    return tab?.current ?? false;
   }
 
-  function selected() {
-    return isCurrentTabSelected(props.tab)
-      ? (<Asterisk
-        style={{ height: '.875rem', width: '.875rem', minWidth: '.875rem' }}
-        alt='Three crossing bars, two crossing diagonally each other and, the other one, vertically.'
-      />)
-      : null;
-  }
-
-  function isCurrentTabSelected(currentTab) {
-    return currentTab?.attributes?.uuid === tab?.attributes?.uuid;
+  /**
+   * Método responsável por atualizar a guia atual e conteúdos relacionados.
+   * 
+   * @returns 
+   */
+  function setCurrentitem() {
+    Util.handle(props.onChange, props.index);
+    Util.handle(props.setCurrentItem, tab.uuid);
   }
 
   function getItemClass() {
-    return `sidebar-item__name no-select overflow-ellipsis ${isCurrentTabSelected(props.tab) ? 'sidebar-item--selected' : ''}`;
+    return `sidebar-item__name no-select overflow-ellipsis ${tab?.current ? 'sidebar-item--selected' : ''}`;
   }
 
   return (
-    <button id={props.tab?.attributes?.uuid} className='sidebar-item' onClick={onItemClick}>
-      {selected()}
-      <span className={getItemClass()} title={props.tab?.attributes?.title}>{props.tab?.attributes?.title}</span>
-    </button>
+    <div className='menu__item'>
+      <input id={tab?.uuid} className='menu__item-radio' type='radio' name={props.group} checked={getChecked()} onChange={setCurrentitem} />
+      <label className={getItemClass()} htmlFor={tab?.uuid}>{tab?.title}</label>
+    </div>
   );
 }
 

@@ -1,25 +1,29 @@
+/**
+ * @file Módulo responsável pela exibição do conteúdo da guia atual em sala de aula.
+ * @copyright Lucas N. T. Sab 2023
+ */
 import React, { useContext } from 'react';
-import ClassroomStageContent from '../ClassroomStageContent/ClassroomStageContent';
-import ClassroomStageNavigation from '../ClassroomStageNavigation/ClassroomStageNavigation';
-import { TabContext } from '../../Context/TabContext/TabContext';
+import ClassroomStageSections from '../ClassroomStageSections/ClassroomStageSections';
+import ClassroomStageExercises from '../ClassroomStageExercises/ClassroomStageExercises';
+import TabContext from '../../Context/TabContext/TabContext';
 
 function ClassroomStage(props) {
-  const [tab,] = useContext(TabContext);
+  const [currentTab,] = useContext(TabContext);
 
-  function getStageClass() {
-    return tab?.attributes?.navigation?.data?.attributes?.navigationItems?.data?.length
-      ? 'classroom-stage'
-      : 'classroom-stage--without-navigation';
-  }
-
-  function getNavigation() {
-    return tab?.attributes?.navigation?.data?.attributes?.navigationItems?.data?.length ? <ClassroomStageNavigation /> : null;
+  /**
+   * Método responsável pela exibição dos exercícios apresentados pela guia atual,
+   * quando existentes.
+   * 
+   * @returns {ReactElement}
+   */
+  function getExercises() {
+    return currentTab?.exercises?.length ? <ClassroomStageExercises /> : null;
   }
 
   return (
-    <div className={getStageClass()}>
-      <ClassroomStageContent />
-      {getNavigation()}
+    <div className='section classroom-screen__content'>
+      <ClassroomStageSections />
+      {getExercises()}
     </div>
   );
 }

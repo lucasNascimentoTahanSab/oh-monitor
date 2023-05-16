@@ -1,16 +1,36 @@
-import React from 'react';
+/**
+ * @file Módulo responsável pela exibição dos itens do menu do editor de código.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React, { useEffect, useState } from 'react';
+import Util from '../../../classes/Util';
 
 function CodeEditorMenuItem(props) {
-  function setCurrentItem() {
-    if (typeof props.setCurrentItem !== 'function') { return; }
+  const [menuItem, setMenuItem] = useState(null);
 
-    props.setCurrentItem(props.item?.uuid);
+  useEffect(() => setMenuItem(props.item), [props.item]);
+
+  function getChecked() {
+    return menuItem?.current ?? false;
+  }
+
+  /**
+   * Método responsável por exibir o arquivo atual em tela. 
+   */
+  function setCurrentMenuItem() {
+    Util.handle(props.onChange, menuItem.uuid);
   }
 
   return (
     <div className='menu__item'>
-      <input id={props.item?.uuid} className={props.selectorClassName} type='radio' name={props.group} checked={props.item?.current} onChange={setCurrentItem} />
-      <label className={props.labelClassName} htmlFor={props.item?.uuid}>{props.item?.name}</label>
+      <input
+        id={menuItem?.uuid}
+        className={props.selectorClassName}
+        type='radio'
+        name={props.group}
+        checked={getChecked()}
+        onChange={setCurrentMenuItem} />
+      <label className={props.labelClassName} htmlFor={menuItem?.uuid}>{menuItem?.name}</label>
     </div>
   );
 }

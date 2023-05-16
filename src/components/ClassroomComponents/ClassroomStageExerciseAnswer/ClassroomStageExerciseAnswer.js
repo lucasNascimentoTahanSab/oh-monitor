@@ -1,23 +1,33 @@
-import React from 'react';
-import { util } from '../../../classes/util';
+/**
+ * @file Módulo responsável pela exibição da resposta ao exercício proposto em sala de aula.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import React, { useEffect, useState } from 'react';
+import Util from '../../../classes/Util';
 
 function ClassroomStageExerciseAnswer(props) {
-  function onAnswerClick() {
-    if (typeof props?.selectAnswer !== 'function') { return; }
+  const [answer, setAnswer] = useState(null);
 
-    props.selectAnswer(props.answer?.uuid);
-  }
+  useEffect(() => setAnswer(props.answer), [props.answer]);
 
   function getLetterClass() {
-    return `no-select exercise__answer-letter ${props.answer?.selected ? 'exercise__answer-letter--selected' : ''}`;
+    return `no-select exercise__answer-letter ${answer?.current ? 'exercise__answer-letter--selected' : ''}`;
   }
 
   return (
-    <li id={props.answer?.uuid} className='exercise__question-answer'>
-      <div className='exercise__answer' onClick={onAnswerClick}>
-        <button className={getLetterClass()}>{util.getLetterByIndex(props.index)}</button>
-        <p className='exercise__answer-text'>{props.answer?.statement}</p>
-      </div>
+    <li id={answer?.uuid} className='menu__item exercise__question-answer'>
+      <input
+        id={`${answer?.uuid}-input`}
+        className='menu__item-radio'
+        type='radio'
+        name={props.group}
+        onClick={() => Util.handle(props.selectAnswer, answer.uuid)}
+      >
+      </input>
+      <label className='exercise__answer-text' htmlFor={`${answer?.uuid}-input`}>
+        <span className={getLetterClass()}>{Util.getLetterByIndex(props.index)}</span>
+        {answer?.statement}
+      </label>
     </li>
   );
 }

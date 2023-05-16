@@ -1,11 +1,15 @@
+/**
+ * @file Módulo responsável por estabelecer comunicação com endpoints do backend.
+ * @copyright Lucas N. T. Sab
+ */
 import { requests } from "./calloutRequest";
 import { endpoints } from "./calloutEndpoint";
 
-export const callouts = {
+const callouts = {
   code: {
     post: async body => (
       new Promise((resolve, reject) => {
-        fetch(endpoints.code.post, requests.code.post(body))
+        fetch(endpoints.code.post(), requests.code.post(body))
           .then(response => resolve(response.json()))
           .catch(error => reject(error))
       })
@@ -30,3 +34,5 @@ export const callouts = {
     )
   }
 };
+
+export default callouts;

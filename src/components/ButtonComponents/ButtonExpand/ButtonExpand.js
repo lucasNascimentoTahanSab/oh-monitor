@@ -1,14 +1,13 @@
+/**
+ * @file Módulo responsável pela exibição do botão de expansão de tela.
+ * @copyright Lucas N. T. Sab 2023
+ */
 import React from 'react';
+import Util from '../../../classes/Util';
 
 function ButtonExpand(props) {
-  function onClick() {
-    if (typeof props.onClick !== 'function') { return; }
-
-    props.onClick();
-  }
-
   return (
-    <button onClick={onClick}>
+    <button onClick={event => Util.handle(props.onClick, event)}>
       <svg width={props.width} height={props.height} viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clipPath="url(#clip0_25_76)">
           <path d="M12.2499 14.0002H9.33325V12.8335H12.2499C12.4046 12.8335 12.553 12.7721 12.6624 12.6627C12.7718 12.5533 12.8332 12.4049 12.8332 12.2502V9.33352H13.9999V12.2502C13.9999 12.7143 13.8155 13.1594 13.4873 13.4876C13.1592 13.8158 12.714 14.0002 12.2499 14.0002Z" fill={props.color} />
