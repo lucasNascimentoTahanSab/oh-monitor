@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import DraggerContext from '../../../Context/DraggerContext/DraggerContext';
+import DraggerContext from '../../../Context/DraggerContext/DraggerContext.js';
 
 function BSTNodeComponent(props) {
   const [dragger,] = useContext(DraggerContext);

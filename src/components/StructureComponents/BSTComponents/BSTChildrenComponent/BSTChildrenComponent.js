@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React from 'react';
-import BSTChildComponent from '../BSTChildComponent/BSTChildComponent';
+import BSTChildComponent from '../BSTChildComponent/BSTChildComponent.js';
 
 function BSTChildrenComponent(props) {
   /**

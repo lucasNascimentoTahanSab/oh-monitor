@@ -4,9 +4,9 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
-import ButtonArrow from '../../ButtonComponents/ButtonArrow/ButtonArrow';
-import NavigationItemsContext from '../../Context/NavigationItemsContext/NavigationItemsContext';
-import Util from '../../../classes/util/Util';
+import ButtonArrow from '../../ButtonComponents/ButtonArrow/ButtonArrow.js';
+import NavigationItemsContext from '../../Context/NavigationItemsContext/NavigationItemsContext.js';
+import Util from '../../../classes/util/Util.js';
 
 function ClassroomNavigationItem(props) {
   const [navigationItems, setNavigationItems] = useContext(NavigationItemsContext);

@@ -4,12 +4,12 @@
  */
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
-import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen';
-import PackageContext from '../../Context/PackageContext/PackageContext';
-import RenderContext from '../../Context/RenderContext/RenderContext';
-import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext';
-import Snippet from '../../../classes/strapi/Snippet';
-import callouts from '../../../classes/callouts/callout';
+import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen.js';
+import PackageContext from '../../Context/PackageContext/PackageContext.js';
+import RenderContext from '../../Context/RenderContext/RenderContext.js';
+import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext.js';
+import Snippet from '../../../classes/strapi/Snippet.js';
+import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
 
 function CodeSnippet(props) {

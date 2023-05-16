@@ -3,8 +3,8 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React from 'react';
-import BSTChildrenComponent from '../BSTChildrenComponent/BSTChildrenComponent';
-import BSTNodeComponent from '../BSTNodeComponent/BSTNodeComponent';
+import BSTChildrenComponent from '../BSTChildrenComponent/BSTChildrenComponent.js';
+import BSTNodeComponent from '../BSTNodeComponent/BSTNodeComponent.js';
 
 function BSTComponent(props) {
   /**

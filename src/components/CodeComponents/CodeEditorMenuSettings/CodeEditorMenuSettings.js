@@ -3,12 +3,12 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useState } from 'react';
-import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand';
-import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay';
-import FilesContext from '../../Context/FilesContext/FilesContext';
-import ResultContext from '../../Context/ResultContext/ResultContext';
-import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext';
-import callouts from '../../../classes/callouts/callout';
+import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand.js';
+import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
+import FilesContext from '../../Context/FilesContext/FilesContext.js';
+import ResultContext from '../../Context/ResultContext/ResultContext.js';
+import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext.js';
+import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
 
 function CodeEditorMenuSettings(props) {

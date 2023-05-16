@@ -3,8 +3,17 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import { createElement } from 'react';
-import CodeSnippet from '../../components/CodeComponents/CodeSnippet/CodeSnippet';
-import CodeEditor from '../../components/CodeComponents/CodeEditor/CodeEditor';
+import CodeSnippet from '../../components/CodeComponents/CodeSnippet/CodeSnippet.js';
+import CodeEditor from '../../components/CodeComponents/CodeEditor/CodeEditor.js';
+
+const ELEMENTS = {
+  'p': element => Builder._getInlineElement(element),
+  'li': element => Builder._getInlineElement(element),
+  'ol': element => Builder._getBlockElement(element),
+  'ul': element => Builder._getBlockElement(element),
+  'snippet': element => Builder._getCodeSnippet(element),
+  'code': element => Builder._getCodeEditor(element)
+};
 
 export default class Builder {
   /**
@@ -15,22 +24,7 @@ export default class Builder {
    * @returns {ReactElement}
    */
   static getElement(element) {
-    switch (element?.type) {
-      case 'p':
-        return Builder._getInlineElement(element);
-      case 'li':
-        return Builder._getInlineElement(element);
-      case 'ol':
-        return Builder._getBlockElement(element);
-      case 'ul':
-        return Builder._getBlockElement(element);
-      case 'snippet':
-        return Builder._getCodeSnippet(element);
-      case 'code':
-        return Builder._getCodeEditor(element);
-      default:
-        break;
-    }
+    return ELEMENTS[element?.type]?.(element);
   }
 
   static _getCodeEditor(element) {

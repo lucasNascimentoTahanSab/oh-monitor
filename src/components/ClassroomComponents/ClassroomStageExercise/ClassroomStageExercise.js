@@ -3,9 +3,9 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
-import ClassroomStageExerciseAnswer from '../ClassroomStageExerciseAnswer/ClassroomStageExerciseAnswer';
-import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext';
-import Util from '../../../classes/util/Util';
+import ClassroomStageExerciseAnswer from '../ClassroomStageExerciseAnswer/ClassroomStageExerciseAnswer.js';
+import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js';
+import Util from '../../../classes/util/Util.js';
 
 function ClassroomStageExercise(props) {
   const [exercises, setExercises] = useContext(ExercisesContext);

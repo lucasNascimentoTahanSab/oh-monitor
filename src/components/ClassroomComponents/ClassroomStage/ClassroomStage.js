@@ -3,9 +3,9 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext } from 'react';
-import ClassroomStageSections from '../ClassroomStageSections/ClassroomStageSections';
-import ClassroomStageExercises from '../ClassroomStageExercises/ClassroomStageExercises';
-import TabContext from '../../Context/TabContext/TabContext';
+import ClassroomStageSections from '../ClassroomStageSections/ClassroomStageSections.js';
+import ClassroomStageExercises from '../ClassroomStageExercises/ClassroomStageExercises.js';
+import TabContext from '../../Context/TabContext/TabContext.js';
 
 function ClassroomStage(props) {
   const [currentTab,] = useContext(TabContext);

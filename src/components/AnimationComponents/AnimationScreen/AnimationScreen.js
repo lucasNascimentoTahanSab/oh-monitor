@@ -3,12 +3,12 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import AnimationEngine from '../AnimationEngine/AnimationEngine';
-import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand';
+import AnimationEngine from '../AnimationEngine/AnimationEngine.js';
+import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand.js';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
-import InputRange from '../../InputComponents/InputRange/InputRange';
-import Util from '../../../classes/util/Util';
-import Dragger from '../../../classes/util/Dragger';
+import InputRange from '../../InputComponents/InputRange/InputRange.js';
+import Util from '../../../classes/util/Util.js';
+import Dragger from '../../../classes/util/Dragger.js';
 import config from '../../../config.json';
 
 function AnimationScreen(props) {

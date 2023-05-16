@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useEffect, useState } from 'react';
-import Builder from '../../../classes/util/Builder';
+import Builder from '../../../classes/util/Builder.js';
 
 function ClassroomStageSection(props) {
   const [section, setSection] = useState(null);

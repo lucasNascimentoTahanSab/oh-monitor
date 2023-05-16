@@ -3,8 +3,8 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import OutputContext from '../../Context/OutputContext/OutputContext';
-import InputContext from '../../Context/InputContext/InputContext';
+import OutputContext from '../../Context/OutputContext/OutputContext.js';
+import InputContext from '../../Context/InputContext/InputContext.js';
 
 function CodeEditorPromptContent(props) {
   const [output,] = useContext(OutputContext);

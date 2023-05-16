@@ -1,4 +1,4 @@
-import Answer from "./Answer";
+import Answer from './Answer.js';
 
 export default class Exercise {
   constructor(exercise) {
