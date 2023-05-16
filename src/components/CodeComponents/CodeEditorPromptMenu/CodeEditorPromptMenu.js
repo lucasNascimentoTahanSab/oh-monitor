@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023 
  */
 import React from 'react';
-import CodeEditorMenuItem from '../CodeEditorMenuItem/CodeEditorMenuItem';
+import CodeEditorMenuItem from '../CodeEditorMenuItem/CodeEditorMenuItem.js';
 
 function CodeEditorPromptMenu(props) {
   /**

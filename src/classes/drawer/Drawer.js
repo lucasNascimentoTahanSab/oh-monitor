@@ -3,7 +3,7 @@
  * deseja animar.
  * @copyright Lucas N. T. Sab 2023
  */
-import DrawingBST from '../drawing/DrawingBST';
+import DrawingBST from '../drawing/DrawingBST.js';
 
 const STRUCTURES = {
   'BST': commands => (new DrawingBST()).parse(commands)

@@ -4,10 +4,10 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
-import ClassroomNavigationItem from '../ClassroomNavigationItem/ClassroomNavigationItem';
-import TabContext from '../../Context/TabContext/TabContext';
-import NavigationItemsContext from '../../Context/NavigationItemsContext/NavigationItemsContext';
-import Util from '../../../classes/Util';
+import ClassroomNavigationItem from '../ClassroomNavigationItem/ClassroomNavigationItem.js';
+import TabContext from '../../Context/TabContext/TabContext.js';
+import NavigationItemsContext from '../../Context/NavigationItemsContext/NavigationItemsContext.js';
+import Util from '../../../classes/util/Util.js';
 
 function ClassroomNavigation(props) {
   const [currentTab, setCurrentTab] = useContext(TabContext);

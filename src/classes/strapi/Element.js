@@ -1,4 +1,4 @@
-import Code from "./Code";
+import Code from './Code.js';
 
 export default class Element {
   constructor(element) {

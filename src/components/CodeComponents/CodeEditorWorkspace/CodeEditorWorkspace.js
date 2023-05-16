@@ -4,12 +4,12 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext } from 'react';
-import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen';
-import CodeEditorFile from '../CodeEditorFile/CodeEditorFile';
-import CodeEditorMenu from '../CodeEditorMenu/CodeEditorMenu';
-import FilesContext from '../../Context/FilesContext/FilesContext';
-import FileContext from '../../Context/FileContext/FileContext';
-import Util from '../../../classes/Util';
+import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen.js';
+import CodeEditorFile from '../CodeEditorFile/CodeEditorFile.js';
+import CodeEditorMenu from '../CodeEditorMenu/CodeEditorMenu.js';
+import FilesContext from '../../Context/FilesContext/FilesContext.js';
+import FileContext from '../../Context/FileContext/FileContext.js';
+import Util from '../../../classes/util/Util.js';
 
 function CodeEditorWorkspace(props) {
   const [files, setFiles] = useContext(FilesContext);

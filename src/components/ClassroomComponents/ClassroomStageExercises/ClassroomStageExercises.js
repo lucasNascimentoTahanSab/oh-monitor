@@ -3,10 +3,10 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
-import ClassroomStageExercise from '../ClassroomStageExercise/ClassroomStageExercise';
-import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation';
-import TabContext from '../../Context/TabContext/TabContext';
-import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext';
+import ClassroomStageExercise from '../ClassroomStageExercise/ClassroomStageExercise.js';
+import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation.js';
+import TabContext from '../../Context/TabContext/TabContext.js';
+import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js';
 
 function ClassroomStageExercises(props) {
   const [currentTab, setCurrentTab] = useContext(TabContext);

@@ -1,6 +1,6 @@
-import Exercise from "./Exercise";
-import Navigation from "./Navigation";
-import Section from "./Section";
+import Exercise from './Exercise.js';
+import Navigation from './Navigation.js';
+import Section from './Section.js';
 
 export default class Tab {
   constructor(tab) {

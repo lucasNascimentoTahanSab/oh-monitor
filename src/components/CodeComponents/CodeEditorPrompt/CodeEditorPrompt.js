@@ -4,10 +4,10 @@
  */
 import React, { useEffect, useState } from 'react';
 import CodeEditorPromptMenu from '../CodeEditorPromptMenu/CodeEditorPromptMenu.js';
-import CodeEditorPromptContent from '../CodeEditorPromptContent/CodeEditorPromptContent';
-import PromptMenuItem from '../../../classes/PromptMenuItem.js';
-import Util from '../../../classes/Util';
-import Resizer from '../../../classes/Resizer.js';
+import CodeEditorPromptContent from '../CodeEditorPromptContent/CodeEditorPromptContent.js';
+import PromptMenuItem from '../../../classes/prompt/PromptMenuItem.js';
+import Util from '../../../classes/util/Util.js';
+import Resizer from '../../../classes/util/Resizer.js';
 import config from '../../../config.json';
 
 function CodeEditorPrompt(props) {

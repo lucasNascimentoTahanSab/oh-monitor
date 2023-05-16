@@ -4,16 +4,16 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useEffect, useState } from 'react';
-import ClassroomSidebar from '../ClassroomSidebar/ClassroomSidebar';
-import ClassroomStage from '../ClassroomStage/ClassroomStage';
-import ClassroomNavigation from '../ClassroomNavigation/ClassroomNavigation';
-import TabContext from '../../Context/TabContext/TabContext';
-import TabsContext from '../../Context/TabsContext/TabsContext';
-import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext';
-import PackagesContext from '../../Context/PackagesContext/PackagesContext';
-import Subject from '../../../classes/strapi/Subject';
-import Util from '../../../classes/Util';
-import callouts from '../../../classes/callout';
+import ClassroomSidebar from '../ClassroomSidebar/ClassroomSidebar.js';
+import ClassroomStage from '../ClassroomStage/ClassroomStage.js';
+import ClassroomNavigation from '../ClassroomNavigation/ClassroomNavigation.js';
+import TabContext from '../../Context/TabContext/TabContext.js';
+import TabsContext from '../../Context/TabsContext/TabsContext.js';
+import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext.js';
+import PackagesContext from '../../Context/PackagesContext/PackagesContext.js';
+import Subject from '../../../classes/strapi/Subject.js';
+import Util from '../../../classes/util/Util.js';
+import callouts from '../../../classes/callouts/callout.js';
 
 function Classroom(props) {
   const [subject, setSubject] = useState(null);

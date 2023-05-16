@@ -5,21 +5,21 @@
  */
 import React, { createElement, useEffect, useState, useContext, useCallback } from 'react';
 import { ReactComponent as Right } from '../../../svg/right.svg';
-import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
-import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt';
-import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext';
-import FilesContext from '../../Context/FilesContext/FilesContext';
-import FileContext from '../../Context/FileContext/FileContext';
-import PackagesContext from '../../Context/PackagesContext/PackagesContext';
-import PackageContext from '../../Context/PackageContext/PackageContext';
-import ResultContext from '../../Context/ResultContext/ResultContext';
-import OutputContext from '../../Context/OutputContext/OutputContext';
-import InputContext from '../../Context/InputContext/InputContext';
-import RenderContext from '../../Context/RenderContext/RenderContext';
-import Package from '../../../classes/Package';
-import File from '../../../classes/File';
-import Util from '../../../classes/Util';
-import callouts from '../../../classes/callout';
+import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace.js';
+import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt.js';
+import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext.js';
+import FilesContext from '../../Context/FilesContext/FilesContext.js';
+import FileContext from '../../Context/FileContext/FileContext.js';
+import PackagesContext from '../../Context/PackagesContext/PackagesContext.js';
+import PackageContext from '../../Context/PackageContext/PackageContext.js';
+import ResultContext from '../../Context/ResultContext/ResultContext.js';
+import OutputContext from '../../Context/OutputContext/OutputContext.js';
+import InputContext from '../../Context/InputContext/InputContext.js';
+import RenderContext from '../../Context/RenderContext/RenderContext.js';
+import Package from '../../../classes/strapi/Package.js';
+import File from '../../../classes/strapi/File.js';
+import Util from '../../../classes/util/Util.js';
+import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
 
 function CodeEditor(props) {

@@ -1,4 +1,4 @@
-import Element from "./strapi/Element";
+import Element from './Element.js';
 
 export default class Snippet extends Element {
   constructor(snippet, content) {

@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React from 'react';
-import Util from '../../../classes/Util';
+import Util from '../../../classes/util/Util.js';
 
 function ButtonConfirmation(props) {
   return (

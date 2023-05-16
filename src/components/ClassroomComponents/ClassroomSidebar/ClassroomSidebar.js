@@ -3,9 +3,9 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useRef } from 'react';
-import ClassroomSidebarItem from '../ClassroomSidebarItem/ClassroomSidebarItem';
-import TabsContext from '../../Context/TabsContext/TabsContext';
-import Util from '../../../classes/Util';
+import ClassroomSidebarItem from '../ClassroomSidebarItem/ClassroomSidebarItem.js';
+import TabsContext from '../../Context/TabsContext/TabsContext.js';
+import Util from '../../../classes/util/Util.js';
 
 function ClassroomSidebar(props) {
   const [tabs, setTabs] = useContext(TabsContext);

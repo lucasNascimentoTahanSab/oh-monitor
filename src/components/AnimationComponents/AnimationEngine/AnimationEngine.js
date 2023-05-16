@@ -7,7 +7,7 @@ import PackageContext from '../../Context/PackageContext/PackageContext.js';
 import RenderContext from '../../Context/RenderContext/RenderContext.js';
 import DraggerContext from '../../Context/DraggerContext/DraggerContext.js';
 import Drawer from '../../../classes/drawer/Drawer.js';
-import Util from '../../../classes/Util.js';
+import Util from '../../../classes/util/Util.js';
 
 function AnimationEngine(props) {
   const [currentPackage,] = useContext(PackageContext);
