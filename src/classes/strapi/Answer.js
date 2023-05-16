@@ -6,6 +6,6 @@ export default class Answer {
     this.updatedAt = answer?.attributes?.updatedAt ?? answer?.updatedAt ?? null;
     this.publishedAt = answer?.attributes?.publishedAt ?? answer?.publishedAt ?? null;
     this.uuid = answer?.attributes?.uuid ?? answer?.uuid ?? null;
-    this.current = answer?.attributes?.current ?? answer?.current ?? false;
+    this.current = answer?.current ?? false;
   }
 }

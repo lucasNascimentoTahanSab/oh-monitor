@@ -1,4 +1,5 @@
 import Code from './Code.js';
+import Answer from './Answer.js';
 
 export default class Element {
   constructor(element) {
@@ -12,6 +13,13 @@ export default class Element {
     this.uuid = element?.attributes?.uuid ?? element?.uuid ?? null;
     this.elements = this._getElements(element?.attributes?.elements?.data ?? element?.elements);
     this.codes = this._getCodes(element?.attributes?.codes?.data ?? element?.codes);
+    this.answers = this._getAnswers(element?.attributes?.answers?.data ?? element?.answers);
+  }
+
+  _getAnswers(answers) {
+    if (!answers?.length) { return []; }
+
+    return answers.map(answer => new Answer(answer));
   }
 
   _getCodes(codes) {

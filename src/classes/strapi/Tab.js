@@ -1,4 +1,3 @@
-import Exercise from './Exercise.js';
 import Navigation from './Navigation.js';
 import Section from './Section.js';
 
@@ -12,16 +11,9 @@ export default class Tab {
     this.publishedAt = tab?.attributes?.publishedAt ?? tab?.publishedAt ?? null;
     this.current = tab?.attributes?.current ?? tab?.current ?? false;
     this.sections = this._getSections(tab?.attributes?.sections?.data ?? tab?.sections);
-    this.exercises = this._getExercises(tab?.attributes?.exercises?.data ?? tab?.exercises);
     this.navigation = tab?.attributes?.navigation?.data ? new Navigation(tab.attributes.navigation.data)
       : tab?.navigation ? new Navigation(tab.navigation)
         : null;
-  }
-
-  _getExercises(exercises) {
-    if (!exercises?.length) { return []; }
-
-    return exercises.map(exercise => new Exercise(exercise));
   }
 
   _getSections(sections) {
