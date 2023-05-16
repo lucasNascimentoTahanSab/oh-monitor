@@ -9,7 +9,7 @@ import TabContext from '../../Context/TabContext/TabContext.js';
 import NavigationItemsContext from '../../Context/NavigationItemsContext/NavigationItemsContext.js';
 import Util from '../../../classes/util/Util.js';
 
-function ClassroomNavigation(props) {
+function ClassroomNavigation() {
   const [currentTab, setCurrentTab] = useContext(TabContext);
   const [navigationItems, setNavigationItems] = useState([]);
 

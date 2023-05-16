@@ -7,7 +7,7 @@ import ClassroomStageSections from '../ClassroomStageSections/ClassroomStageSect
 import ClassroomStageExercises from '../ClassroomStageExercises/ClassroomStageExercises.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
 
-function ClassroomStage(props) {
+function ClassroomStage() {
   const [currentTab,] = useContext(TabContext);
 
   /**

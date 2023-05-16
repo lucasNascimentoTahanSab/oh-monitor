@@ -11,7 +11,7 @@ import FilesContext from '../../Context/FilesContext/FilesContext.js';
 import FileContext from '../../Context/FileContext/FileContext.js';
 import Util from '../../../classes/util/Util.js';
 
-function CodeEditorWorkspace(props) {
+function CodeEditorWorkspace() {
   const [files, setFiles] = useContext(FilesContext);
   const [currentFile,] = useContext(FileContext);
 

@@ -11,9 +11,9 @@ import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext
 import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
 
-function CodeEditorMenuSettings(props) {
-  const [files, setFiles] = useContext(FilesContext);
-  const [result, setResult] = useContext(ResultContext);
+function CodeEditorMenuSettings() {
+  const [files,] = useContext(FilesContext);
+  const [, setResult] = useContext(ResultContext);
   const [fullscreen, setFullscreen] = useContext(FullscreenContext);
   const [loading, setLoading] = useState(false);
 

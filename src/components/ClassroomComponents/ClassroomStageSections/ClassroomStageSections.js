@@ -6,7 +6,7 @@ import React, { useContext } from 'react';
 import ClassroomStageSection from '../ClassroomStageSection/ClassroomStageSection.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
 
-function ClassroomStageSections(props) {
+function ClassroomStageSections() {
   const [tab,] = useContext(TabContext);
 
   /**
