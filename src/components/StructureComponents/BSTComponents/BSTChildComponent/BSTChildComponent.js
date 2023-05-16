@@ -1,18 +1,18 @@
 import React from 'react';
-import TreeChildrenComponent from '../TreeChildrenComponent/TreeChildrenComponent';
-import TreeNodeComponent from '../TreeNodeComponent/TreeNodeComponent';
+import BSTChildrenComponent from '../BSTChildrenComponent/BSTChildrenComponent';
+import BSTNodeComponent from '../BSTNodeComponent/BSTNodeComponent';
 
-function TreeChildComponent(props) {
+function BSTChildComponent(props) {
   function getNodeElement() {
     if (!props.node) { return null; }
 
-    return <TreeNodeComponent key={`_${props.node.address}`} node={props.node} />;
+    return <BSTNodeComponent key={`_${props.node.address}`} node={props.node} />;
   }
 
   function getChildrenElement() {
     if (!props.node?.left && !props.node?.right) { return null; }
 
-    return <TreeChildrenComponent key={`_${props.node.address}-children`} parent={props.node} />;
+    return <BSTChildrenComponent key={`_${props.node.address}-children`} parent={props.node} />;
   }
 
   return (
@@ -23,4 +23,4 @@ function TreeChildComponent(props) {
   );
 }
 
-export default TreeChildComponent;
+export default BSTChildComponent;

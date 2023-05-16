@@ -1,17 +1,17 @@
 import React from 'react';
-import TreeChildComponent from '../TreeChildComponent/TreeChildComponent';
+import BSTChildComponent from '../BSTChildComponent/BSTChildComponent';
 
-function TreeChildrenComponent(props) {
+function BSTChildrenComponent(props) {
   function getLeftChildComponent() {
     if (!props.parent?.left) { return null; }
 
-    return <TreeChildComponent key={`${props.parent.left.address}-subtree`} node={props.parent.left} direction='left' />
+    return <BSTChildComponent key={`${props.parent.left.address}-subtree`} node={props.parent.left} direction='left' />
   }
 
   function getRightChildComponent() {
     if (!props.parent?.right) { return null; }
 
-    return <TreeChildComponent key={`${props.parent.right.address}-subtree`} node={props.parent.right} direction='right' />
+    return <BSTChildComponent key={`${props.parent.right.address}-subtree`} node={props.parent.right} direction='right' />
   }
 
   return (
@@ -22,4 +22,4 @@ function TreeChildrenComponent(props) {
   );
 }
 
-export default TreeChildrenComponent;
+export default BSTChildrenComponent;

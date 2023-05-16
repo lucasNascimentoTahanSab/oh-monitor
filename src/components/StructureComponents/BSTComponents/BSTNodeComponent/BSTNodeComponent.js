@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { DraggerContext } from '../../Context/DraggerContext/DraggerContext';
+import DraggerContext from '../../Context/DraggerContext/DraggerContext';
 
-function TreeNodeComponent(props) {
+function BSTNodeComponent(props) {
   const [dragger,] = useContext(DraggerContext);
   const [node, setNode] = useState(null);
   const focus = useRef(null);
@@ -21,4 +21,4 @@ function TreeNodeComponent(props) {
   );
 }
 
-export default TreeNodeComponent;
+export default BSTNodeComponent;

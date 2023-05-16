@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import { createElement } from 'react';
-import TreeComponent from '../../components/TreeComponents/TreeComponent/TreeComponent.js';
+import BSTComponent from '../../components/StructureComponents/BSTComponents/BSTComponent/BSTComponent.js';
 import Drawing from './Drawing.js';
 import Tree from '../tree/Tree.js';
 import Node from '../tree/Node.js';
@@ -77,7 +77,7 @@ export default class DrawingBST extends Drawing {
   }
 
   _createTreeElement(tree) {
-    return createElement(TreeComponent, { key: `_${tree.address}`, tree });
+    return createElement(BSTComponent, { key: `_${tree.address}`, tree });
   }
 
   /**
