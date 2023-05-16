@@ -17,10 +17,12 @@ const ST_REQUEST = {
       method: 'GET',
       url: `${process.env.ST_ENDPOINT}/subjects?` +
         getFilter('uuid', req.params.subjectId) + '&' +
-        getPopulate('tabs', 'sections.elements.elements', '0') + '&' +
-        getPopulate('tabs', 'sections.elements.codes', '1') + '&' +
-        getPopulate('tabs', 'exercises.answers', '2') + '&' +
-        getPopulate('tabs', 'navigation.navigationItems.navigationItems', '3'),
+        getPopulate('tabs', 'sections.sections.elements.elements.answers', '0') + '&' +
+        getPopulate('tabs', 'sections.sections.elements.codes', '1') + '&' +
+        getPopulate('tabs', 'sections.elements.elements.answers', '2') + '&' +
+        getPopulate('tabs', 'sections.elements.codes', '3') + '&' +
+        getPopulate('tabs', 'navigation.navigationItems.navigationItems', '4')
+      ,
       headers: { 'Authorization': process.env.ST_TOKEN },
     };
   },
