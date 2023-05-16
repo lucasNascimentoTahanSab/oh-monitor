@@ -38,6 +38,17 @@ function AnimationScreen(props) {
     setDragger(new Dragger(animationScreen.current, animationEngine.current));
   }, [animationEngine]);
 
+  const pauseTimelineCallback = useCallback(pauseTimeline, [pauseTimeline]);
+
+  /**
+   * Hook responsável por interromper a animação antes de reiniciá-la.
+   */
+  useEffect(() => {
+    if (!reset) { return; }
+
+    pauseTimelineCallback();
+  }, [reset, pauseTimelineCallback]);
+
   const resetTimelineCallback = useCallback(resetTimeline, [resetTimeline]);
 
   function resetTimeline() {
@@ -55,28 +66,43 @@ function AnimationScreen(props) {
   }
 
   /**
-   * Hook responsável por reiniciar animação quando pronta.
+   * Hook responsável por interromper a animação antes de reiniciá-la.
    */
   useEffect(() => {
     if (!reset) { return; }
     if (!totalTime) { return; }
     if (!snapshots?.length) { return; }
+    if (playing) { return; }
 
     resetTimelineCallback();
-  }, [reset, totalTime, snapshots, resetTimelineCallback]);
+  }, [reset, totalTime, snapshots, playing, resetTimelineCallback]);
 
   function configureSnapshots(result) {
     setSnapshots(result);
     setTotalTime(result?.length * config.animation.duration);
   }
 
+  /**
+   * Método responsável por configurar um novo momento de execução para a animação.
+   * 
+   * @param {object} event 
+   */
   function onInputRangeChange(event) {
     setPlaying(false);
     setCurrentTime(event.target.value);
-
-    if (event.target.value === totalTime) { setFinished(true); }
-
+    updateFinished(event);
     placeElements(getNewSnapshotNumber(event.target.value));
+  }
+
+  /**
+   * Método responsável por atualizar estado atual da animação (se terminada ou não)
+   * durante atualização do progresso.
+   * 
+   * @param {object} event 
+   */
+  function updateFinished(event) {
+    if (event.target.value === totalTime) { setFinished(true); }
+    else if (finished) { setFinished(false); }
   }
 
   /**

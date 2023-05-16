@@ -6,7 +6,7 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import PackageContext from '../../Context/PackageContext/PackageContext.js';
 import RenderContext from '../../Context/RenderContext/RenderContext.js';
 import DraggerContext from '../../Context/DraggerContext/DraggerContext.js';
-import animation from '../../../classes/animation';
+import Drawer from '../../../classes/drawer/Drawer.js';
 import Util from '../../../classes/Util.js';
 
 function AnimationEngine(props) {
@@ -28,7 +28,7 @@ function AnimationEngine(props) {
   const parseCommandsCallback = useCallback(parseCommands, [parseCommands]);
 
   function parseCommands() {
-    const result = animation.parse(currentPackage.commands);
+    const result = Drawer.draw('BST').with(currentPackage.commands);
 
     Util.handle(props.setSnapshots, result);
     Util.handle(props.setSnapshot, null);

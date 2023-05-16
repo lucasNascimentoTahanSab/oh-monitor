@@ -300,10 +300,11 @@ li.exercise__question-statement:not(:last-child) {
 
 .code-editor {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: .625rem;
+  display: grid;
+  column-gap: .625rem;
   border-radius: .625rem;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -311,8 +312,6 @@ li.exercise__question-statement:not(:last-child) {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   border-radius: 0;
 }
 
@@ -324,8 +323,7 @@ li.exercise__question-statement:not(:last-child) {
 }
 
 .code-editor__workspace-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 1.25rem;
   width: 100%;
   height: 100%;
@@ -381,7 +379,8 @@ li.exercise__question-statement:not(:last-child) {
 }
 
 .code-editor__file {
-  width: 100%;
+  width: initial;
+  min-height: 34.6875rem;
 }
 
 .prompt {
