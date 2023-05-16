@@ -3,10 +3,10 @@
  * deseja animar.
  * @copyright Lucas N. T. Sab 2023
  */
-import BSTDrawing from '../drawing/BSTDrawing';
+import DrawingBST from '../drawing/DrawingBST';
 
 const STRUCTURES = {
-  'BST': commands => (new BSTDrawing()).parse(commands)
+  'BST': commands => (new DrawingBST()).parse(commands)
 };
 
 export default class Drawer {

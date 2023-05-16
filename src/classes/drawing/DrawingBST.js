@@ -8,7 +8,7 @@ import Drawing from './Drawing.js';
 import Tree from '../tree/Tree.js';
 import Node from '../tree/Node.js';
 
-export default class BSTDrawing extends Drawing {
+export default class DrawingBST extends Drawing {
   constructor() {
     super();
 
