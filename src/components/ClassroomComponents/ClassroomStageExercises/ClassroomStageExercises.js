@@ -8,7 +8,7 @@ import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/Button
 import TabContext from '../../Context/TabContext/TabContext.js';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js';
 
-function ClassroomStageExercises(props) {
+function ClassroomStageExercises() {
   const [currentTab, setCurrentTab] = useContext(TabContext);
   const [exercises, setExercises] = useState([]);
 

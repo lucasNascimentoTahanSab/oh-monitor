@@ -8,7 +8,7 @@ import CodeEditorMenuSettings from '../CodeEditorMenuSettings/CodeEditorMenuSett
 import FilesContext from '../../Context/FilesContext/FilesContext.js';
 import Util from '../../../classes/util/Util.js';
 
-function CodeEditorMenu(props) {
+function CodeEditorMenu() {
   const [files, setFiles] = useContext(FilesContext);
 
   /**

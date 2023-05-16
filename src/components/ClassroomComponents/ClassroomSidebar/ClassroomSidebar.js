@@ -7,7 +7,7 @@ import ClassroomSidebarItem from '../ClassroomSidebarItem/ClassroomSidebarItem.j
 import TabsContext from '../../Context/TabsContext/TabsContext.js';
 import Util from '../../../classes/util/Util.js';
 
-function ClassroomSidebar(props) {
+function ClassroomSidebar() {
   const [tabs, setTabs] = useContext(TabsContext);
   const fillRef = useRef(null);
 
