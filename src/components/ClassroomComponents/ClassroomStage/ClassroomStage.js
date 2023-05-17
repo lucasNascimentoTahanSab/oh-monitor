@@ -2,29 +2,47 @@
  * @file Módulo responsável pela exibição do conteúdo da guia atual em sala de aula.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useContext } from 'react';
-import ClassroomStageSections from '../ClassroomStageSections/ClassroomStageSections.js';
-import ClassroomStageExercises from '../ClassroomStageExercises/ClassroomStageExercises.js';
+import React, { useContext, useEffect, useState } from 'react';
+import ClassroomStageSection from '../ClassroomStageSection/ClassroomStageSection.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
+import SectionsContext from '../../Context/SectionsContext/SectionsContext.js';
+import Tab from '../../../classes/strapi/Tab.js';
 
 function ClassroomStage() {
-  const [currentTab,] = useContext(TabContext);
+  const [currentTab, setCurrentTab] = useContext(TabContext);
+  const [sections, setSections] = useState([]);
+
+  useEffect(() => { setSections(currentTab?.sections) }, [currentTab?.sections]);
 
   /**
-   * Método responsável pela exibição dos exercícios apresentados pela guia atual,
-   * quando existentes.
+   * Método responsável pela exibição das seções da guia atual.
    * 
-   * @returns {ReactElement}
+   * @returns {array}
    */
-  function getExercises() {
-    return currentTab?.exercises?.length ? <ClassroomStageExercises /> : null;
+  function getSections() {
+    if (!sections?.length) { return null; }
+
+    return sections.map(section => <ClassroomStageSection key={section.uid} section={section} />);
+  }
+
+  /**
+   * Método responsável pela atualização das seções, assim como suas correspondentes
+   * na guia atual.
+   * 
+   * @param {array} sections 
+   */
+  function updateSections(sections) {
+    const newCurrentTab = new Tab({ ...currentTab, sections });
+
+    setCurrentTab(newCurrentTab);
   }
 
   return (
-    <div className='section classroom-screen__content'>
-      <ClassroomStageSections />
-      {getExercises()}
-    </div>
+    <SectionsContext.Provider value={[sections, updateSections]}>
+      <div className='section classroom-screen__content'>
+        {getSections()}
+      </div>
+    </SectionsContext.Provider>
   );
 }
 

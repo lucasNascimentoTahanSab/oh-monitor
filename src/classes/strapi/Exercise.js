@@ -1,19 +1,32 @@
-import Answer from './Answer.js';
+/**
+ * @file Módulo responsável pela normalização do objeto Exercise retornado em integração.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import Code from './Code.js';
+import Choice from './Choice.js';
 
 export default class Exercise {
   constructor(exercise) {
-    this.id = exercise?.id ?? null;
-    this.statement = exercise?.attributes?.statement ?? exercise?.statement ?? null;
+    this.uid = exercise?.attributes?.uid ?? exercise?.uid ?? null;
     this.createdAt = exercise?.attributes?.createdAt ?? exercise?.createdAt ?? null;
     this.updatedAt = exercise?.attributes?.updatedAt ?? exercise?.updatedAt ?? null;
     this.publishedAt = exercise?.attributes?.publishedAt ?? exercise?.publishedAt ?? null;
-    this.uuid = exercise?.attributes?.uuid ?? exercise?.uuid ?? null;
-    this.answers = this._getAnswers(exercise?.attributes?.answers?.data ?? exercise?.answers);
+    this.type = exercise?.attributes?.type ?? exercise?.type ?? null;
+    this.answer = exercise?.attributes?.answer ?? exercise?.answer ?? null;
+    this.statement = exercise?.attributes?.statement ?? exercise?.statement ?? null;
+    this.codes = this._getCodes(exercise?.attributes?.codes?.data ?? exercise?.codes);
+    this.choices = this._getChoices(exercise?.attributes?.choices?.data ?? exercise?.choices);
   }
 
-  _getAnswers(answers) {
-    if (!answers?.length) { return []; }
+  _getChoices(choices) {
+    if (!choices?.length) { return []; }
 
-    return answers.map(answer => new Answer(answer));
+    return choices.map(choice => new Choice(choice));
+  }
+
+  _getCodes(codes) {
+    if (!codes?.length) { return []; }
+
+    return codes.map(code => new Code(code));
   }
 }

@@ -27,14 +27,14 @@ function CodeEditor(props) {
   const [currentPackage, setCurrentPackage] = useState(null);
   const [files, setFiles] = useState(new Map());
   const [currentFile, setCurrentFile] = useState(null);
-  const [element, setElement] = useState(null);
+  const [exercise, setExercise] = useState(null);
   const [result, setResult] = useState(null);
   const [output, setOutput] = useState([getRightArrow()]);
   const [input, setInput] = useState([getRightArrow()]);
   const [render, setRender] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
 
-  useEffect(() => setElement(props.element), [props.element]);
+  useEffect(() => setExercise(props.exercise), [props.exercise]);
 
   const getFilesCallback = useCallback(getFiles, [getFiles]);
 
@@ -44,7 +44,7 @@ function CodeEditor(props) {
    * @returns 
    */
   async function getFiles() {
-    if (!element?.codes?.length) { return; }
+    if (!exercise?.codes?.length) { return; }
     if (files.size) { return; }
 
     const retrievedFiles = await retriveFilesFromRepo();
@@ -70,9 +70,9 @@ function CodeEditor(props) {
    * editor atual.
    */
   function updatePackages(files) {
-    const updatedPackage = new Package(packages.get(element.uuid), files);
+    const updatedPackage = new Package(packages.get(exercise.uid), files);
 
-    packages.set(element.uuid, updatedPackage);
+    packages.set(exercise.uid, updatedPackage);
 
     setCurrentPackage(updatedPackage);
     setPackages(new Map(packages));
@@ -85,7 +85,7 @@ function CodeEditor(props) {
    * @param {array} retrievedFiles 
    */
   function setFilesMap(retrievedFiles) {
-    retrievedFiles.forEach(file => files.set(file.uuid, file));
+    retrievedFiles.forEach(file => files.set(file.uid, file));
   }
 
   /**
@@ -95,7 +95,7 @@ function CodeEditor(props) {
    * @returns {Promise}
    */
   async function retriveFilesFromRepo() {
-    return Promise.all(element.codes.map(getFile));
+    return Promise.all(exercise.codes.map(getFile));
   }
 
   async function getFile(file) {
@@ -107,18 +107,18 @@ function CodeEditor(props) {
   }
 
   function packagesHasFile(file) {
-    return packages.has(element.uuid) && packages.get(element.uuid)?.files?.has(file.uuid);
+    return packages.has(exercise.uid) && packages.get(exercise.uid)?.files?.has(file.uid);
   }
 
   function getFileFromCodes(file) {
-    return packages.get(element.uuid)?.files?.get(file.uuid);
+    return packages.get(exercise.uid)?.files?.get(file.uid);
   }
 
   /**
    * Hook responsável pela requisição dos arquivos em repositório ou obtenção em memória
    * quando previamente carregados, configurando arquivo principal.
    */
-  useEffect(() => { if (!currentFile && element) { getFilesCallback() } }, [currentFile, element, getFilesCallback]);
+  useEffect(() => { if (!currentFile && exercise) { getFilesCallback() } }, [currentFile, exercise, getFilesCallback]);
 
   /**
    * Método responsável pela atualização do arquivo recebido dentre os demais arquivos.
@@ -169,12 +169,12 @@ function CodeEditor(props) {
   }
 
   function getItem(item) {
-    return createElement('p', { key: `${currentPackage.uuid}_content_${currentPackage.output.length}` }, item);
+    return createElement('p', { key: `${currentPackage.uid}_content_${currentPackage.output.length}` }, item);
   }
 
   function getRightArrow() {
     return createElement(Right, {
-      key: `${currentPackage?.uuid ?? ''}_right_${currentPackage?.output?.length ?? ''}`,
+      key: `${currentPackage?.uid ?? ''}_right_${currentPackage?.output?.length ?? ''}`,
       style: { height: '1rem', width: '1rem', minHeight: '1rem' },
       alt: 'Arrow pointing to the right.'
     });
@@ -203,7 +203,7 @@ function CodeEditor(props) {
   }
 
   function getJustCommandsFromResult(result) {
-    // A expressão regular considera apenas saídas que iniciem pelo UUID especificado.
+    // A expressão regular considera apenas saídas que iniciem pelo UID especificado.
     return result.output.split('\n')?.filter(line => line.match(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*/g));
   }
 

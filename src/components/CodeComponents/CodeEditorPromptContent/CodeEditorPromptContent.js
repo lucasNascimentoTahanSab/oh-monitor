@@ -21,7 +21,7 @@ function CodeEditorPromptContent(props) {
   return (
     <div className='prompt__content-inner' ref={contentRef}>
       <div className='prompt__content-inner-container'>
-        {current?.uuid === 'output' ? output : input}
+        {current?.uid === 'output' ? output : input}
       </div>
     </div>
   );

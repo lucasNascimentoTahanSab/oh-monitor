@@ -28,7 +28,7 @@ function ClassroomSidebarItem(props) {
    */
   function setCurrentitem() {
     Util.handle(props.onChange, props.index);
-    Util.handle(props.setCurrentItem, tab.uuid);
+    Util.handle(props.setCurrentItem, tab.uid);
   }
 
   function getItemClass() {
@@ -37,8 +37,8 @@ function ClassroomSidebarItem(props) {
 
   return (
     <div className='menu__item'>
-      <input id={tab?.uuid} className='menu__item-radio' type='radio' name={props.group} checked={getChecked()} onChange={setCurrentitem} />
-      <label className={getItemClass()} htmlFor={tab?.uuid}>{tab?.title}</label>
+      <input id={tab?.uid} className='menu__item-radio' type='radio' name={props.group} checked={getChecked()} onChange={setCurrentitem} />
+      <label className={getItemClass()} htmlFor={tab?.uid}>{tab?.title}</label>
     </div>
   );
 }

@@ -21,7 +21,7 @@ function ClassroomSidebar() {
 
     return tabs.map((tab, index) =>
       <ClassroomSidebarItem
-        key={tab.uuid}
+        key={tab.uid}
         tab={tab}
         index={index}
         group='classroom-sidebar-radio-group'

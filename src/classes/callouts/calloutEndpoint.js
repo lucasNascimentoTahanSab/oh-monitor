@@ -7,7 +7,8 @@ export const endpoints = {
     post: () => '/api/code/submit'
   },
   content: {
-    getSubject: uuid => `api/content/subjects/${uuid}`
+    getSubject: uid => `api/content/subjects/${uid}`,
+    getCorrectAnswers: uids => `api/content/exercises?${uids.map(uid => `uids[]=${uid}`).join('&')}`
   },
   repo: {
     getFile: (path, language, extension) => `api/repo/${language}${path}.${extension}`

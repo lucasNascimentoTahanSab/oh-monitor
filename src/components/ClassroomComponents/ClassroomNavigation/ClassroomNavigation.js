@@ -25,7 +25,7 @@ function ClassroomNavigation() {
 
     return navigationItems.map(navigationItem =>
       <ClassroomNavigationItem
-        key={navigationItem?.uuid}
+        key={navigationItem?.uid}
         navigationItem={navigationItem}
         group='classroom-navigation-radio-group'
         onChange={handleNavigationItemSelection}
@@ -39,7 +39,7 @@ function ClassroomNavigation() {
    * @param {object} navigationItem 
    */
   function handleNavigationItemSelection(navigationItem) {
-    scrollIntoSection(navigationItem.uuidParent);
+    scrollIntoSection(navigationItem.uidParent);
     setCurrentNavigationItem(navigationItem);
   }
 
@@ -60,8 +60,8 @@ function ClassroomNavigation() {
    * quando existente.
    */
   function selectNavigationItem(navigationItem) {
-    const newNavigationItem = Util.getItemByUuid(navigationItems, navigationItem.uuidParentNavigationItem);
-    const newItem = Util.getItemByUuid(newNavigationItem?.navigationItems ?? navigationItems, navigationItem.uuid);
+    const newNavigationItem = Util.getItemByUid(navigationItems, navigationItem.uidParentNavigationItem);
+    const newItem = Util.getItemByUid(newNavigationItem?.navigationItems ?? navigationItems, navigationItem.uid);
 
     if (newNavigationItem) { newNavigationItem.current = true; }
     if (newItem) { newItem.current = true; }
