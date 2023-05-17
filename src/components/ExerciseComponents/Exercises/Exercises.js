@@ -5,16 +5,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Exercise from '../Exercise/Exercise.js';
 import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation.js';
-import TabContext from '../../Context/TabContext/TabContext.js';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js';
-import callouts from '../../../classes/callouts/callout.js';
+import Util from '../../../classes/util/Util.js';
+// import callouts from '../../../classes/callouts/callout.js';
 
 function Exercises(props) {
-  // const [currentTab, setCurrentTab] = useContext(TabContext);
   const [element, setElement] = useState(null);
   const [exercises, setExercises] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
+  // const [loading, setLoading] = useState(false);
+  // const [result, setResult] = useState(null);
 
   useEffect(() => {
     setElement(props.element);
@@ -38,41 +37,42 @@ function Exercises(props) {
    * @param {array} exercises 
    */
   function updateExercises(exercises) {
+
     setExercises(exercises);
     // setCurrentTab({ ...currentTab, exercises });
   }
 
-  function onSend() {
-    if (!exercises?.length) { return; }
+  // function onSend() {
+  //   if (!exercises?.length) { return; }
 
-    const chosenAnswers = getChosenAnswers();
+  //   const chosenAnswers = getChosenAnswers();
 
-    if (!chosenAnswers?.length) { return; }
+  //   if (!chosenAnswers?.length) { return; }
 
-    setLoading(true);
-    send(chosenAnswers);
-  }
+  //   setLoading(true);
+  //   send(chosenAnswers);
+  // }
 
-  function send(chosenAnswers) {
-    callouts.content.getCorrectAnswers(chosenAnswers).then(getResult).catch(getResult);
-  }
+  // function send(chosenAnswers) {
+  //   callouts.content.getCorrectAnswers(chosenAnswers).then(getResult).catch(getResult);
+  // }
 
-  function getResult(result) {
-    setResult(result);
-    setLoading(false);
-  }
+  // function getResult(result) {
+  //   setResult(result);
+  //   setLoading(false);
+  // }
 
-  function getChosenAnswers() {
-    return exercises.reduce(getChosenAnswer, []);
-  }
+  // function getChosenAnswers() {
+  //   return exercises.reduce(getChosenAnswer, []);
+  // }
 
-  function getChosenAnswer(uids, exercise) {
-    const chosenAnswer = exercise.answers.find(answer => answer.current);
+  // function getChosenAnswer(uids, exercise) {
+  //   const chosenAnswer = exercise.answers.find(answer => answer.current);
 
-    if (chosenAnswer) { uids.push(chosenAnswer.uid); }
+  //   if (chosenAnswer) { uids.push(chosenAnswer.uid); }
 
-    return uids;
-  }
+  //   return uids;
+  // }
 
   return (
     <ExercisesContext.Provider value={[exercises, updateExercises]}>
@@ -80,7 +80,7 @@ function Exercises(props) {
         {getExercises()}
       </ol>
       <div className='exercise__confirmation'>
-        <ButtonConfirmation value='Enviar' onClick={onSend} loading={loading} />
+        <ButtonConfirmation value='Enviar' />
       </div>
     </ExercisesContext.Provider >
   );

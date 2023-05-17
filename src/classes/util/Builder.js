@@ -4,7 +4,6 @@
  */
 import { createElement } from 'react';
 import CodeSnippet from '../../components/CodeComponents/CodeSnippet/CodeSnippet.js';
-// import CodeEditor from '../../components/CodeComponents/CodeEditor/CodeEditor.js';
 import Exercises from '../../components/ExerciseComponents/Exercises/Exercises.js';
 
 const ELEMENTS = {
@@ -13,7 +12,6 @@ const ELEMENTS = {
   'ol': element => Builder._getBlockElement(element),
   'ul': element => Builder._getBlockElement(element),
   'snippet': element => Builder._getCodeSnippet(element),
-  // 'code': element => Builder._getCodeEditor(element),
   'exercise': element => Builder._getExercise(element)
 };
 
@@ -32,10 +30,6 @@ export default class Builder {
   static _getExercise(element) {
     return createElement(Exercises, { key: element.uid, element });
   }
-
-  // static _getCodeEditor(element) {
-  //   return createElement(CodeEditor, { key: element.uid, element });
-  // }
 
   static _getCodeSnippet(element) {
     return createElement(CodeSnippet, { key: element.uid, element });

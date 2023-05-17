@@ -3,17 +3,23 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
-import Builder from '../../../classes/util/Builder.js';
 import ClassroomStageSubsection from '../ClassroomStageSubsection/ClassroomStageSubsection.js';
 import SectionContext from '../../Context/SectionContext/SectionContext.js';
 import SectionsContext from '../../Context/SectionsContext/SectionsContext.js';
+import ElementsContext from '../../Context/ElementsContext/ElementsContext.js';
+import Section from '../../../classes/strapi/Section.js';
+import Builder from '../../../classes/util/Builder.js';
 import Util from '../../../classes/util/Util.js';
 
 function ClassroomStageSection(props) {
   const [sections, setSections] = useContext(SectionsContext);
   const [currentSection, setCurrentSection] = useState(null);
+  const [elements, setElements] = useState([]);
 
-  useEffect(() => setCurrentSection(props.section), [props.section]);
+  useEffect(() => {
+    setCurrentSection(props.section);
+    setElements(props.section?.elements);
+  }, [props.section]);
 
   /**
    * Método responsável pela exibição dos elementos da seção em página.
@@ -47,12 +53,26 @@ function ClassroomStageSection(props) {
     Util.setCurrentItem(sections, setSections)(section);
   }
 
+  /**
+   * Método responsável pela atualização dos elementos em seção atual.
+   * 
+   * @param {array} elements 
+   */
+  function updateElements(elements) {
+    const newCurrentSection = new Section({ ...currentSection, elements });
+
+    updateCurrentSection(newCurrentSection);
+    setElements(elements);
+  }
+
   return (
     <SectionContext.Provider value={[currentSection, updateCurrentSection]}>
       <section id={currentSection?.uid} className='classroom__content'>
         <h2>{currentSection?.title}</h2>
         <div className='classroom__content-section'>
-          {getElements()}
+          <ElementsContext.Provider value={[elements, updateElements]}>
+            {getElements()}
+          </ElementsContext.Provider>
           {getSubsections()}
         </div>
       </section>

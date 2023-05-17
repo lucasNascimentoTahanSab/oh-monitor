@@ -3,16 +3,22 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
-import SubsecionContext from '../../Context/SubsectionContext/SubsectionContext.js';
-import Builder from '../../../classes/util/Builder.js';
 import SectionContext from '../../Context/SectionContext/SectionContext.js';
+import SubsecionContext from '../../Context/SubsectionContext/SubsectionContext.js';
+import ElementsContext from '../../Context/ElementsContext/ElementsContext.js';
+import Section from '../../../classes/strapi/Section.js';
+import Builder from '../../../classes/util/Builder.js';
 import Util from '../../../classes/util/Util.js';
 
 function ClassroomStageSubsection(props) {
-  const [section, setSection] = useContext(SectionContext);
-  const [subsection, setSubsection] = useState(null);
+  const [currentSection, setCurrentSection] = useContext(SectionContext);
+  const [currentSubsection, setCurrentSubsection] = useState(null);
+  const [elements, setElements] = useState([]);
 
-  useEffect(() => setSubsection(props.subsection), [props.subsection]);
+  useEffect(() => {
+    setCurrentSubsection(props.subsection);
+    setElements(props.subsection?.elements);
+  }, [props.subsection]);
 
   /**
    * Método responsável pela exibição dos elementos da seção em página.
@@ -20,9 +26,9 @@ function ClassroomStageSubsection(props) {
    * @returns {array}
    */
   function getElements() {
-    if (!subsection?.elements?.length) { return null; }
+    if (!currentSubsection?.elements?.length) { return null; }
 
-    return subsection.elements.map(element => Builder.getElement(element));
+    return currentSubsection.elements.map(element => Builder.getElement(element));
   }
 
   /**
@@ -32,17 +38,31 @@ function ClassroomStageSubsection(props) {
    * @param {object} subsection 
    */
   function updateSubsection(subsection) {
-    Util.setCurrentItem(section, setSection)(subsection);
+    Util.setCurrentItem(currentSection, setCurrentSection)(subsection);
+  }
+
+  /**
+   * Método responsável pela atualização dos elementos em subseção atual.
+   * 
+   * @param {array} elements 
+   */
+  function updateElements(elements) {
+    const newCurrentSubsection = new Section({ ...currentSubsection, elements });
+
+    updateSubsection(newCurrentSubsection);
+    setElements(elements);
   }
 
   return (
-    <SubsecionContext.Provider value={[subsection, updateSubsection]}>
-      <section id={subsection?.uid} className='classroom__content-section'>
-        <h3>{subsection?.title}</h3>
-        <div className='classroom__content-section'>
-          {getElements()}
-        </div>
-      </section>
+    <SubsecionContext.Provider value={[currentSubsection, updateSubsection]}>
+      <ElementsContext.Provider value={[elements, updateElements]}>
+        <section id={currentSubsection?.uid} className='classroom__content-section'>
+          <h3>{currentSubsection?.title}</h3>
+          <div className='classroom__content-section'>
+            {getElements()}
+          </div>
+        </section>
+      </ElementsContext.Provider>
     </SubsecionContext.Provider>
   );
 }
