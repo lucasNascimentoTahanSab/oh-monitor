@@ -44,6 +44,7 @@ function CodeEditor() {
 
     setCodesMap(retrievedCodes);
     updateCodes(codes);
+    updateOutputContent();
   }
 
   /**
