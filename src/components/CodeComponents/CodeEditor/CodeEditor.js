@@ -116,12 +116,12 @@ function CodeEditor() {
 
   /**
    * Método responsável por atualizar resultados (no caso a saída do código executado) por 
-   * exercício para posterior avaliação.
+   * exercício para posterior avaliação. Considera a última saída apresentada.
    * 
    * @param {object} result 
    */
   function updateResultByExercise(result) {
-    resultByExercise.set(currentExercise.uid, result);
+    resultByExercise.set(currentExercise.uid, result[result.length - 1]);
 
     setResultByExercise(new Map(resultByExercise));
   }
