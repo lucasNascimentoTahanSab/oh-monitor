@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ExerciseChoice from '../ExerciseChoice/ExerciseChoice.js';
 import Util from '../../../classes/util/Util.js';
+import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
+import Exercise from '../../../classes/strapi/Exercise.js';
 
 function ExerciseChoices(props) {
-  const [exercises, setExercises] = useState(null);
-  const [exercise, setElement] = useState(null);
+  const [currentExercise, setCurrentExercise] = useContext(ExerciseContext);
   const [choices, setChoices] = useState(null);
 
-  useEffect(() => {
-    setElement(props.exercise);
-    setChoices(props.exercise?.choices);
-  }, [props.exercise]);
+  useEffect(() => { setChoices(currentExercise?.choices); }, [currentExercise?.choices]);
 
   /**
    * Método responsável pela exibição das respostas para o exercício em questão.
@@ -18,14 +16,14 @@ function ExerciseChoices(props) {
    * @returns {array}
    */
   function getExerciseAnswers() {
-    if (!exercise?.choices?.length) { return null; }
+    if (!choices?.length) { return null; }
 
-    return exercise.choices.map((choice, index) =>
+    return choices.map((choice, index) =>
       <ExerciseChoice
         key={choice.uid}
         choice={choice}
         index={index}
-        group={`${exercise.uid}-choices`}
+        group={`${currentExercise.uid}-choices`}
         selectChoice={Util.setCurrentItem(choices, updateChoices)} />
     );
   }
@@ -36,12 +34,14 @@ function ExerciseChoices(props) {
    * @param {array} choices 
    */
   function updateChoices(choices) {
-    Util.updateItemIn(exercises, setExercises)({ ...exercise, choices });
+    const newCurrentExercise = new Exercise({ ...currentExercise, choices });
+
+    setCurrentExercise(newCurrentExercise);
   }
 
   return (
-    <li id={exercise?.uid} className='exercise__question-statement'>
-      <span>{exercise?.statement}</span>
+    <li id={currentExercise?.uid} className='exercise__question-statement'>
+      <span>{currentExercise?.statement}</span>
       <ul className='exercise__question-choices'>
         {getExerciseAnswers()}
       </ul>

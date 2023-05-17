@@ -7,6 +7,7 @@ import ClassroomStageSubsection from '../ClassroomStageSubsection/ClassroomStage
 import SectionContext from '../../Context/SectionContext/SectionContext.js';
 import SectionsContext from '../../Context/SectionsContext/SectionsContext.js';
 import ElementsContext from '../../Context/ElementsContext/ElementsContext.js';
+import SubsectionsContext from '../../Context/SubsectionsContext/SubsectionsContext.js';
 import Section from '../../../classes/strapi/Section.js';
 import Builder from '../../../classes/util/Builder.js';
 import Util from '../../../classes/util/Util.js';
@@ -15,10 +16,12 @@ function ClassroomStageSection(props) {
   const [sections, setSections] = useContext(SectionsContext);
   const [currentSection, setCurrentSection] = useState(null);
   const [elements, setElements] = useState([]);
+  const [subsections, setSubsections] = useState([]);
 
   useEffect(() => {
     setCurrentSection(props.section);
     setElements(props.section?.elements);
+    setSubsections(props.section?.sections);
   }, [props.section]);
 
   /**
@@ -62,7 +65,17 @@ function ClassroomStageSection(props) {
     const newCurrentSection = new Section({ ...currentSection, elements });
 
     updateCurrentSection(newCurrentSection);
-    setElements(elements);
+  }
+
+  /**
+   * Método responsável pela atualização das subseções em seção atual.
+   * 
+   * @param {array} elements 
+   */
+  function updateSubsections(subsections) {
+    const newCurrentSection = new Section({ ...currentSection, sections: subsections });
+
+    updateCurrentSection(newCurrentSection);
   }
 
   return (
@@ -73,7 +86,9 @@ function ClassroomStageSection(props) {
           <ElementsContext.Provider value={[elements, updateElements]}>
             {getElements()}
           </ElementsContext.Provider>
-          {getSubsections()}
+          <SubsectionsContext.Provider value={[subsections, updateSubsections]}>
+            {getSubsections()}
+          </SubsectionsContext.Provider>
         </div>
       </section>
     </SectionContext.Provider>

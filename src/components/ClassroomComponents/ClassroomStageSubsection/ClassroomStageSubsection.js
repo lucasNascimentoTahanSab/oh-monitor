@@ -3,15 +3,15 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
-import SectionContext from '../../Context/SectionContext/SectionContext.js';
-import SubsecionContext from '../../Context/SubsectionContext/SubsectionContext.js';
+import SubsectionsContext from '../../Context/SubsectionsContext/SubsectionsContext.js';
+import SubsectionContext from '../../Context/SubsectionContext/SubsectionContext.js';
 import ElementsContext from '../../Context/ElementsContext/ElementsContext.js';
 import Section from '../../../classes/strapi/Section.js';
 import Builder from '../../../classes/util/Builder.js';
 import Util from '../../../classes/util/Util.js';
 
 function ClassroomStageSubsection(props) {
-  const [currentSection, setCurrentSection] = useContext(SectionContext);
+  const [subsections, setSubsections] = useContext(SubsectionsContext);
   const [currentSubsection, setCurrentSubsection] = useState(null);
   const [elements, setElements] = useState([]);
 
@@ -37,8 +37,8 @@ function ClassroomStageSubsection(props) {
    * 
    * @param {object} subsection 
    */
-  function updateSubsection(subsection) {
-    Util.setCurrentItem(currentSection, setCurrentSection)(subsection);
+  function updateCurrentSubsection(subsection) {
+    Util.setCurrentItem(subsections, setSubsections)(subsection);
   }
 
   /**
@@ -49,12 +49,11 @@ function ClassroomStageSubsection(props) {
   function updateElements(elements) {
     const newCurrentSubsection = new Section({ ...currentSubsection, elements });
 
-    updateSubsection(newCurrentSubsection);
-    setElements(elements);
+    updateCurrentSubsection(newCurrentSubsection);
   }
 
   return (
-    <SubsecionContext.Provider value={[currentSubsection, updateSubsection]}>
+    <SubsectionContext.Provider value={[currentSubsection, updateCurrentSubsection]}>
       <ElementsContext.Provider value={[elements, updateElements]}>
         <section id={currentSubsection?.uid} className='classroom__content-section'>
           <h3>{currentSubsection?.title}</h3>
@@ -63,7 +62,7 @@ function ClassroomStageSubsection(props) {
           </div>
         </section>
       </ElementsContext.Provider>
-    </SubsecionContext.Provider>
+    </SubsectionContext.Provider>
   );
 }
 

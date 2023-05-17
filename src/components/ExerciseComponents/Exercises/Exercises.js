@@ -3,20 +3,23 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
-import Exercise from '../Exercise/Exercise.js';
 import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation.js';
+import ElementsContext from '../../Context/ElementsContext/ElementsContext.js';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js';
+import Exercise from '../Exercise/Exercise.js';
 import Util from '../../../classes/util/Util.js';
+import Element from '../../../classes/strapi/Element.js';
 // import callouts from '../../../classes/callouts/callout.js';
 
 function Exercises(props) {
-  const [element, setElement] = useState(null);
+  const [elements, setElements] = useContext(ElementsContext);
+  const [currentElement, setCurrentElement] = useState(null);
   const [exercises, setExercises] = useState([]);
   // const [loading, setLoading] = useState(false);
   // const [result, setResult] = useState(null);
 
   useEffect(() => {
-    setElement(props.element);
+    setCurrentElement(props.element);
     setExercises(props.element?.exercises);
   }, [props.element]);
 
@@ -32,14 +35,24 @@ function Exercises(props) {
   }
 
   /**
-   * Método responsável pela atualização dos exercícios na guia atual.
+   * Método repsonsável por atualizar elemento dentre demais elementos da seção atual.
+   * 
+   * @param {object} element 
+   */
+  function updateCurrentElement(element) {
+    Util.setCurrentItem(elements, setElements)(element);
+  }
+
+  /**
+   * Método responsável pela atualização dos exercícios assim como sua representação 
+   * no elemento atual.
    * 
    * @param {array} exercises 
    */
   function updateExercises(exercises) {
+    const newCurrentElement = new Element({ ...currentElement, exercises });
 
-    setExercises(exercises);
-    // setCurrentTab({ ...currentTab, exercises });
+    updateCurrentElement(newCurrentElement);
   }
 
   // function onSend() {

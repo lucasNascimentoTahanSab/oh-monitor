@@ -14,14 +14,19 @@ function ExerciseChoice(props) {
     return `no-select exercise__choice-letter ${choice?.current ? 'exercise__choice-letter--selected' : ''}`;
   }
 
+  function getChecked() {
+    return choice?.current ?? false;
+  }
+
   return (
     <li id={choice?.uid} className='menu__item exercise__question-choice'>
       <input
         id={`${choice?.uid}-input`}
         className='menu__item-radio'
         type='radio'
+        checked={getChecked()}
         name={props.group}
-        onClick={() => Util.handle(props.selectChoice, choice.uid)}
+        onChange={() => Util.handle(props.selectChoice, choice.uid)}
       >
       </input>
       <label className='exercise__choice-text' htmlFor={`${choice?.uid}-input`}>
