@@ -43,7 +43,12 @@ function ButtonPlay(props) {
 
   function getLoading() {
     return (
-      <div className='button-play--loading'><div></div><div></div><div></div><div></div></div>
+      <div className='button-play--loading' style={{ width: props.width, height: props.height }}>
+        <div style={{ width: props.width, height: props.height }}></div>
+        <div style={{ width: props.width, height: props.height }}></div>
+        <div style={{ width: props.width, height: props.height }}></div>
+        <div style={{ width: props.width, height: props.height }}></div>
+      </div>
     );
   }
 

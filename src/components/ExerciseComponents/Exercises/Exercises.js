@@ -6,17 +6,27 @@ import React, { useContext, useEffect, useState } from 'react';
 import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation.js';
 import ElementsContext from '../../Context/ElementsContext/ElementsContext.js';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js';
-import Exercise from '../Exercise/Exercise.js';
-import Util from '../../../classes/util/Util.js';
+import ResultContext from '../../Context/ResultContext/ResultContext';
 import Element from '../../../classes/strapi/Element.js';
-// import callouts from '../../../classes/callouts/callout.js';
+import Exercise from '../Exercise/Exercise.js';
+import Validator from '../../../classes/util/Validator.js';
+import Util from '../../../classes/util/Util.js';
+import ValidationContext from '../../Context/ValidationContext/ValidationContext.js';
 
 function Exercises(props) {
   const [elements, setElements] = useContext(ElementsContext);
-  const [currentElement, setCurrentElement] = useState(null);
+  const [resultByExercise, setResultByExercise] = useState(new Map());
   const [exercises, setExercises] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const [result, setResult] = useState(null);
+  const [currentElement, setCurrentElement] = useState(null);
+  const [validator, setValidator] = useState(null);
+  const [validation, setValidation] = useState(null);
+  const [showError, setShowError] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
+
+  useEffect(() => {
+    setValidator(new Validator(setShowError, setShowSuccess, setShowLoading));
+  }, []);
 
   useEffect(() => {
     setCurrentElement(props.element);
@@ -55,46 +65,25 @@ function Exercises(props) {
     updateCurrentElement(newCurrentElement);
   }
 
-  // function onSend() {
-  //   if (!exercises?.length) { return; }
-
-  //   const chosenAnswers = getChosenAnswers();
-
-  //   if (!chosenAnswers?.length) { return; }
-
-  //   setLoading(true);
-  //   send(chosenAnswers);
-  // }
-
-  // function send(chosenAnswers) {
-  //   callouts.content.getCorrectAnswers(chosenAnswers).then(getResult).catch(getResult);
-  // }
-
-  // function getResult(result) {
-  //   setResult(result);
-  //   setLoading(false);
-  // }
-
-  // function getChosenAnswers() {
-  //   return exercises.reduce(getChosenAnswer, []);
-  // }
-
-  // function getChosenAnswer(uids, exercise) {
-  //   const chosenAnswer = exercise.answers.find(answer => answer.current);
-
-  //   if (chosenAnswer) { uids.push(chosenAnswer.uid); }
-
-  //   return uids;
-  // }
+  /**
+   * Método responsável por validar respostas entregues pelo usuário.
+   */
+  async function validateResult() {
+    setValidation(await validator.validate(resultByExercise));
+  }
 
   return (
     <ExercisesContext.Provider value={[exercises, updateExercises]}>
-      <ol className='exercise__questions'>
-        {getExercises()}
-      </ol>
-      <div className='exercise__confirmation'>
-        <ButtonConfirmation value='Enviar' />
-      </div>
+      <ResultContext.Provider value={[resultByExercise, setResultByExercise]}>
+        <ValidationContext.Provider value={[validation, setValidation]}>
+          <ol className='exercise__questions'>
+            {getExercises()}
+          </ol>
+          <div className='exercise__confirmation'>
+            <ButtonConfirmation value='Enviar' loading={showLoading} onClick={validateResult} />
+          </div>
+        </ValidationContext.Provider>
+      </ResultContext.Provider >
     </ExercisesContext.Provider >
   );
 }

@@ -10,9 +10,11 @@ const ST_PARSER = {
     return JSON.parse(JSON.stringify(data).replaceAll(/"answer":(".+?"|null),?/g, ''));
   },
   parseCorrectAnswers(data) {
-    if (typeof data !== 'object') { return data; }
+    if (typeof data !== 'object') { return { correct: false }; }
+    if (!Array.isArray(data.data)) { return { correct: false }; }
+    if (!data.data.length) { return { correct: false }; }
 
-    return data.data?.map(answer => answer.attributes?.answer);
+    return { correct: true };
   },
 };
 

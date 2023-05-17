@@ -6,14 +6,14 @@ import React, { useContext, useState } from 'react';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand.js';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
 import CodesContext from '../../Context/CodesContext/CodesContext.js';
-import ResultContext from '../../Context/ResultContext/ResultContext.js';
+import CodeContext from '../../Context/CodeContext/CodeContext.js';
 import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext.js';
 import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
 
 function CodeEditorMenuSettings() {
-  const [files,] = useContext(CodesContext);
-  const [updateResult] = useContext(ResultContext);
+  const [codes,] = useContext(CodesContext);
+  const [currentCode, setCurrentCode] = useContext(CodeContext);
   const [fullscreen, setFullscreen] = useContext(FullscreenContext);
   const [loading, setLoading] = useState(false);
 
@@ -29,11 +29,11 @@ function CodeEditorMenuSettings() {
    * @returns {object}
    */
   function sendCode() {
-    callouts.code.post({ files: Array.from(files.values()), config }).then(getResult).catch(getResult);
+    callouts.code.post({ files: Array.from(codes.values()), config }).then(getResult).catch(getResult);
   }
 
   function getResult(result) {
-    updateResult(result);
+    setCurrentCode({ ...currentCode, result });
     setLoading(false);
   }
 

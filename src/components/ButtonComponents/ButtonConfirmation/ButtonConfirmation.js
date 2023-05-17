@@ -19,7 +19,12 @@ function ButtonConfirmation(props) {
 
   function getLoading() {
     return (
-      <div className='button-play--loading button-play--loading--white'><div></div><div></div><div></div><div></div></div>
+      <div className='button-play--loading button-play--loading--white'>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     );
   }
 

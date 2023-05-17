@@ -3,9 +3,11 @@ import ExerciseChoice from '../ExerciseChoice/ExerciseChoice.js';
 import Util from '../../../classes/util/Util.js';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
 import Exercise from '../../../classes/strapi/Exercise.js';
+import ResultContext from '../../Context/ResultContext/ResultContext.js';
 
 function ExerciseChoices(props) {
   const [currentExercise, setCurrentExercise] = useContext(ExerciseContext);
+  const [resultByExercise, setResultByExercise] = useContext(ResultContext);
   const [choices, setChoices] = useState(null);
 
   useEffect(() => { setChoices(currentExercise?.choices); }, [currentExercise?.choices]);
@@ -24,7 +26,9 @@ function ExerciseChoices(props) {
         choice={choice}
         index={index}
         group={`${currentExercise.uid}-choices`}
-        selectChoice={Util.setCurrentItem(choices, updateChoices)} />
+        selectChoice={Util.setCurrentItem(choices, updateChoices)}
+        updateChoice={Util.updateItemIn(choices, updateChoices)}
+      />
     );
   }
 
@@ -36,7 +40,21 @@ function ExerciseChoices(props) {
   function updateChoices(choices) {
     const newCurrentExercise = new Exercise({ ...currentExercise, choices });
 
+    updateResultByExercise(choices);
+
     setCurrentExercise(newCurrentExercise);
+  }
+
+  /**
+   * Método responsável por atualizar resultados (no caso a resposta escolhida para 
+   * o problema) por exercício para posterior avaliação.
+   * 
+   * @param {array} choices 
+   */
+  function updateResultByExercise(choices) {
+    resultByExercise.set(currentExercise.uid, Util.getCurrentItem(choices)?.uid);
+
+    setResultByExercise(new Map(resultByExercise));
   }
 
   return (

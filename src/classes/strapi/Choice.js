@@ -11,5 +11,7 @@ export default class Choice {
     this.publishedAt = answer?.attributes?.publishedAt ?? answer?.publishedAt ?? null;
     this.uid = answer?.attributes?.uid ?? answer?.uid ?? null;
     this.current = answer?.current ?? false;
+    this.correct = answer?.correct ?? false;
+    this.wrong = answer?.wrong ?? false;
   }
 }

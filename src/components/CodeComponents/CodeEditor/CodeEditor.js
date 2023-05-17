@@ -22,6 +22,7 @@ import config from '../../../config.json';
 
 function CodeEditor() {
   const [currentExercise, setCurrentExercise] = useContext(ExerciseContext);
+  const [resultByExercise, setResultByExercise] = useContext(ResultContext);
   const [codes, setCodes] = useState(new Map());
   const [currentCode, setCurrentCode] = useState(null);
   const [output, setOutput] = useState([getRightArrow('output')]);
@@ -96,20 +97,33 @@ function CodeEditor() {
   useEffect(() => { if (!currentCode && currentExercise) { getCodesCallback() } }, [currentCode, currentExercise, getCodesCallback]);
 
   /**
-   * Método responsável por configurar saída e comandos de acordo com resultado obtido
-   * em execução.
+   * Método responsável por configurar saída e comandos de acordo com resultado em exercício
+   * obtido.
    * 
-   * @param {object} result 
+   * @param {object} exercise 
    */
-  function updateResult(result) {
-    currentExercise.result = result;
-    currentExercise.output = getOutput(result);
-    currentExercise.commands = getCommands(result);
+  function updateResult(exercise) {
+    currentExercise.result = exercise.result;
+    currentExercise.output = getOutput(exercise.result);
+    currentExercise.commands = getCommands(exercise.result);
 
     updateOutputContent();
+    updateResultByExercise(currentExercise.output);
 
     setCurrentExercise({ ...currentExercise });
     setRender(true);
+  }
+
+  /**
+   * Método responsável por atualizar resultados (no caso a saída do código executado) por 
+   * exercício para posterior avaliação.
+   * 
+   * @param {object} result 
+   */
+  function updateResultByExercise(result) {
+    resultByExercise.set(currentExercise.uid, result);
+
+    setResultByExercise(new Map(resultByExercise));
   }
 
   /**
@@ -192,23 +206,21 @@ function CodeEditor() {
 
   return (
     <CodesContext.Provider value={[codes, updateCodes]}>
-      <CodeContext.Provider value={[currentCode, setCurrentCode]}>
-        <ResultContext.Provider value={[updateResult]}>
-          <OutputContext.Provider value={[output, setOutput]}>
-            <InputContext.Provider value={[input, setInput]}>
-              <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
-                <RenderContext.Provider value={[render, setRender]}>
-                  <div className={getCodeEditorClass()}>
-                    <CodeEditorWorkspace />
-                    <CodeEditorPrompt />
-                  </div>
-                </RenderContext.Provider>
-              </FullscreenContext.Provider>
-            </InputContext.Provider>
-          </OutputContext.Provider>
-        </ResultContext.Provider>
+      <CodeContext.Provider value={[currentCode, updateResult]}>
+        <OutputContext.Provider value={[output, setOutput]}>
+          <InputContext.Provider value={[input, setInput]}>
+            <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
+              <RenderContext.Provider value={[render, setRender]}>
+                <div className={getCodeEditorClass()}>
+                  <CodeEditorWorkspace />
+                  <CodeEditorPrompt />
+                </div>
+              </RenderContext.Provider>
+            </FullscreenContext.Provider>
+          </InputContext.Provider>
+        </OutputContext.Provider>
       </CodeContext.Provider>
-    </CodesContext.Provider>
+    </CodesContext.Provider >
   );
 }
 

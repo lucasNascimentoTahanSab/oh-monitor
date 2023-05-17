@@ -8,7 +8,7 @@ export const endpoints = {
   },
   content: {
     getSubject: uid => `api/content/subjects/${uid}`,
-    getCorrectAnswers: uids => `api/content/exercises?${uids.map(uid => `uids[]=${uid}`).join('&')}`
+    getExerciseAnswer: (exerciseUid, answer) => `api/content/exercises?exerciseUid=${exerciseUid}&answer=${answer}`
   },
   repo: {
     getCode: (path, language, extension) => `api/repo/${language}${path}.${extension}`

@@ -14,7 +14,7 @@ export const requests = {
     getSubject: () => ({
       method: 'GET'
     }),
-    getCorrectAnswers: () => ({
+    getExerciseAnswer: () => ({
       method: 'GET'
     })
   },

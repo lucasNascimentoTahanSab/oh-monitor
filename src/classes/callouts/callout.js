@@ -23,9 +23,9 @@ const callouts = {
           .catch(error => reject(error))
       })
     ),
-    getCorrectAnswers: async uids => (
+    getExerciseAnswer: async (exerciseUid, answer) => (
       new Promise((resolve, reject) => {
-        fetch(endpoints.content.getCorrectAnswers(uids), requests.content.getCorrectAnswers())
+        fetch(endpoints.content.getExerciseAnswer(exerciseUid, answer), requests.content.getExerciseAnswer())
           .then(response => resolve(response.json()))
           .catch(error => reject(error))
       })
