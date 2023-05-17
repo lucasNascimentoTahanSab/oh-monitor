@@ -38,7 +38,7 @@ function ClassroomStageSubsection(props) {
    * @param {object} subsection 
    */
   function updateCurrentSubsection(subsection) {
-    Util.setCurrentItem(subsections, setSubsections)(subsection);
+    Util.updateItemIn(subsections, setSubsections)(subsection);
   }
 
   /**

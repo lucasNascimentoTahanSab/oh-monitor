@@ -4,6 +4,8 @@
   --color-gray: #808B96;
   --color-gray--medium: #6E6974;
   --color-white: #FFFFFF;
+  --color-green: #42DC50;
+  --color-red: #F94F49;
   --color-blue--light: #D4E6F1;
   --color-blue--light-medium: #84C7E6;
   --color-blue--light-dark: #3498DB;
@@ -210,6 +212,18 @@ li.exercise__question-statement:not(:last-child) {
 .exercise__choice-letter--selected {
   color: var(--color-white);
   background-color: var(--color-blue--light-dark);
+  border: none;
+}
+
+.exercise__choice-letter--correct {
+  color: var(--color-white);
+  background-color: var(--color-green);
+  border: none;
+}
+
+.exercise__choice-letter--wrong {
+  color: var(--color-white);
+  background-color: var(--color-red);
   border: none;
 }
 

@@ -8,84 +8,68 @@ import { ReactComponent as Right } from '../../../svg/right.svg';
 import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace.js';
 import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt.js';
 import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext.js';
-import FilesContext from '../../Context/FilesContext/FilesContext.js';
-import FileContext from '../../Context/FileContext/FileContext.js';
-import PackagesContext from '../../Context/PackagesContext/PackagesContext.js';
-import PackageContext from '../../Context/PackageContext/PackageContext.js';
-import ResultContext from '../../Context/ResultContext/ResultContext.js';
+import CodesContext from '../../Context/CodesContext/CodesContext.js';
+import CodeContext from '../../Context/CodeContext/CodeContext.js';
+import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
+import ResultContext from '../../Context/ResultContext/ResultContext';
 import OutputContext from '../../Context/OutputContext/OutputContext.js';
 import InputContext from '../../Context/InputContext/InputContext.js';
 import RenderContext from '../../Context/RenderContext/RenderContext.js';
-import Package from '../../../classes/strapi/Package.js';
-import File from '../../../classes/strapi/File.js';
+import Code from '../../../classes/strapi/Code.js';
 import Util from '../../../classes/util/Util.js';
 import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
 
-function CodeEditor(props) {
-  const [packages, setPackages] = useContext(PackagesContext);
-  const [currentPackage, setCurrentPackage] = useState(null);
-  const [files, setFiles] = useState(new Map());
-  const [currentFile, setCurrentFile] = useState(null);
-  const [exercise, setExercise] = useState(null);
-  const [result, setResult] = useState(null);
-  const [output, setOutput] = useState([getRightArrow()]);
-  const [input, setInput] = useState([getRightArrow()]);
+function CodeEditor() {
+  const [currentExercise, setCurrentExercise] = useContext(ExerciseContext);
+  const [resultByExercise, setResultByExercise] = useContext(ResultContext);
+  const [codes, setCodes] = useState(new Map());
+  const [currentCode, setCurrentCode] = useState(null);
+  const [output, setOutput] = useState([getRightArrow('output')]);
+  const [input, setInput] = useState([getRightArrow('input')]);
   const [render, setRender] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
 
-  useEffect(() => setExercise(props.exercise), [props.exercise]);
-
-  const getFilesCallback = useCallback(getFiles, [getFiles]);
+  const getCodesCallback = useCallback(getCodes, [getCodes]);
 
   /**
    * Método responsável pela obtenção dos arquivos de código a partir dos metadados recebidos.
    * 
    * @returns 
    */
-  async function getFiles() {
-    if (!exercise?.codes?.length) { return; }
-    if (files.size) { return; }
+  async function getCodes() {
+    if (!currentExercise?.codes?.length) { return; }
+    if (codes.size) { return; }
 
-    const retrievedFiles = await retriveFilesFromRepo();
+    const retrievedCodes = await retrieveCodesFromRepo();
 
-    setFilesMap(retrievedFiles);
-    updateFiles(files);
+    setCodesMap(retrievedCodes);
+    updateCodes(codes);
+    updateOutputContent();
   }
 
   /**
    * Método responsável pela atualização dos arquivos assim como arquivo atual.
    * 
-   * @param {Map} files 
+   * @param {Map} codes 
    */
-  function updateFiles(files) {
-    setCurrentFile(Util.getCurrentItem(Array.from(files.values())));
-    setFiles(new Map(files));
+  function updateCodes(codes) {
+    const codesArray = Array.from(codes.values());
+    const newCurrentCode = Util.getCurrentItem(codesArray);
 
-    updatePackages(files);
-  }
-
-  /**
-   * Método responsável pela atualização dos editores de código assim como o
-   * editor atual.
-   */
-  function updatePackages(files) {
-    const updatedPackage = new Package(packages.get(exercise.uid), files);
-
-    packages.set(exercise.uid, updatedPackage);
-
-    setCurrentPackage(updatedPackage);
-    setPackages(new Map(packages));
+    setCodes(new Map(codes));
+    setCurrentCode(newCurrentCode);
+    setCurrentExercise({ ...currentExercise, codes: codesArray });
   }
 
   /**
    * Método responsável pela configuração de mapa para os arquivos de código recuperados, 
    * separados por endereço.
    * 
-   * @param {array} retrievedFiles 
+   * @param {array} retrievedCodes 
    */
-  function setFilesMap(retrievedFiles) {
-    retrievedFiles.forEach(file => files.set(file.uid, file));
+  function setCodesMap(retrievedCodes) {
+    retrievedCodes.forEach(code => codes.set(code.uid, code));
   }
 
   /**
@@ -94,59 +78,52 @@ function CodeEditor(props) {
    * 
    * @returns {Promise}
    */
-  async function retriveFilesFromRepo() {
-    return Promise.all(exercise.codes.map(getFile));
+  async function retrieveCodesFromRepo() {
+    return Promise.all(currentExercise.codes.map(getCode));
   }
 
-  async function getFile(file) {
-    return packagesHasFile(file) ? getFileFromCodes(file) : new File(file, (await calloutFile(file))?.data);
+  async function getCode(code) {
+    return code.content ? code : new Code({ ...code, content: (await calloutCode(code))?.data });
   }
 
-  async function calloutFile(file) {
-    return await callouts.repo.getFile(file.path, config.language, config.languages[config.language].extension);
-  }
-
-  function packagesHasFile(file) {
-    return packages.has(exercise.uid) && packages.get(exercise.uid)?.files?.has(file.uid);
-  }
-
-  function getFileFromCodes(file) {
-    return packages.get(exercise.uid)?.files?.get(file.uid);
+  async function calloutCode(code) {
+    return await callouts.repo.getCode(code.path, config.language, config.languages[config.language].extension);
   }
 
   /**
    * Hook responsável pela requisição dos arquivos em repositório ou obtenção em memória
    * quando previamente carregados, configurando arquivo principal.
    */
-  useEffect(() => { if (!currentFile && exercise) { getFilesCallback() } }, [currentFile, exercise, getFilesCallback]);
+  useEffect(() => { if (!currentCode && currentExercise) { getCodesCallback() } }, [currentCode, currentExercise, getCodesCallback]);
 
   /**
-   * Método responsável pela atualização do arquivo recebido dentre os demais arquivos.
+   * Método responsável por configurar saída e comandos de acordo com resultado em exercício
+   * obtido.
    * 
-   * @param {object} file 
+   * @param {object} exercise 
    */
-  function updateCurrentFile(file) {
-    Util.updateItemInMap(files, updateFiles)(file);
-  }
-
-  /**
-   * Método responsável por configurar saída e comandos de acordo com resultado obtido
-   * em execução.
-   * 
-   * @param {object} result 
-   */
-  function updateResult(result) {
-    currentPackage.output = getOutput(result);
-    currentPackage.commands = getCommands(result);
+  function updateResult(exercise) {
+    currentExercise.result = exercise.result;
+    currentExercise.output = getOutput(exercise.result);
+    currentExercise.commands = getCommands(exercise.result);
 
     updateOutputContent();
-    updateCurrentPackage();
-    setResult(result);
+    updateResultByExercise(currentExercise.output);
+
+    setCurrentExercise({ ...currentExercise });
     setRender(true);
   }
 
-  function updateCurrentPackage() {
-    Util.updateItemInMap(packages, setPackages)(currentPackage);
+  /**
+   * Método responsável por atualizar resultados (no caso a saída do código executado) por 
+   * exercício para posterior avaliação.
+   * 
+   * @param {object} result 
+   */
+  function updateResultByExercise(result) {
+    resultByExercise.set(currentExercise.uid, result);
+
+    setResultByExercise(new Map(resultByExercise));
   }
 
   /**
@@ -154,7 +131,7 @@ function CodeEditor(props) {
    * de códigos.
    */
   function updateOutputContent() {
-    setOutput([getRightArrow(), getOutputContent()]);
+    setOutput([getRightArrow('output'), getOutputContent()]);
   }
 
   /**
@@ -163,18 +140,18 @@ function CodeEditor(props) {
    * @returns {array}
    */
   function getOutputContent() {
-    if (!currentPackage.output) { return []; }
+    if (!currentExercise.output) { return []; }
 
-    return currentPackage.output.map(item => [getItem(item), getRightArrow()]);
+    return currentExercise.output.map(item => [getItem('output', item), getRightArrow('output')]);
   }
 
-  function getItem(item) {
-    return createElement('p', { key: `${currentPackage.uid}_content_${currentPackage.output.length}` }, item);
+  function getItem(content, item) {
+    return createElement('p', { key: `${currentExercise.uid}_${content}_${currentExercise[content].length}` }, item);
   }
 
-  function getRightArrow() {
+  function getRightArrow(content) {
     return createElement(Right, {
-      key: `${currentPackage?.uid ?? ''}_right_${currentPackage?.output?.length ?? ''}`,
+      key: `${currentExercise?.uid ?? ''}_right-${content}_${currentExercise?.[content]?.length ?? ''}`,
       style: { height: '1rem', width: '1rem', minHeight: '1rem' },
       alt: 'Arrow pointing to the right.'
     });
@@ -187,8 +164,8 @@ function CodeEditor(props) {
    * @returns {array}
    */
   function getCommands(result) {
-    if (!result || result.error) { return currentPackage.commands; }
-    if (!result.output) { return currentPackage.commands; }
+    if (!result || result.error) { return currentExercise.commands; }
+    if (!result.output) { return currentExercise.commands; }
 
     const justCommands = getJustCommandsFromResult(result);
 
@@ -215,12 +192,12 @@ function CodeEditor(props) {
    * @returns {array}
    */
   function getOutput(result) {
-    if (!result) { return currentPackage.output; }
+    if (!result) { return currentExercise.output; }
 
-    if (result.error) { currentPackage.output.push(result.error); }
-    else { currentPackage.output.push(result.output.replaceAll(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*\n/g, '')); }
+    if (result.error) { currentExercise.output.push(result.error); }
+    else { currentExercise.output.push(result.output.replaceAll(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*\n/g, '')); }
 
-    return currentPackage.output;
+    return currentExercise.output;
   }
 
   function getCodeEditorClass() {
@@ -228,26 +205,22 @@ function CodeEditor(props) {
   }
 
   return (
-    <PackageContext.Provider value={[currentPackage, setCurrentPackage]}>
-      <FilesContext.Provider value={[files, updateFiles]}>
-        <FileContext.Provider value={[currentFile, updateCurrentFile]}>
-          <ResultContext.Provider value={[result, updateResult]}>
-            <OutputContext.Provider value={[output, setOutput]}>
-              <InputContext.Provider value={[input, setInput]}>
-                <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
-                  <RenderContext.Provider value={[render, setRender]}>
-                    <div className={getCodeEditorClass()}>
-                      <CodeEditorWorkspace />
-                      <CodeEditorPrompt />
-                    </div>
-                  </RenderContext.Provider>
-                </FullscreenContext.Provider>
-              </InputContext.Provider>
-            </OutputContext.Provider>
-          </ResultContext.Provider>
-        </FileContext.Provider>
-      </FilesContext.Provider>
-    </PackageContext.Provider>
+    <CodesContext.Provider value={[codes, updateCodes]}>
+      <CodeContext.Provider value={[currentCode, updateResult]}>
+        <OutputContext.Provider value={[output, setOutput]}>
+          <InputContext.Provider value={[input, setInput]}>
+            <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
+              <RenderContext.Provider value={[render, setRender]}>
+                <div className={getCodeEditorClass()}>
+                  <CodeEditorWorkspace />
+                  <CodeEditorPrompt />
+                </div>
+              </RenderContext.Provider>
+            </FullscreenContext.Provider>
+          </InputContext.Provider>
+        </OutputContext.Provider>
+      </CodeContext.Provider>
+    </CodesContext.Provider >
   );
 }
 

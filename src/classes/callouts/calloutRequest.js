@@ -14,12 +14,12 @@ export const requests = {
     getSubject: () => ({
       method: 'GET'
     }),
-    getCorrectAnswers: () => ({
+    getExerciseAnswer: () => ({
       method: 'GET'
     })
   },
   repo: {
-    getFile: () => ({
+    getCode: () => ({
       method: 'GET'
     })
   }

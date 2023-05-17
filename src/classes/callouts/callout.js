@@ -23,18 +23,18 @@ const callouts = {
           .catch(error => reject(error))
       })
     ),
-    getCorrectAnswers: async uids => (
+    getExerciseAnswer: async (exerciseUid, answer) => (
       new Promise((resolve, reject) => {
-        fetch(endpoints.content.getCorrectAnswers(uids), requests.content.getCorrectAnswers())
+        fetch(endpoints.content.getExerciseAnswer(exerciseUid, answer), requests.content.getExerciseAnswer())
           .then(response => resolve(response.json()))
           .catch(error => reject(error))
       })
     ),
   },
   repo: {
-    getFile: async (path, language, extension) => (
+    getCode: async (path, language, extension) => (
       new Promise((resolve, reject) => {
-        fetch(endpoints.repo.getFile(path, language, extension), requests.repo.getFile())
+        fetch(endpoints.repo.getCode(path, language, extension), requests.repo.getCode())
           .then(response => resolve(response.json()))
           .catch(error => reject(error))
       })

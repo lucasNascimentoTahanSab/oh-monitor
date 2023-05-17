@@ -2,7 +2,7 @@
  * @file Módulo responsável pela exibição do HUB de animações.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import AnimationEngine from '../AnimationEngine/AnimationEngine.js';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand.js';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
@@ -10,8 +10,11 @@ import InputRange from '../../InputComponents/InputRange/InputRange.js';
 import Util from '../../../classes/util/Util.js';
 import Dragger from '../../../classes/util/Dragger.js';
 import config from '../../../config.json';
+import RenderContext from '../../Context/RenderContext/RenderContext.js';
 
 function AnimationScreen(props) {
+  const [, setRender] = useContext(RenderContext);
+  const [commands, setCommands] = useState([]);
   const [play, setPlay] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [dragger, setDragger] = useState(null);
@@ -26,6 +29,8 @@ function AnimationScreen(props) {
   const [reset, setReset] = useState(false);
   const [timer, setTimer] = useState(null);
   const animationScreen = useRef(null);
+
+  useEffect(() => { setCommands(props.commands) }, [props.commands]);
 
   /**
    * Hook responsável pela atualização do dragger para possibilitar arrastar pela tela e
@@ -78,6 +83,8 @@ function AnimationScreen(props) {
   }, [reset, totalTime, snapshots, playing, resetTimelineCallback]);
 
   function configureSnapshots(result) {
+    setReset(true);
+    setSnapshot(null);
     setSnapshots(result);
     setTotalTime(result?.length * config.animation.duration);
   }
@@ -138,7 +145,20 @@ function AnimationScreen(props) {
    */
   function toggleTimeline() {
     if (play) { pauseTimeline(); }
-    else { playTimeline(); }
+    else if (totalTime > 0) { playTimeline(); }
+    else { buildTimeline(); }
+  }
+
+  /**
+   * Método responsável por iniciar reprodução de timeline quando timeline ainda
+   * não tiver sido construído, porém já houverem comandos.
+   * 
+   * @returns 
+   */
+  function buildTimeline() {
+    if (!commands.length) { return; }
+
+    setRender(true);
   }
 
   /**
@@ -258,9 +278,9 @@ function AnimationScreen(props) {
     <div className={`code-snippet__animation ${getAnimationScreenClass()}`}>
       <div className='animation-screen__screen' ref={animationScreen} onMouseDown={handleScreenMouseDown}>
         <AnimationEngine
+          commands={commands}
           setAnimationEngine={setAnimationEngine}
           setSnapshots={configureSnapshots}
-          setSnapshot={setSnapshot}
           setReset={setReset}
           snapshot={snapshot}
           dragger={dragger} />

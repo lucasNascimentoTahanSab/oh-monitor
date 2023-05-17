@@ -2,16 +2,42 @@
  * @file Módulo responsável pela exibição da resposta ao exercício proposto em sala de aula.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import ValidationContext from '../../Context/ValidationContext/ValidationContext.js';
 import Util from '../../../classes/util/Util.js';
+import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
 
 function ExerciseChoice(props) {
+  const [currentExercise,] = useContext(ExerciseContext);
+  const [validation,] = useContext(ValidationContext);
   const [choice, setAnswer] = useState(null);
 
   useEffect(() => setAnswer(props.choice), [props.choice]);
 
+  /**
+   * Método responsável por atualizar status da opção atual (correta ou errada) para
+   * alterações em exibição.
+   */
+  useEffect(() => {
+    if (!choice?.current) { return; }
+
+    choice.wrong = validation?.[currentExercise.uid] ? !validation[currentExercise.uid].correct : false;
+    choice.correct = validation?.[currentExercise.uid] ? validation[currentExercise.uid].correct : false;
+
+    Util.handle(props.updateChoice, choice);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [validation]);
+
   function getLetterClass() {
-    return `no-select exercise__choice-letter ${choice?.current ? 'exercise__choice-letter--selected' : ''}`;
+    return `no-select exercise__choice-letter ${getLetterAditionalStyling()}`;
+  }
+
+  function getLetterAditionalStyling() {
+    if (choice?.wrong) { return 'exercise__choice-letter--wrong'; }
+    if (choice?.correct) { return 'exercise__choice-letter--correct'; }
+    if (choice?.current) { return 'exercise__choice-letter--selected'; }
+
+    return '';
   }
 
   function getChecked() {

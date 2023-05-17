@@ -39,7 +39,7 @@ const ST_REQUEST = {
     return {
       method: 'GET',
       url: `${process.env.ST_ENDPOINT}/exercises?` +
-        getFilter('uid', req.query.exerciseId) + '&' +
+        getFilter('uid', req.query.exerciseUid) + '&' +
         getFilter('answer', req.query.answer),
       headers: { 'Authorization': process.env.ST_TOKEN },
     };

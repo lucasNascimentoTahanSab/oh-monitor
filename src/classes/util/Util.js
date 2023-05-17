@@ -48,6 +48,32 @@ export default class Util {
   }
 
   /**
+   * Método responsável pela obtenção do item atualmente correto dentre os itens
+   * recebidos.
+   * 
+   * @param {array} items 
+   * @returns {object}
+   */
+  static getCorrectItem(items) {
+    if (!items?.length) { return null; }
+
+    return items.find(item => item.correct);
+  }
+
+  /**
+   * Método responsável pela obtenção do item atualmente incorreto dentre os itens
+   * recebidos.
+   * 
+   * @param {array} items 
+   * @returns {object}
+   */
+  static getWrongItem(items) {
+    if (!items?.length) { return null; }
+
+    return items.find(item => item.wrong);
+  }
+
+  /**
    * Método responsável pela obtenção de um item, dados os itens recebidos, a partir
    * de um uid correspondente.
    * 
@@ -75,7 +101,8 @@ export default class Util {
   }
 
   /**
-   * Método responsável pela seleção de um item dentre outros recebidos.
+   * Método responsável pela seleção de um item dentre outros recebidos,
+   * desmarcando os demais (selecionados, certos ou errados).
    * 
    * @param {array} items 
    * @param {function} setItems 
@@ -87,6 +114,8 @@ export default class Util {
 
     return function (uid) {
       unselectCurrentItem();
+      unselectWrongItem();
+      unselectCorrectItem();
       selectItemByUid(uid);
       setItems([...items]);
 
@@ -94,6 +123,18 @@ export default class Util {
         const newItem = Util.getItemByUid(items, uid);
 
         if (newItem) { newItem.current = true; }
+      }
+
+      function unselectCorrectItem() {
+        const currentItem = Util.getCorrectItem(items);
+
+        if (currentItem) { currentItem.correct = false; }
+      }
+
+      function unselectWrongItem() {
+        const currentItem = Util.getWrongItem(items);
+
+        if (currentItem) { currentItem.wrong = false; }
       }
 
       function unselectCurrentItem() {
@@ -203,20 +244,20 @@ export default class Util {
    * Método responsável pela atualização do código em arquivo dentre os arquivos
    * recebidos.
    * 
-   * @param {Map} files 
-   * @param {function} setFiles 
+   * @param {Map} codes 
+   * @param {function} setCodes 
    * @returns {function}
    */
-  static updateFileIn(files, setFiles) {
-    if (typeof setFiles !== 'function') { return function () { }; }
-    if (!files?.size) { return function () { }; }
+  static updateCodeIn(codes, setCodes) {
+    if (typeof setCodes !== 'function') { return function () { }; }
+    if (!codes?.size) { return function () { }; }
 
     return function (uid, content) {
       updateFileContent(uid, content);
-      setFiles(new Map(files));
+      setCodes(new Map(codes));
 
       function updateFileContent(uid, content) {
-        const file = files.get(uid);
+        const file = codes.get(uid);
 
         if (file) { file.content = content; }
       }

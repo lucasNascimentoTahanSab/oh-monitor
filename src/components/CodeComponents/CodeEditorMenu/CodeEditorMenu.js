@@ -5,11 +5,11 @@
 import React, { useContext } from 'react';
 import CodeEditorMenuItem from '../CodeEditorMenuItem/CodeEditorMenuItem';
 import CodeEditorMenuSettings from '../CodeEditorMenuSettings/CodeEditorMenuSettings.js';
-import FilesContext from '../../Context/FilesContext/FilesContext.js';
+import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import Util from '../../../classes/util/Util.js';
 
 function CodeEditorMenu() {
-  const [files, setFiles] = useContext(FilesContext);
+  const [code, setCodes] = useContext(CodesContext);
 
   /**
    * Método responsável pela obtenção dos itens do menu a serem exibidos.
@@ -17,16 +17,16 @@ function CodeEditorMenu() {
    * @returns {array}
    */
   function getMenuItems() {
-    if (!files?.size) { return null; }
+    if (!code?.size) { return null; }
 
-    return Array.from(files.values()).map(file =>
+    return Array.from(code.values()).map(file =>
       <CodeEditorMenuItem
         key={file.uid}
         item={file}
         group='code-editor-menu-radio-group'
         selectorClassName='menu__item-radio'
         labelClassName='menu__item-label'
-        onChange={Util.setCurrentItemInMap(files, setFiles)}
+        onChange={Util.setCurrentItemInMap(code, setCodes)}
       />
     );
   }

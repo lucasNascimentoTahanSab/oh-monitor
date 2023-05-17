@@ -33,7 +33,7 @@ function CodeSnippet(props) {
   }
 
   async function calloutSnippet() {
-    return await callouts.repo.getFile(element?.value, config.language, config.languages[config.language].extension)
+    return await callouts.repo.getCode(element?.value, config.language, config.languages[config.language].extension)
   }
 
   /**
@@ -46,9 +46,9 @@ function CodeSnippet(props) {
   const getSnippetsCallback = useCallback(getSnippets, [getSnippets]);
 
   function getSnippets() {
-    if (snippets.has(element.uid)) { return; }
+    if (snippets.has(snippet.uid)) { return; }
 
-    snippets.set(element.uid, snippet);
+    snippets.set(snippet.uid, snippet);
 
     setSnippets(snippets);
   }
@@ -59,7 +59,7 @@ function CodeSnippet(props) {
   useEffect(() => { if (snippet) { getSnippetsCallback() } }, [snippet, getSnippetsCallback]);
 
   function displayAnimationScreen() {
-    return element?.displayAnimationScreen ? (<AnimationScreen theme='dark' />) : null;
+    return snippet?.displayAnimationScreen ? (<AnimationScreen theme='dark' commands={snippet?.commands} />) : null;
   }
 
   return (
