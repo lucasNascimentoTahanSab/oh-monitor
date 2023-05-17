@@ -8,20 +8,20 @@ import AnimationScreen from '../../AnimationComponents/AnimationScreen/Animation
 import CodeEditorFile from '../CodeEditorFile/CodeEditorFile.js';
 import CodeEditorMenu from '../CodeEditorMenu/CodeEditorMenu.js';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
-import FilesContext from '../../Context/FilesContext/FilesContext.js';
-import FileContext from '../../Context/FileContext/FileContext.js';
+import CodeContext from '../../Context/CodeContext/CodeContext.js';
 import Util from '../../../classes/util/Util.js';
+import CodesContext from '../../Context/CodesContext/CodesContext.js';
 
 function CodeEditorWorkspace() {
   const [currentExercise,] = useContext(ExerciseContext);
-  const [files, setFiles] = useContext(FilesContext);
-  const [currentFile,] = useContext(FileContext);
+  const [codes, setCodes] = useContext(CodesContext);
+  const [currentCode,] = useContext(CodeContext);
 
   return (
     <div className='code-editor__workspace'>
       <CodeEditorMenu />
       <div className='code-editor__workspace-inner'>
-        <CodeEditorFile file={currentFile} onChange={Util.updateFileIn(files, setFiles)} />
+        <CodeEditorFile code={currentCode} onChange={Util.updateCodeIn(codes, setCodes)} />
         <AnimationScreen commands={currentExercise?.commands} />
       </div>
     </div>

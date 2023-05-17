@@ -5,11 +5,11 @@
 import React, { useContext } from 'react';
 import CodeEditorMenuItem from '../CodeEditorMenuItem/CodeEditorMenuItem';
 import CodeEditorMenuSettings from '../CodeEditorMenuSettings/CodeEditorMenuSettings.js';
-import FilesContext from '../../Context/FilesContext/FilesContext.js';
+import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import Util from '../../../classes/util/Util.js';
 
 function CodeEditorMenu() {
-  const [files, setFiles] = useContext(FilesContext);
+  const [files, setFiles] = useContext(CodesContext);
 
   /**
    * Método responsável pela obtenção dos itens do menu a serem exibidos.

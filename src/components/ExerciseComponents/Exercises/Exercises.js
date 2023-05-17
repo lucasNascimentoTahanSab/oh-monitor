@@ -40,7 +40,7 @@ function Exercises(props) {
    * @param {object} element 
    */
   function updateCurrentElement(element) {
-    Util.setCurrentItem(elements, setElements)(element);
+    Util.updateItemIn(elements, setElements)(element);
   }
 
   /**

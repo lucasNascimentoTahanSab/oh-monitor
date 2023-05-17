@@ -3,7 +3,6 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
 import RenderContext from '../../Context/RenderContext/RenderContext.js';
 import DraggerContext from '../../Context/DraggerContext/DraggerContext.js';
 import Drawer from '../../../classes/drawer/Drawer.js';

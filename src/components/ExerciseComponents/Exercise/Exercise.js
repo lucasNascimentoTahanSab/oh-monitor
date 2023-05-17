@@ -27,7 +27,7 @@ function Exercise(props) {
    * @param {object} exercise 
    */
   function updateExercise(exercise) {
-    Util.setCurrentItem(exercises, setExercises)(exercise);
+    Util.updateItemIn(exercises, setExercises)(exercise);
   }
 
   return (

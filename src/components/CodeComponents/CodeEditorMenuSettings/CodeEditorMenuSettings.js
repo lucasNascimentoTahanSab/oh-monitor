@@ -5,14 +5,14 @@
 import React, { useContext, useState } from 'react';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand.js';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
-import FilesContext from '../../Context/FilesContext/FilesContext.js';
+import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import ResultContext from '../../Context/ResultContext/ResultContext.js';
 import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext.js';
 import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
 
 function CodeEditorMenuSettings() {
-  const [files,] = useContext(FilesContext);
+  const [files,] = useContext(CodesContext);
   const [updateResult] = useContext(ResultContext);
   const [fullscreen, setFullscreen] = useContext(FullscreenContext);
   const [loading, setLoading] = useState(false);

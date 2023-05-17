@@ -8,19 +8,19 @@ import { ReactComponent as Right } from '../../../svg/right.svg';
 import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace.js';
 import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt.js';
 import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext.js';
-import FilesContext from '../../Context/FilesContext/FilesContext.js';
-import FileContext from '../../Context/FileContext/FileContext.js';
+import CodesContext from '../../Context/CodesContext/CodesContext.js';
+import CodeContext from '../../Context/CodeContext/CodeContext.js';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
 import ResultContext from '../../Context/ResultContext/ResultContext';
 import OutputContext from '../../Context/OutputContext/OutputContext.js';
 import InputContext from '../../Context/InputContext/InputContext.js';
 import RenderContext from '../../Context/RenderContext/RenderContext.js';
+import Code from '../../../classes/strapi/Code.js';
 import Util from '../../../classes/util/Util.js';
 import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
-import Code from '../../../classes/strapi/Code';
 
-function CodeEditor(props) {
+function CodeEditor() {
   const [currentExercise, setCurrentExercise] = useContext(ExerciseContext);
   const [codes, setCodes] = useState(new Map());
   const [currentCode, setCurrentCode] = useState(null);
@@ -29,20 +29,20 @@ function CodeEditor(props) {
   const [render, setRender] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
 
-  const getFilesCallback = useCallback(getFiles, [getFiles]);
+  const getCodesCallback = useCallback(getCodes, [getCodes]);
 
   /**
    * Método responsável pela obtenção dos arquivos de código a partir dos metadados recebidos.
    * 
    * @returns 
    */
-  async function getFiles() {
+  async function getCodes() {
     if (!currentExercise?.codes?.length) { return; }
     if (codes.size) { return; }
 
-    const retrievedFiles = await retrieveCodesFromRepo();
+    const retrievedCodes = await retrieveCodesFromRepo();
 
-    setCodesMap(retrievedFiles);
+    setCodesMap(retrievedCodes);
     updateCodes(codes);
   }
 
@@ -57,7 +57,7 @@ function CodeEditor(props) {
 
     setCodes(new Map(codes));
     setCurrentCode(newCurrentCode);
-    setCurrentExercise({ ...currentExercise, codes });
+    setCurrentExercise({ ...currentExercise, codes: codesArray });
   }
 
   /**
@@ -92,16 +92,7 @@ function CodeEditor(props) {
    * Hook responsável pela requisição dos arquivos em repositório ou obtenção em memória
    * quando previamente carregados, configurando arquivo principal.
    */
-  useEffect(() => { if (!currentCode && currentExercise) { getFilesCallback() } }, [currentCode, currentExercise, getFilesCallback]);
-
-  /**
-   * Método responsável pela atualização do arquivo recebido dentre os demais arquivos.
-   * 
-   * @param {object} code 
-   */
-  function updateCurrentCode(code) {
-    Util.updateItemInMap(codes, updateCodes)(code);
-  }
+  useEffect(() => { if (!currentCode && currentExercise) { getCodesCallback() } }, [currentCode, currentExercise, getCodesCallback]);
 
   /**
    * Método responsável por configurar saída e comandos de acordo com resultado obtido
@@ -199,8 +190,8 @@ function CodeEditor(props) {
   }
 
   return (
-    <FilesContext.Provider value={[codes, updateCodes]}>
-      <FileContext.Provider value={[currentCode, updateCurrentCode]}>
+    <CodesContext.Provider value={[codes, updateCodes]}>
+      <CodeContext.Provider value={[currentCode, setCurrentCode]}>
         <ResultContext.Provider value={[updateResult]}>
           <OutputContext.Provider value={[output, setOutput]}>
             <InputContext.Provider value={[input, setInput]}>
@@ -215,8 +206,8 @@ function CodeEditor(props) {
             </InputContext.Provider>
           </OutputContext.Provider>
         </ResultContext.Provider>
-      </FileContext.Provider>
-    </FilesContext.Provider>
+      </CodeContext.Provider>
+    </CodesContext.Provider>
   );
 }
 
