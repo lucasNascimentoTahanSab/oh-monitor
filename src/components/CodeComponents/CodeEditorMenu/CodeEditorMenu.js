@@ -21,7 +21,7 @@ function CodeEditorMenu() {
 
     return Array.from(files.values()).map(file =>
       <CodeEditorMenuItem
-        key={file.uuid}
+        key={file.uid}
         item={file}
         group='code-editor-menu-radio-group'
         selectorClassName='menu__item-radio'

@@ -16,7 +16,7 @@ function CodeEditorPromptMenu(props) {
 
     return props.items.map(item =>
       <CodeEditorMenuItem
-        key={item.uuid}
+        key={item.uid}
         item={item}
         group={`code-editor-prompt-menu-radio-group`}
         onChange={props.setCurrentItem}

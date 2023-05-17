@@ -16,16 +16,16 @@ const callouts = {
     )
   },
   content: {
-    getSubject: async uuid => (
+    getSubject: async uid => (
       new Promise((resolve, reject) => {
-        fetch(endpoints.content.getSubject(uuid), requests.content.getSubject())
+        fetch(endpoints.content.getSubject(uid), requests.content.getSubject())
           .then(response => resolve(response.json()))
           .catch(error => reject(error))
       })
     ),
-    getCorrectAnswers: async uuids => (
+    getCorrectAnswers: async uids => (
       new Promise((resolve, reject) => {
-        fetch(endpoints.content.getCorrectAnswers(uuids), requests.content.getCorrectAnswers())
+        fetch(endpoints.content.getCorrectAnswers(uids), requests.content.getCorrectAnswers())
           .then(response => resolve(response.json()))
           .catch(error => reject(error))
       })

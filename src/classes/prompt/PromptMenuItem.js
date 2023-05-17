@@ -1,6 +1,6 @@
 export default class PromptMenuItem {
   constructor(item) {
-    this.uuid = item?.uuid ?? null;
+    this.uid = item?.uid ?? null;
     this.name = item?.name ?? null;
     this.current = item?.current ?? false;
     this.allowOutput = item?.allowOutput ?? false;

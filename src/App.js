@@ -8,7 +8,7 @@ import Classroom from './components/ClassroomComponents/Classroom/Classroom.js';
 function App() {
   return (
     <div className='App'>
-      <Classroom uuid='subject' />
+      <Classroom uid='subject' />
     </div>
   );
 }

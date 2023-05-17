@@ -1,5 +1,8 @@
-import Code from './Code.js';
-import Answer from './Answer.js';
+/**
+ * @file Módulo responsável pela normalização do objeto Element retornado em integração.
+ * @copyright Lucas N. T. Sab 2023
+ */
+import Exercise from './Exercise.js';
 
 export default class Element {
   constructor(element) {
@@ -10,22 +13,15 @@ export default class Element {
     this.updatedAt = element?.attributes?.updatedAt ?? element?.updatedAt ?? null;
     this.publishedAt = element?.attributes?.publishedAt ?? element?.publishedAt ?? null;
     this.displayAnimationScreen = element?.attributes?.displayAnimationScreen ?? element?.displayAnimationScreen ?? false;
-    this.uuid = element?.attributes?.uuid ?? element?.uuid ?? null;
+    this.uid = element?.attributes?.uid ?? element?.uid ?? null;
     this.elements = this._getElements(element?.attributes?.elements?.data ?? element?.elements);
-    this.codes = this._getCodes(element?.attributes?.codes?.data ?? element?.codes);
-    this.answers = this._getAnswers(element?.attributes?.answers?.data ?? element?.answers);
+    this.exercises = this._getExercises(element?.attributes?.exercises?.data ?? element?.exercises);
   }
 
-  _getAnswers(answers) {
-    if (!answers?.length) { return []; }
+  _getExercises(exercises) {
+    if (!exercises?.length) { return []; }
 
-    return answers.map(answer => new Answer(answer));
-  }
-
-  _getCodes(codes) {
-    if (!codes?.length) { return []; }
-
-    return codes.map(code => new Code(code));
+    return exercises.map(exercise => new Exercise(exercise));
   }
 
   _getElements(elements) {

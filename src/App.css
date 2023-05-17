@@ -168,12 +168,6 @@ button {
   gap: .9375rem;
 }
 
-.classroom__content-section-item {
-  display: flex;
-  flex-direction: column;
-  gap: .9375rem;
-}
-
 .exercise__questions {
   list-style-position: inside;
   padding: 0;
@@ -183,18 +177,18 @@ li.exercise__question-statement:not(:last-child) {
   margin-bottom: 1.875rem;
 }
 
-.exercise__question-answers {
+.exercise__question-choices {
   display: flex;
   flex-direction: column;
   gap: .9375rem;
   padding: .9375rem 0 0 .9375rem;
 }
 
-.exercise__question-answer {
+.exercise__question-choice {
   list-style: none;
 }
 
-.exercise__answer-letter {
+.exercise__choice-letter {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -207,19 +201,19 @@ li.exercise__question-statement:not(:last-child) {
   transition: .25s;
 }
 
-.exercise__answer-letter:hover:not(.exercise__answer-letter--selected) {
+.exercise__choice-letter:hover:not(.exercise__choice-letter--selected) {
   color: var(--color-white);
   background-color: var(--color-blue--light-medium);
   border: none;
 }
 
-.exercise__answer-letter--selected {
+.exercise__choice-letter--selected {
   color: var(--color-white);
   background-color: var(--color-blue--light-dark);
   border: none;
 }
 
-.exercise__answer-text {
+.exercise__choice-text {
   display: flex;
   align-items: center;
   gap: .625rem;

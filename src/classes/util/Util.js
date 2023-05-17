@@ -49,30 +49,16 @@ export default class Util {
 
   /**
    * Método responsável pela obtenção de um item, dados os itens recebidos, a partir
-   * de um uuid correspondente.
+   * de um uid correspondente.
    * 
    * @param {array} items 
-   * @param {string} uuid 
+   * @param {string} uid 
    * @returns {object}
    */
-  static getItemByUuid(items, uuid) {
+  static getItemByUid(items, uid) {
     if (!items?.length) { return null; }
 
-    return items.find(item => item.uuid === uuid);
-  }
-
-  /**
-   * Método responsável pela obtenção da posição de um determinado item, dados os itens
-   * recebidos, a partir de um uuid correspondente.
-   * 
-   * @param {array} items 
-   * @param {string} uuid 
-   * @returns {array}
-   */
-  static getItemIndexByUuid(items, uuid) {
-    if (!items?.length) { return null; }
-
-    return items.map(item => item.uuid).indexOf(uuid);
+    return items.find(item => item.uid === uid);
   }
 
   /**
@@ -99,13 +85,13 @@ export default class Util {
     if (typeof setItems !== 'function') { return function () { }; }
     if (!items?.length) { return function () { }; }
 
-    return function (uuid) {
+    return function (uid) {
       unselectCurrentItem();
-      selectItemByUuid(uuid);
+      selectItemByUid(uid);
       setItems([...items]);
 
-      function selectItemByUuid(uuid) {
-        const newItem = Util.getItemByUuid(items, uuid);
+      function selectItemByUid(uid) {
+        const newItem = Util.getItemByUid(items, uid);
 
         if (newItem) { newItem.current = true; }
       }
@@ -129,13 +115,13 @@ export default class Util {
     if (typeof setItems !== 'function') { return function () { }; }
     if (!items?.size) { return function () { }; }
 
-    return function (uuid) {
+    return function (uid) {
       unselectCurrentItem();
-      selectItemByUuid(uuid);
+      selectItemByUid(uid);
       setItems(new Map(items));
 
-      function selectItemByUuid(uuid) {
-        const newItem = items.get(uuid);
+      function selectItemByUid(uid) {
+        const newItem = items.get(uid);
 
         if (newItem) { newItem.current = true; }
       }
@@ -163,7 +149,7 @@ export default class Util {
     return function (item) {
       if (typeof item !== 'object') { return; }
 
-      Util.matchObjects(item, Util.getItemByUuid(items, item.uuid));
+      Util.matchObjects(item, Util.getItemByUid(items, item.uid));
 
       setItems([...items]);
     }
@@ -184,14 +170,14 @@ export default class Util {
     return function (item) {
       if (typeof item !== 'object') { return; }
 
-      Util.matchObjects(item, items.get(item.uuid));
+      Util.matchObjects(item, items.get(item.uid));
 
       setItems(new Map(items));
     }
   }
 
   /**
-   * Método responsável por alternar o valor de open no item de uuid recebido.
+   * Método responsável por alternar o valor de open no item de uid recebido.
    * 
    * @param {array} items 
    * @param {function} setItems 
@@ -201,12 +187,12 @@ export default class Util {
     if (typeof setItems !== 'function') { return function () { }; }
     if (!items?.length) { return function () { }; }
 
-    return function (uuid) {
-      openItemByUuid(uuid);
+    return function (uid) {
+      openItemByUid(uid);
       setItems([...items]);
 
-      function openItemByUuid(uuid) {
-        const item = Util.getItemByUuid(items, uuid);
+      function openItemByUid(uid) {
+        const item = Util.getItemByUid(items, uid);
 
         if (item) { item.open = !item.open; }
       }
@@ -225,12 +211,12 @@ export default class Util {
     if (typeof setFiles !== 'function') { return function () { }; }
     if (!files?.size) { return function () { }; }
 
-    return function (uuid, content) {
-      updateFileContent(uuid, content);
+    return function (uid, content) {
+      updateFileContent(uid, content);
       setFiles(new Map(files));
 
-      function updateFileContent(uuid, content) {
-        const file = files.get(uuid);
+      function updateFileContent(uid, content) {
+        const file = files.get(uid);
 
         if (file) { file.content = content; }
       }

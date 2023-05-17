@@ -18,19 +18,19 @@ function CodeEditorMenuItem(props) {
    * Método responsável por exibir o arquivo atual em tela. 
    */
   function setCurrentMenuItem() {
-    Util.handle(props.onChange, menuItem.uuid);
+    Util.handle(props.onChange, menuItem.uid);
   }
 
   return (
     <div className='menu__item'>
       <input
-        id={menuItem?.uuid}
+        id={menuItem?.uid}
         className={props.selectorClassName}
         type='radio'
         name={props.group}
         checked={getChecked()}
         onChange={setCurrentMenuItem} />
-      <label className={props.labelClassName} htmlFor={menuItem?.uuid}>{menuItem?.name}</label>
+      <label className={props.labelClassName} htmlFor={menuItem?.uid}>{menuItem?.name}</label>
     </div>
   );
 }

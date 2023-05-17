@@ -1,7 +1,11 @@
+/**
+ * @file Módulo responsável pela normalização do objeto Code retornado em integração.
+ * @copyright Lucas N. T. Sab 2023
+ */
 export default class Code {
   constructor(code) {
     this.id = code?.id ?? null;
-    this.uuid = code?.attributes?.uuid ?? code?.uuid ?? null;
+    this.uid = code?.attributes?.uid ?? code?.uid ?? null;
     this.name = code?.attributes?.name ?? code?.name ?? null;
     this.path = code?.attributes?.path ?? code?.path ?? null;
     this.current = code?.attributes?.current ?? code?.current ?? false;

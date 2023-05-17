@@ -18,10 +18,10 @@ function CodeEditorFile(props) {
       defaultLanguage={config.language}
       value={file?.content}
       theme='vs-dark'
-      // Para atualização do arquivo atual é considerado o UUID do arquivo recebido ao invés
+      // Para atualização do arquivo atual é considerado o UID do arquivo recebido ao invés
       // do arquivo já configurado, evitando incongruências entre atualizações por conta de
       // limitações do editor.
-      onChange={content => Util.handle(props.onChange, props.file?.uuid, content)}
+      onChange={content => Util.handle(props.onChange, props.file?.uid, content)}
       options={{
         readOnly: file?.disabled,
         bracketPairColorization: { enabled: true },

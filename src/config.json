@@ -16,14 +16,14 @@
   "prompt": {
     "menu": [
       {
-        "uuid": "output",
+        "uid": "output",
         "name": "SAÍDA",
         "current": true,
         "allowOutput": true,
         "allowInput": false
       },
       {
-        "uuid": "input",
+        "uid": "input",
         "name": "ENTRADA",
         "current": false,
         "allowOutput": false,

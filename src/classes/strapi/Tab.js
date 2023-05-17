@@ -1,3 +1,7 @@
+/**
+ * @file Módulo responsável pela normalização do objeto Tab retornado em integração.
+ * @copyright Lucas N. T. Sab 2023
+ */
 import Navigation from './Navigation.js';
 import Section from './Section.js';
 
@@ -5,7 +9,7 @@ export default class Tab {
   constructor(tab) {
     this.id = tab?.id ?? null;
     this.title = tab?.attributes?.title ?? tab?.title ?? null;
-    this.uuid = tab?.attributes?.uuid ?? tab?.uuid ?? null;
+    this.uid = tab?.attributes?.uid ?? tab?.uid ?? null;
     this.createdAt = tab?.attributes?.createdAt ?? tab?.createdAt ?? null;
     this.updatedAt = tab?.attributes?.updatedAt ?? tab?.updatedAt ?? null;
     this.publishedAt = tab?.attributes?.publishedAt ?? tab?.publishedAt ?? null;

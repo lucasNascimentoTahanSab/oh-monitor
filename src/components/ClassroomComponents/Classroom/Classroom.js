@@ -1,5 +1,5 @@
 /**
- * @file Módulo responsável pelo carregamento da sala de aula a partir do UUID do 
+ * @file Módulo responsável pelo carregamento da sala de aula a partir do UID do 
  * assunto tratado.
  * @copyright Lucas N. T. Sab 2023
  */
@@ -24,12 +24,12 @@ function Classroom(props) {
 
   /**
    * Hook responsável pela obtenção do registro do assunto tratado na tela atual
-   * a partir do UUID recebido.
+   * a partir do UID recebido.
    */
   useEffect(() => { if (!subject) { getSubject(); } });
 
   async function getSubject() {
-    const retrievedSubject = new Subject((await callouts.content.getSubject(props.uuid))?.data?.[0]);
+    const retrievedSubject = new Subject((await callouts.content.getSubject(props.uid))?.data?.[0]);
     const retrievedCurrentTab = Util.getCurrentItem(retrievedSubject.tabs);
 
     setSubject(retrievedSubject);

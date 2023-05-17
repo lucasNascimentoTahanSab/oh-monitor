@@ -3,19 +3,23 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
-import ClassroomStageExercise from '../ClassroomStageExercise/ClassroomStageExercise.js';
+import Exercise from '../Exercise/Exercise.js';
 import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js';
 import callouts from '../../../classes/callouts/callout.js';
 
-function ClassroomStageExercises() {
-  const [currentTab, setCurrentTab] = useContext(TabContext);
+function Exercises(props) {
+  // const [currentTab, setCurrentTab] = useContext(TabContext);
+  const [element, setElement] = useState(null);
   const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
 
-  useEffect(() => setExercises(currentTab?.exercises), [currentTab]);
+  useEffect(() => {
+    setElement(props.element);
+    setExercises(props.element?.exercises);
+  }, [props.element]);
 
   /**
    * Método responsável pela obtenção dos exercícios a serem exibidos na guia atual.
@@ -25,7 +29,7 @@ function ClassroomStageExercises() {
   function getExercises() {
     if (!exercises?.length) { return null; }
 
-    return exercises.map(exercise => <ClassroomStageExercise key={exercise.uuid} exercise={exercise} />);
+    return exercises.map(exercise => <Exercise key={exercise.uid} exercise={exercise} />);
   }
 
   /**
@@ -35,7 +39,7 @@ function ClassroomStageExercises() {
    */
   function updateExercises(exercises) {
     setExercises(exercises);
-    setCurrentTab({ ...currentTab, exercises });
+    // setCurrentTab({ ...currentTab, exercises });
   }
 
   function onSend() {
@@ -62,29 +66,24 @@ function ClassroomStageExercises() {
     return exercises.reduce(getChosenAnswer, []);
   }
 
-  function getChosenAnswer(uuids, exercise) {
+  function getChosenAnswer(uids, exercise) {
     const chosenAnswer = exercise.answers.find(answer => answer.current);
 
-    if (chosenAnswer) { uuids.push(chosenAnswer.uuid); }
+    if (chosenAnswer) { uids.push(chosenAnswer.uid); }
 
-    return uuids;
+    return uids;
   }
 
   return (
     <ExercisesContext.Provider value={[exercises, updateExercises]}>
-      <section className='classroom__content'>
-        <h2>Exercícios</h2>
-        <div>
-          <ol className='exercise__questions'>
-            {getExercises()}
-          </ol>
-        </div>
-        <div className='exercise__confirmation'>
-          <ButtonConfirmation value='Enviar' onClick={onSend} loading={loading} />
-        </div>
-      </section>
-    </ExercisesContext.Provider>
+      <ol className='exercise__questions'>
+        {getExercises()}
+      </ol>
+      <div className='exercise__confirmation'>
+        <ButtonConfirmation value='Enviar' onClick={onSend} loading={loading} />
+      </div>
+    </ExercisesContext.Provider >
   );
 }
 
-export default ClassroomStageExercises;
+export default Exercises;

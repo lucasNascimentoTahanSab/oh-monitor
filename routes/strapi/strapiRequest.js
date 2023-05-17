@@ -16,29 +16,31 @@ const ST_REQUEST = {
     return {
       method: 'GET',
       url: `${process.env.ST_ENDPOINT}/subjects?` +
-        getFilter('uuid', req.params.subjectId) + '&' +
-        getPopulate('tabs', 'sections.sections.elements.elements.answers', '0') + '&' +
-        getPopulate('tabs', 'sections.sections.elements.codes', '1') + '&' +
-        getPopulate('tabs', 'sections.elements.elements.answers', '2') + '&' +
-        getPopulate('tabs', 'sections.elements.codes', '3') + '&' +
-        getPopulate('tabs', 'navigation.navigationItems.navigationItems', '4')
+        getFilter('uid', req.params.subjectId) + '&' +
+        getPopulate('tabs', 'sections.sections.elements.exercises.choices', '0') + '&' +
+        getPopulate('tabs', 'sections.sections.elements.exercises.codes', '1') + '&' +
+        getPopulate('tabs', 'sections.sections.elements.elements', '2') + '&' +
+        getPopulate('tabs', 'sections.elements.exercises.choices', '3') + '&' +
+        getPopulate('tabs', 'sections.elements.exercises.codes', '4') + '&' +
+        getPopulate('tabs', 'sections.elements.elements', '5') + '&' +
+        getPopulate('tabs', 'navigation.navigationItems.navigationItems', '6')
       ,
       headers: { 'Authorization': process.env.ST_TOKEN },
     };
   },
   /**
    * Método responsável pela obtenção de corpo da requisição ao Strapi a partir
-   * da requisição recebida para verificação de respostas corretas.
+   * da requisição recebida para verificar resposta dada ao exercício recebido.
    * 
    * @param {object} req 
    * @returns {object}
    */
-  getCorrectAnswersRequest(req) {
+  getExerciseAnswerRequest(req) {
     return {
       method: 'GET',
-      url: `${process.env.ST_ENDPOINT}/answers?` +
-        getFilterForValues('uuid', req.query.uuids) + '&' +
-        getFilter('correct', 'true'),
+      url: `${process.env.ST_ENDPOINT}/exercises?` +
+        getFilter('uid', req.query.exerciseId) + '&' +
+        getFilter('answer', req.query.answer),
       headers: { 'Authorization': process.env.ST_TOKEN },
     };
   }

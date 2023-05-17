@@ -21,8 +21,8 @@ router.get('/subjects/:subjectId', (req, res) => {
     .catch(error => res.send(error));
 });
 
-router.get('/answers?*', (req, res) => {
-  axios.request(ST_REQUEST.getCorrectAnswersRequest(req))
+router.get('/exercises?*', (req, res) => {
+  axios.request(ST_REQUEST.getExerciseAnswerRequest(req))
     .then(response => res.send(ST_PARSER.parseCorrectAnswers(response.data)))
     .catch(error => res.send(error));
 });

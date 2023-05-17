@@ -28,7 +28,7 @@ function CodeSnippet(props) {
    * primária, caso já tenha sido carregado.
    */
   async function getSnippet() {
-    if (snippets.has(element.uuid)) { setSnippet(snippets.get(element.uuid)); }
+    if (snippets.has(element.uid)) { setSnippet(snippets.get(element.uid)); }
     else { setSnippet(new Snippet(element, (await calloutSnippet())?.data)); }
   }
 
@@ -46,9 +46,9 @@ function CodeSnippet(props) {
   const getSnippetsCallback = useCallback(getSnippets, [getSnippets]);
 
   function getSnippets() {
-    if (snippets.has(element.uuid)) { return; }
+    if (snippets.has(element.uid)) { return; }
 
-    snippets.set(element.uuid, snippet);
+    snippets.set(element.uid, snippet);
 
     setSnippets(snippets);
   }

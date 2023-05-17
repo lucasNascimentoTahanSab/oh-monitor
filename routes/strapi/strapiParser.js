@@ -7,12 +7,12 @@ const ST_PARSER = {
   parse(data) {
     if (typeof data !== 'object') { return data; }
 
-    return JSON.parse(JSON.stringify(data).replaceAll(/"correct":[false|true]+,?/g, ''));
+    return JSON.parse(JSON.stringify(data).replaceAll(/"answer":(".+?"|null),?/g, ''));
   },
   parseCorrectAnswers(data) {
     if (typeof data !== 'object') { return data; }
 
-    return data.data?.map(answer => answer.attributes?.uuid);
+    return data.data?.map(answer => answer.attributes?.answer);
   },
 };
 

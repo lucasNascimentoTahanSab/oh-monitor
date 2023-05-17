@@ -4,7 +4,8 @@
  */
 import { createElement } from 'react';
 import CodeSnippet from '../../components/CodeComponents/CodeSnippet/CodeSnippet.js';
-import CodeEditor from '../../components/CodeComponents/CodeEditor/CodeEditor.js';
+// import CodeEditor from '../../components/CodeComponents/CodeEditor/CodeEditor.js';
+import Exercises from '../../components/ExerciseComponents/Exercises/Exercises.js';
 
 const ELEMENTS = {
   'p': element => Builder._getInlineElement(element),
@@ -12,7 +13,8 @@ const ELEMENTS = {
   'ol': element => Builder._getBlockElement(element),
   'ul': element => Builder._getBlockElement(element),
   'snippet': element => Builder._getCodeSnippet(element),
-  'code': element => Builder._getCodeEditor(element)
+  // 'code': element => Builder._getCodeEditor(element),
+  'exercise': element => Builder._getExercise(element)
 };
 
 export default class Builder {
@@ -27,16 +29,20 @@ export default class Builder {
     return ELEMENTS[element?.type]?.(element);
   }
 
-  static _getCodeEditor(element) {
-    return createElement(CodeEditor, { key: element.uuid, element });
+  static _getExercise(element) {
+    return createElement(Exercises, { key: element.uid, element });
   }
 
+  // static _getCodeEditor(element) {
+  //   return createElement(CodeEditor, { key: element.uid, element });
+  // }
+
   static _getCodeSnippet(element) {
-    return createElement(CodeSnippet, { key: element.uuid, element });
+    return createElement(CodeSnippet, { key: element.uid, element });
   }
 
   static _getBlockElement(element) {
-    return createElement(element.type, { key: element.uuid, id: element.uuid }, Builder._getBlockElementInnerHTML(element));
+    return createElement(element.type, { key: element.uid, id: element.uid }, Builder._getBlockElementInnerHTML(element));
   }
 
   /**
@@ -52,6 +58,6 @@ export default class Builder {
   }
 
   static _getInlineElement(element) {
-    return createElement(element.type, { key: element.uuid, id: element.uuid }, element.value);
+    return createElement(element.type, { key: element.uid, id: element.uid }, element.value);
   }
 }
