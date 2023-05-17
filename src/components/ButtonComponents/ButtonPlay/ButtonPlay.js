@@ -2,10 +2,17 @@
  * @file Módulo responsável pela exibição do botão play.
  * @copyright Lucas N. T. Sab 2023
  */
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Util from '../../../classes/util/Util.js';
 
 function ButtonPlay(props) {
+  const buttonRef = useRef(null);
+
+  useEffect(() => {
+    buttonRef.current.style.minWidth = `${buttonRef.current.getBoundingClientRect().width}px`
+    buttonRef.current.style.minHeight = `${buttonRef.current.getBoundingClientRect().height}px`
+  }, []);
+
   function getShape() {
     return props.loading ? getLoading() : (props.playing ? getPause() : getPlay());
   }
@@ -41,7 +48,7 @@ function ButtonPlay(props) {
   }
 
   return (
-    <button onClick={event => Util.handle(props.onClick, event)}>
+    <button onClick={event => Util.handle(props.onClick, event)} ref={buttonRef}>
       {getShape()}
     </button>
   );

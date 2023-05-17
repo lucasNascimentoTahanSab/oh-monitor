@@ -7,11 +7,13 @@ import React, { useContext } from 'react';
 import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen.js';
 import CodeEditorFile from '../CodeEditorFile/CodeEditorFile.js';
 import CodeEditorMenu from '../CodeEditorMenu/CodeEditorMenu.js';
+import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
 import FilesContext from '../../Context/FilesContext/FilesContext.js';
 import FileContext from '../../Context/FileContext/FileContext.js';
 import Util from '../../../classes/util/Util.js';
 
 function CodeEditorWorkspace() {
+  const [currentExercise,] = useContext(ExerciseContext);
   const [files, setFiles] = useContext(FilesContext);
   const [currentFile,] = useContext(FileContext);
 
@@ -20,7 +22,7 @@ function CodeEditorWorkspace() {
       <CodeEditorMenu />
       <div className='code-editor__workspace-inner'>
         <CodeEditorFile file={currentFile} onChange={Util.updateFileIn(files, setFiles)} />
-        <AnimationScreen />
+        <AnimationScreen commands={currentExercise?.commands} />
       </div>
     </div>
   );

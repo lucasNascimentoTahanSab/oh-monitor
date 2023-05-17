@@ -3,18 +3,20 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import PackageContext from '../../Context/PackageContext/PackageContext.js';
+import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
 import RenderContext from '../../Context/RenderContext/RenderContext.js';
 import DraggerContext from '../../Context/DraggerContext/DraggerContext.js';
 import Drawer from '../../../classes/drawer/Drawer.js';
 import Util from '../../../classes/util/Util.js';
 
 function AnimationEngine(props) {
-  const [currentPackage,] = useContext(PackageContext);
   const [render, setRender] = useContext(RenderContext);
+  const [commands, setCommands] = useState([]);
   const [dragger, setDragger] = useState(null);
   const [snapshot, setSnapshot] = useState(null);
   const animationEngine = useRef(null);
+
+  useEffect(() => { setCommands(props.commands) }, [props.commands]);
 
   useEffect(() => { setDragger(props.dragger); }, [props.dragger]);
 
@@ -28,11 +30,9 @@ function AnimationEngine(props) {
   const parseCommandsCallback = useCallback(parseCommands, [parseCommands]);
 
   function parseCommands() {
-    const result = Drawer.draw('BST').with(currentPackage.commands);
+    const result = Drawer.draw('BST').with(commands);
 
     Util.handle(props.setSnapshots, result);
-    Util.handle(props.setSnapshot, null);
-    Util.handle(props.setReset, true);
 
     setRender(false);
   }
@@ -41,7 +41,7 @@ function AnimationEngine(props) {
    * Hook responsável por disparar construção da animação a ser apresentada quando
    * comandos gerados.
    */
-  useEffect(() => { if (render) { parseCommandsCallback() } }, [render, parseCommandsCallback]);
+  useEffect(() => { if (render && commands?.length) { parseCommandsCallback() } }, [render, commands, parseCommandsCallback]);
 
   return (
     <DraggerContext.Provider value={[dragger, setDragger]}>

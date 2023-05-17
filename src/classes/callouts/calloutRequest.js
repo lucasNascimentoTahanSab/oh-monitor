@@ -19,7 +19,7 @@ export const requests = {
     })
   },
   repo: {
-    getFile: () => ({
+    getCode: () => ({
       method: 'GET'
     })
   }

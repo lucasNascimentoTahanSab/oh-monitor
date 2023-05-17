@@ -11,6 +11,6 @@ export const endpoints = {
     getCorrectAnswers: uids => `api/content/exercises?${uids.map(uid => `uids[]=${uid}`).join('&')}`
   },
   repo: {
-    getFile: (path, language, extension) => `api/repo/${language}${path}.${extension}`
+    getCode: (path, language, extension) => `api/repo/${language}${path}.${extension}`
   }
 };

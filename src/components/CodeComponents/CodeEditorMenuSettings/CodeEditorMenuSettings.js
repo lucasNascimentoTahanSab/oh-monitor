@@ -13,7 +13,7 @@ import config from '../../../config.json';
 
 function CodeEditorMenuSettings() {
   const [files,] = useContext(FilesContext);
-  const [, setResult] = useContext(ResultContext);
+  const [updateResult] = useContext(ResultContext);
   const [fullscreen, setFullscreen] = useContext(FullscreenContext);
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +33,7 @@ function CodeEditorMenuSettings() {
   }
 
   function getResult(result) {
-    setResult(result);
+    updateResult(result);
     setLoading(false);
   }
 

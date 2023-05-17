@@ -12,6 +12,7 @@ import Dragger from '../../../classes/util/Dragger.js';
 import config from '../../../config.json';
 
 function AnimationScreen(props) {
+  const [commands, setCommands] = useState([]);
   const [play, setPlay] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [dragger, setDragger] = useState(null);
@@ -26,6 +27,8 @@ function AnimationScreen(props) {
   const [reset, setReset] = useState(false);
   const [timer, setTimer] = useState(null);
   const animationScreen = useRef(null);
+
+  useEffect(() => { setCommands(props.commands) }, [props.commands]);
 
   /**
    * Hook responsável pela atualização do dragger para possibilitar arrastar pela tela e
@@ -78,6 +81,8 @@ function AnimationScreen(props) {
   }, [reset, totalTime, snapshots, playing, resetTimelineCallback]);
 
   function configureSnapshots(result) {
+    setReset(true);
+    setSnapshot(null);
     setSnapshots(result);
     setTotalTime(result?.length * config.animation.duration);
   }
@@ -258,9 +263,9 @@ function AnimationScreen(props) {
     <div className={`code-snippet__animation ${getAnimationScreenClass()}`}>
       <div className='animation-screen__screen' ref={animationScreen} onMouseDown={handleScreenMouseDown}>
         <AnimationEngine
+          commands={commands}
           setAnimationEngine={setAnimationEngine}
           setSnapshots={configureSnapshots}
-          setSnapshot={setSnapshot}
           setReset={setReset}
           snapshot={snapshot}
           dragger={dragger} />

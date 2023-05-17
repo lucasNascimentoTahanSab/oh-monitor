@@ -15,5 +15,6 @@ export default class Code {
     this.order = code?.attributes?.order ?? code?.order ?? null;
     this.disabled = code?.attributes?.disabled ?? code?.disabled ?? false;
     this.alternativePath = code?.attributes?.alternativePath ?? code?.alternativePath ?? null;
+    this.content = code?.content ?? null;
   }
 }

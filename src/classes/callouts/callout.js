@@ -32,9 +32,9 @@ const callouts = {
     ),
   },
   repo: {
-    getFile: async (path, language, extension) => (
+    getCode: async (path, language, extension) => (
       new Promise((resolve, reject) => {
-        fetch(endpoints.repo.getFile(path, language, extension), requests.repo.getFile())
+        fetch(endpoints.repo.getCode(path, language, extension), requests.repo.getCode())
           .then(response => resolve(response.json()))
           .catch(error => reject(error))
       })

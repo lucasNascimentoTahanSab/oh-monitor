@@ -16,6 +16,10 @@ export default class Exercise {
     this.statement = exercise?.attributes?.statement ?? exercise?.statement ?? null;
     this.codes = this._getCodes(exercise?.attributes?.codes?.data ?? exercise?.codes);
     this.choices = this._getChoices(exercise?.attributes?.choices?.data ?? exercise?.choices);
+    this.result = exercise?.result ?? null;
+    this.commands = exercise?.commands ?? [];
+    this.output = exercise?.output ?? [];
+    this.input = exercise?.input ?? [];
   }
 
   _getChoices(choices) {
