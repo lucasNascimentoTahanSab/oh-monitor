@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,700;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 :root {
   --color-gray: #808B96;
@@ -78,7 +78,9 @@ button {
   padding: 0;
 }
 
-/* .App {} */
+.App {
+  position: relative;
+}
 
 .section {
   padding: 3.125rem;
@@ -706,6 +708,74 @@ li.exercise__question-statement:not(:last-child) {
   }
 }
 
+.modal-toast {
+  display: flex;
+  flex-direction: column;
+  gap: .625rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background-color: var(--color-white);
+  border-radius: 0.5rem;
+  height: fit-content;
+  width: 30rem;
+  margin: 0 auto;
+  padding: 1rem;
+  animation: show-toast .75s ease forwards, vanish .75s ease forwards 5s;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.modal-toast>header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .625rem;
+}
+
+.modal-toast>section {
+  display: flex;
+  align-items: center;
+  gap: .625rem;
+}
+
+@keyframes show-toast {
+  100% {
+    opacity: 1;
+    transform: translateY(6rem);
+  }
+}
+
+@keyframes vanish {
+  100% {
+    opacity: 0;
+    transform: translateY(-6rem);
+  }
+}
+
+.modal-toast--info {
+  background: var(--color-blue--light-dark);
+}
+
+.modal-toast--error {
+  background: var(--color-red);
+}
+
+.modal-toast--success {
+  background: var(--color-green);
+}
+
+.modal-toast--info *,
+.modal-toast--error *,
+.modal-toast--success * {
+  color: var(--color-white);
+}
+
+.modal-toast__overlay {
+  position: absolute;
+  top: -4rem;
+  left: 0;
+  width: 100%;
+}
+
 /* utils */
 
 .background-color--color-gray {
@@ -722,6 +792,10 @@ li.exercise__question-statement:not(:last-child) {
 
 .background-color--color-blue--dark {
   background-color: var(--color-blue--dark);
+}
+
+.color--color-blue--dark {
+  color: var(--color-blue--dark);
 }
 
 .overflow-ellipsis {
