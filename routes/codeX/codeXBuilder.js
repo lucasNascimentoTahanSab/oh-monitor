@@ -15,12 +15,12 @@ const GH = require('../gitHub/gitHubRouter.js');
  * Método responsável pela montagem dos arquivos a serem enviados ao CodeX para compilação/interpretação 
  * e execução. 
  * 
- * @param {array} files 
+ * @param {array} codes 
  * @param {object} config 
  * @returns {Promise}
  */
-async function build(files, config) {
-  return (await Promise.all(sortFilesByOrder(files, config)?.map(async file => {
+async function build(codes, config) {
+  return (await Promise.all(sortFilesByOrder(codes, config)?.map(async file => {
     return file.alternativePath ? (await getAlternativeFile(getAlternativeFileEndpoint(file, config)))?.data : file.content;
   }))).reduce((content, data) => `${content}${data}\n`, '');
 }
@@ -48,26 +48,26 @@ function getAlternativeFile(url) {
  * Método responsável por ordenar os arquivos recebidos antes de agregá-los, de acordo com configurações 
  * pré-definidas para garantia de compilação/interpretação de múltiplos arquivos pelo CodeX.
  * 
- * @param {array} files 
+ * @param {array} codes 
  * @param {object} config 
  * @returns {array}
  */
-function sortFilesByOrder(files, config) {
-  if (!files?.length) { return null; }
+function sortFilesByOrder(codes, config) {
+  if (!codes?.length) { return null; }
 
-  return config?.languages?.[config.language]?.sort === 'asc' ? sortFilesByOrderAsc(files) : sortFilesByOrderDesc(files);
+  return config?.languages?.[config.language]?.sort === 'asc' ? sortFilesByOrderAsc(codes) : sortFilesByOrderDesc(codes);
 }
 
-function sortFilesByOrderAsc(files) {
-  if (!files?.length) { return null; }
+function sortFilesByOrderAsc(codes) {
+  if (!codes?.length) { return null; }
 
-  return files.sort((firstFile, secondFile) => firstFile.order > secondFile.order ? 1 : -1);
+  return codes.sort((firstFile, secondFile) => firstFile.order > secondFile.order ? 1 : -1);
 }
 
-function sortFilesByOrderDesc(files) {
-  if (!files?.length) { return null; }
+function sortFilesByOrderDesc(codes) {
+  if (!codes?.length) { return null; }
 
-  return files.sort((firstFile, secondFile) => firstFile.order > secondFile.order ? -1 : 1);
+  return codes.sort((firstFile, secondFile) => firstFile.order > secondFile.order ? -1 : 1);
 }
 
 const CX_BUILDER = { build };

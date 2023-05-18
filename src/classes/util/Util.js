@@ -74,6 +74,19 @@ export default class Util {
   }
 
   /**
+   * Método responsável pela obtenção de itens em carregamento dentre os itens
+   * recebidos.
+   * 
+   * @param {array} items 
+   * @returns {object}
+   */
+  static getLoadingItem(items) {
+    if (!items?.length) { return null; }
+
+    return items.find(item => item.loading);
+  }
+
+  /**
    * Método responsável pela obtenção de um item, dados os itens recebidos, a partir
    * de um uid correspondente.
    * 
@@ -146,36 +159,6 @@ export default class Util {
   }
 
   /**
-   * Método responsável pela seleção de um item num mapa recebido.
-   * 
-   * @param {Map} items 
-   * @param {function} setItems 
-   * @returns {function}
-   */
-  static setCurrentItemInMap(items, setItems) {
-    if (typeof setItems !== 'function') { return function () { }; }
-    if (!items?.size) { return function () { }; }
-
-    return function (uid) {
-      unselectCurrentItem();
-      selectItemByUid(uid);
-      setItems(new Map(items));
-
-      function selectItemByUid(uid) {
-        const newItem = items.get(uid);
-
-        if (newItem) { newItem.current = true; }
-      }
-
-      function unselectCurrentItem() {
-        const currentItem = Util.getCurrentItem(Array.from(items.values()));
-
-        if (currentItem) { currentItem.current = false; }
-      }
-    }
-  }
-
-  /**
    * Método responsável pela atualização de um item dentro de um conjunto de outros itens
    * recebidos.
    * 
@@ -193,27 +176,6 @@ export default class Util {
       Util.matchObjects(item, Util.getItemByUid(items, item.uid));
 
       setItems([...items]);
-    }
-  }
-
-  /**
-   * Método responsável pela atualização de um item dentro de um mapa de outros itens
-   * recebidos.
-   * 
-   * @param {Map} items 
-   * @param {function} setItems 
-   * @returns {function}
-   */
-  static updateItemInMap(items, setItems) {
-    if (typeof setItems !== 'function') { return function () { }; }
-    if (!items?.size) { return function () { }; }
-
-    return function (item) {
-      if (typeof item !== 'object') { return; }
-
-      Util.matchObjects(item, items.get(item.uid));
-
-      setItems(new Map(items));
     }
   }
 
@@ -244,22 +206,22 @@ export default class Util {
    * Método responsável pela atualização do código em arquivo dentre os arquivos
    * recebidos.
    * 
-   * @param {Map} codes 
+   * @param {array} codes 
    * @param {function} setCodes 
    * @returns {function}
    */
   static updateCodeIn(codes, setCodes) {
     if (typeof setCodes !== 'function') { return function () { }; }
-    if (!codes?.size) { return function () { }; }
+    if (!codes?.length) { return function () { }; }
 
     return function (uid, content) {
       updateFileContent(uid, content);
-      setCodes(new Map(codes));
+      setCodes([...codes]);
 
       function updateFileContent(uid, content) {
-        const file = codes.get(uid);
+        const code = Util.getItemByUid(codes, uid);
 
-        if (file) { file.content = content; }
+        if (code) { code.content = content; }
       }
     }
   }
@@ -283,5 +245,53 @@ export default class Util {
     });
 
     return stateValue;
+  }
+
+  /**
+   * Método responsável pela configuração do próximo item como atual.
+   * 
+   * @param {array} item 
+   * @param {function} setItems 
+   * @returns {function}
+   */
+  static goToNextItem(item, setItems) {
+    if (typeof setItems !== 'function') { return function () { }; }
+    if (!item?.length) { return function () { }; }
+
+    return function (uid) {
+      const nextTabUid = Util.getNextItemUid(item, uid);
+
+      Util.setCurrentItem(item, setItems)(nextTabUid);
+    }
+  }
+
+  /**
+   * Método responsável por recuperar UID do próximo item em lista recebida.
+   * 
+   * @param {array} items 
+   * @param {string} uid 
+   * @returns {number}
+   */
+  static getNextItemUid(items, uid) {
+    if (!items?.length) { return null; }
+
+    const currentItemIndex = Util.getItemIndex(items, uid);
+
+    if (currentItemIndex === items.length - 1) { return uid; }
+
+    return items[currentItemIndex + 1].uid;
+  }
+
+  /**
+   * Método responsável por recuperar índice do item em lista recebida.
+   * 
+   * @param {array} items 
+   * @param {string} uid 
+   * @returns {number}
+   */
+  static getItemIndex(items, uid) {
+    if (!items?.length) { return null; }
+
+    return items.map(item => item.uid)?.indexOf(uid);
   }
 }

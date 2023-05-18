@@ -3,14 +3,15 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import RenderContext from '../../Context/RenderContext/RenderContext.js';
 import AnimationEngine from '../AnimationEngine/AnimationEngine.js';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand.js';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
 import InputRange from '../../InputComponents/InputRange/InputRange.js';
-import Util from '../../../classes/util/Util.js';
 import Dragger from '../../../classes/util/Dragger.js';
+import Fullscreen from '../../../classes/util/Fullscreen.js';
+import Util from '../../../classes/util/Util.js';
 import config from '../../../config.json';
-import RenderContext from '../../Context/RenderContext/RenderContext.js';
 
 function AnimationScreen(props) {
   const [, setRender] = useContext(RenderContext);
@@ -28,6 +29,8 @@ function AnimationScreen(props) {
   const [finished, setFinished] = useState(false);
   const [reset, setReset] = useState(false);
   const [timer, setTimer] = useState(null);
+  const [fullscreen, setFullscreen] = useState(false);
+  const animationCamera = useRef(null);
   const animationScreen = useRef(null);
 
   useEffect(() => { setCommands(props.commands) }, [props.commands]);
@@ -37,11 +40,16 @@ function AnimationScreen(props) {
    * focar em elementos expecíficos.
    */
   useEffect(() => {
-    if (!animationScreen) { return; }
+    if (!animationCamera) { return; }
     if (!animationEngine) { return; }
 
-    setDragger(new Dragger(animationScreen.current, animationEngine.current));
+    setDragger(new Dragger(animationCamera.current, animationEngine.current));
   }, [animationEngine]);
+
+  useEffect(() => {
+    if (fullscreen) { Fullscreen.open(animationScreen.current); }
+    else { Fullscreen.close(); }
+  }, [fullscreen]);
 
   const pauseTimelineCallback = useCallback(pauseTimeline, [pauseTimeline]);
 
@@ -122,10 +130,6 @@ function AnimationScreen(props) {
     if (!play) { return; }
 
     playTimeline();
-  }
-
-  function getAnimationScreenClass() {
-    return props.theme === 'dark' ? 'background-color--color-blue--dark' : 'background-color--color-blue--light';
   }
 
   /**
@@ -275,8 +279,8 @@ function AnimationScreen(props) {
   }
 
   return (
-    <div className={`code-snippet__animation ${getAnimationScreenClass()}`}>
-      <div className='animation-screen__screen' ref={animationScreen} onMouseDown={handleScreenMouseDown}>
+    <div className='code-snippet__animation' ref={animationScreen}>
+      <div className='animation-screen__screen' ref={animationCamera} onMouseDown={handleScreenMouseDown}>
         <AnimationEngine
           commands={commands}
           setAnimationEngine={setAnimationEngine}
@@ -288,7 +292,7 @@ function AnimationScreen(props) {
       <div className='animation-screen__control'>
         <ButtonPlay height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={toggleTimeline} playing={playing} />
         <InputRange theme={props.theme} max={totalTime} value={currentTime} onChange={onInputRangeChange} onMouseUp={onInputMouseUp} />
-        <ButtonExpand height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} />
+        <ButtonExpand height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={() => setFullscreen(!fullscreen)} />
       </div>
     </div>
   );

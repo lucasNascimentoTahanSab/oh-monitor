@@ -10,7 +10,11 @@ function ExerciseChoices(props) {
   const [resultByExercise, setResultByExercise] = useContext(ResultContext);
   const [choices, setChoices] = useState(null);
 
-  useEffect(() => { setChoices(currentExercise?.choices); }, [currentExercise?.choices]);
+  useEffect(() => {
+    setChoices(currentExercise?.choices);
+    updateResultByExercise(currentExercise?.choices);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentExercise?.choices]);
 
   /**
    * Método responsável pela exibição das respostas para o exercício em questão.
@@ -52,7 +56,11 @@ function ExerciseChoices(props) {
    * @param {array} choices 
    */
   function updateResultByExercise(choices) {
-    resultByExercise.set(currentExercise.uid, Util.getCurrentItem(choices)?.uid);
+    const currentChoice = Util.getCurrentItem(choices)?.uid;
+
+    if (!currentChoice) { return; }
+
+    resultByExercise.set(currentExercise.uid, currentChoice);
 
     setResultByExercise(new Map(resultByExercise));
   }

@@ -18,6 +18,8 @@ export default class Tab {
     this.navigation = tab?.attributes?.navigation?.data ? new Navigation(tab.attributes.navigation.data)
       : tab?.navigation ? new Navigation(tab.navigation)
         : null;
+    this.loading = tab?.loading ?? false;
+    this.solved = tab?.solved ?? false;
   }
 
   _getSections(sections) {
