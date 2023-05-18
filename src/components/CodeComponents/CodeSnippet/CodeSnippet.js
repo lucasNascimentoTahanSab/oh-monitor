@@ -65,10 +65,6 @@ function CodeSnippet(props) {
    */
   useEffect(() => { if (snippet) { getSnippetsCallback() } }, [snippet, getSnippetsCallback]);
 
-  function displayAnimationScreen() {
-    return snippet?.displayAnimationScreen ? (<AnimationScreen commands={snippet?.commands} />) : null;
-  }
-
   return (
     <RenderContext.Provider value={[render, setRender]}>
       <div className='code-snippet' ref={snippetRef}>
@@ -80,7 +76,7 @@ function CodeSnippet(props) {
         </div>
         <div className='code-snippet__inner'>
           <CodeEditorFile className='code-snippet__file' code={snippet} minimap={false} />
-          {displayAnimationScreen()}
+          <AnimationScreen commands={snippet?.commands} />
         </div>
       </div>
     </RenderContext.Provider>
