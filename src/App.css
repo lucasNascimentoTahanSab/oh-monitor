@@ -158,6 +158,16 @@ button {
   display: flex;
   flex-direction: column;
   gap: 1.875rem;
+  opacity: 0;
+  transform: translateY(15rem);
+  animation: show-up 1.5s forwards;
+}
+
+@keyframes show-up {
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .classroom__content-sections {
