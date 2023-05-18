@@ -19,7 +19,7 @@ import Util from '../../../classes/util/Util.js';
 
 function Exercises(props) {
   const [tabs, setTabs] = useContext(TabsContext);
-  const [currentTab,] = useContext(TabContext);
+  const [currentTab, setCurrentTab] = useContext(TabContext);
   const [elements, setElements] = useContext(ElementsContext);
   const [, setToastEvent] = useContext(ToastEventContext);
   const [resultByExercise, setResultByExercise] = useState(new Map());
@@ -36,6 +36,10 @@ function Exercises(props) {
     setCurrentElement(props.element);
     setExercises(props.element?.exercises);
   }, [props.element]);
+
+  useEffect(() => {
+    setNext(currentTab.solved);
+  }, [currentTab]);
 
   /**
    * Método responsável pela obtenção dos exercícios a serem exibidos na guia atual.
@@ -101,7 +105,7 @@ function Exercises(props) {
       setToastEvent(new ShowToastEvent('Ops...', 'Revise suas respostas e tente novamente!', 'error'));
     } else {
       setToastEvent(new ShowToastEvent('Sucesso!', 'Você acertou em cheio e já pode avançar para a próxima seção!', 'success'));
-      setNext(true);
+      setCurrentTab({ ...currentTab, solved: true });
     }
   }
 
