@@ -9,7 +9,7 @@ import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import Util from '../../../classes/util/Util.js';
 
 function CodeEditorMenu() {
-  const [code, setCodes] = useContext(CodesContext);
+  const [codes, setCodes] = useContext(CodesContext);
 
   /**
    * Método responsável pela obtenção dos itens do menu a serem exibidos.
@@ -17,16 +17,16 @@ function CodeEditorMenu() {
    * @returns {array}
    */
   function getMenuItems() {
-    if (!code?.size) { return null; }
+    if (!codes?.length) { return null; }
 
-    return Array.from(code.values()).map(file =>
+    return codes.map(file =>
       <CodeEditorMenuItem
         key={file.uid}
         item={file}
         group='code-editor-menu-radio-group'
         selectorClassName='menu__item-radio'
         labelClassName='menu__item-label'
-        onChange={Util.setCurrentItemInMap(code, setCodes)}
+        onChange={Util.setCurrentItem(codes, setCodes)}
       />
     );
   }

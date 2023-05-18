@@ -29,7 +29,7 @@ function CodeEditorMenuSettings() {
    * @returns {object}
    */
   function sendCode() {
-    callouts.code.post({ files: Array.from(codes.values()), config }).then(getResult).catch(getResult);
+    callouts.code.post({ codes, config }).then(getResult).catch(getResult);
   }
 
   function getResult(result) {

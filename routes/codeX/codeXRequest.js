@@ -10,7 +10,7 @@ const CX_REQUEST = {
   async getRequest(req) {
     const encodedParams = new URLSearchParams();
 
-    encodedParams.append('code', await CX_BUILDER.build(req.body.files, req.body.config));
+    encodedParams.append('code', await CX_BUILDER.build(req.body.codes, req.body.config));
     encodedParams.append('language', req.body.config?.language);
 
     return {

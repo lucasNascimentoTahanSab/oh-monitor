@@ -10,6 +10,7 @@ import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt.js';
 import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext.js';
 import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import CodeContext from '../../Context/CodeContext/CodeContext.js';
+import TabContext from '../../Context/TabContext/TabContext';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
 import ResultContext from '../../Context/ResultContext/ResultContext';
 import OutputContext from '../../Context/OutputContext/OutputContext.js';
@@ -21,9 +22,10 @@ import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
 
 function CodeEditor() {
+  const [currentTab, setCurrentTab] = useContext(TabContext);
   const [currentExercise, setCurrentExercise] = useContext(ExerciseContext);
   const [resultByExercise, setResultByExercise] = useContext(ResultContext);
-  const [codes, setCodes] = useState(new Map());
+  const [codes, setCodes] = useState([]);
   const [currentCode, setCurrentCode] = useState(null);
   const [output, setOutput] = useState([getRightArrow('output')]);
   const [input, setInput] = useState([getRightArrow('input')]);
@@ -39,37 +41,32 @@ function CodeEditor() {
    */
   async function getCodes() {
     if (!currentExercise?.codes?.length) { return; }
-    if (codes.size) { return; }
+    if (codes.length) { return; }
 
-    const retrievedCodes = await retrieveCodesFromRepo();
+    if (isThereAnyCodeToRetrieve()) {
+      setCurrentTab({ ...currentTab, loading: true });
 
-    setCodesMap(retrievedCodes);
-    updateCodes(codes);
+      updateCodes(await retrieveCodesFromRepo());
+
+      setCurrentTab({ ...currentTab, loading: false });
+    } else {
+      updateCodes(await retrieveCodesFromRepo());
+    }
+
     updateOutputContent();
   }
 
   /**
    * Método responsável pela atualização dos arquivos assim como arquivo atual.
    * 
-   * @param {Map} codes 
+   * @param {array} codes 
    */
   function updateCodes(codes) {
-    const codesArray = Array.from(codes.values());
-    const newCurrentCode = Util.getCurrentItem(codesArray);
+    const newCurrentCode = Util.getCurrentItem(codes);
 
-    setCodes(new Map(codes));
+    setCodes(codes);
     setCurrentCode(newCurrentCode);
-    setCurrentExercise({ ...currentExercise, codes: codesArray });
-  }
-
-  /**
-   * Método responsável pela configuração de mapa para os arquivos de código recuperados, 
-   * separados por endereço.
-   * 
-   * @param {array} retrievedCodes 
-   */
-  function setCodesMap(retrievedCodes) {
-    retrievedCodes.forEach(code => codes.set(code.uid, code));
+    setCurrentExercise({ ...currentExercise, codes });
   }
 
   /**
@@ -90,11 +87,21 @@ function CodeEditor() {
     return await callouts.repo.getCode(code.path, config.language, config.languages[config.language].extension);
   }
 
+  function isThereAnyCodeToRetrieve() {
+    return currentExercise.codes.find(code => code.content === null);
+  }
+
   /**
    * Hook responsável pela requisição dos arquivos em repositório ou obtenção em memória
    * quando previamente carregados, configurando arquivo principal.
    */
-  useEffect(() => { if (!currentCode && currentExercise) { getCodesCallback() } }, [currentCode, currentExercise, getCodesCallback]);
+  useEffect(() => {
+    if (!currentExercise) { return; }
+    if (currentCode) { return; }
+    if (currentTab.loading) { return; }
+
+    getCodesCallback();
+  }, [currentCode, currentExercise, currentTab, getCodesCallback]);
 
   /**
    * Método responsável por configurar saída e comandos de acordo com resultado em exercício
