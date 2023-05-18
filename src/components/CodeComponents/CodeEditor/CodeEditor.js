@@ -54,6 +54,7 @@ function CodeEditor() {
     }
 
     updateOutputContent();
+    updateResultByExercise(currentExercise.output);
   }
 
   /**
@@ -128,6 +129,8 @@ function CodeEditor() {
    * @param {object} result 
    */
   function updateResultByExercise(result) {
+    if (result[result.length - 1] === undefined) { return; }
+
     resultByExercise.set(currentExercise.uid, result[result.length - 1]);
 
     setResultByExercise(new Map(resultByExercise));

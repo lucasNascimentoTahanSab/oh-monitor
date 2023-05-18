@@ -21,8 +21,8 @@ function ExerciseChoice(props) {
   useEffect(() => {
     if (!choice?.current) { return; }
 
-    choice.wrong = validation?.[currentExercise.uid] ? !validation[currentExercise.uid].correct : false;
-    choice.correct = validation?.[currentExercise.uid] ? validation[currentExercise.uid].correct : false;
+    choice.wrong = validation ? (validation[currentExercise.uid] ? !validation[currentExercise.uid].correct : false) : choice.wrong;
+    choice.correct = validation ? (validation[currentExercise.uid] ? validation[currentExercise.uid].correct : false) : choice.correct;
 
     Util.handle(props.updateChoice, choice);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -44,6 +44,10 @@ function ExerciseChoice(props) {
     return choice?.current ?? false;
   }
 
+  function getDisabled() {
+    return Boolean(Util.getCorrectItem(currentExercise?.choices));
+  }
+
   return (
     <li id={choice?.uid} className='menu__item exercise__question-choice'>
       <input
@@ -51,6 +55,7 @@ function ExerciseChoice(props) {
         className='menu__item-radio'
         type='radio'
         checked={getChecked()}
+        disabled={getDisabled()}
         name={props.group}
         onChange={() => Util.handle(props.selectChoice, choice.uid)}
       >
