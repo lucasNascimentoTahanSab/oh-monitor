@@ -79,7 +79,7 @@ function CodeSnippet(props) {
           </div>
         </div>
         <div className='code-snippet__inner'>
-          <CodeEditorFile className='code-snippet__file' code={snippet?.content} minimap={false} />
+          <CodeEditorFile className='code-snippet__file' code={snippet} minimap={false} />
           {displayAnimationScreen()}
         </div>
       </div>
