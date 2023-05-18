@@ -1,3 +1,7 @@
+/**
+ * @file Módulo responsável por controlar/configurar exibição de modal toast.
+ * @copyright Lucas N. T. Sab 2023 
+ */
 import Util from "./Util";
 
 export default class ShowToastEvent {
@@ -8,6 +12,13 @@ export default class ShowToastEvent {
     this._timer = null;
   }
 
+  /**
+   * Método responsável pela exibição do toast ao usuário, configurando fechamento
+   * para mais 6500 milissegundos.
+   * 
+   * @param {function} setToastEvent 
+   * @param {function} setShowToastEvent 
+   */
   show(setToastEvent, setShowToastEvent) {
     Util.handle(setShowToastEvent, true);
 
@@ -16,6 +27,13 @@ export default class ShowToastEvent {
     }, 6500);
   }
 
+  /**
+   * Método responsável pelo fechamento do toast, por decisão do usuário ou tempo
+   * limite de exibição atingido.
+   * 
+   * @param {function} setToastEvent 
+   * @param {function} setShowToastEvent 
+   */
   unmountToastEvent(setToastEvent, setShowToastEvent) {
     Util.handle(setShowToastEvent, false);
     Util.handle(setToastEvent, null);
