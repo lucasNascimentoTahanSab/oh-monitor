@@ -7,26 +7,25 @@ import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/Button
 import ElementsContext from '../../Context/ElementsContext/ElementsContext.js';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js';
 import ResultContext from '../../Context/ResultContext/ResultContext';
+import ValidationContext from '../../Context/ValidationContext/ValidationContext.js';
+import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
 import Element from '../../../classes/strapi/Element.js';
 import Exercise from '../Exercise/Exercise.js';
 import Validator from '../../../classes/util/Validator.js';
+import ShowToastEvent from '../../../classes/util/ShowToastEvent.js';
 import Util from '../../../classes/util/Util.js';
-import ValidationContext from '../../Context/ValidationContext/ValidationContext.js';
 
 function Exercises(props) {
   const [elements, setElements] = useContext(ElementsContext);
+  const [, setToastEvent] = useContext(ToastEventContext);
   const [resultByExercise, setResultByExercise] = useState(new Map());
   const [exercises, setExercises] = useState([]);
   const [currentElement, setCurrentElement] = useState(null);
   const [validator, setValidator] = useState(null);
   const [validation, setValidation] = useState(null);
-  const [showError, setShowError] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
 
-  useEffect(() => {
-    setValidator(new Validator(setShowError, setShowSuccess, setShowLoading));
-  }, []);
+  useEffect(() => { setValidator(new Validator(setShowLoading)); }, []);
 
   useEffect(() => {
     setCurrentElement(props.element);
@@ -69,7 +68,32 @@ function Exercises(props) {
    * Método responsável por validar respostas entregues pelo usuário.
    */
   async function validateResult() {
-    setValidation(await validator.validate(resultByExercise));
+    if (resultByExercise.size < exercises.length) {
+      return setToastEvent(new ShowToastEvent(
+        'Não está se esquecendo de nada?',
+        'Responda as atividades restantes antes de enviar suas respostas!',
+        'info'
+      ));
+    }
+
+    const response = await validator.validate(resultByExercise);
+
+    setValidation(response);
+    validateResponse(response);
+  }
+
+  function validateResponse(response) {
+    const wrongAnswers = getWrongAnswers(response);
+
+    if (wrongAnswers.length > 0) {
+      setToastEvent(new ShowToastEvent('Ops...', 'Revise suas respostas e tente novamente!', 'info'));
+    }
+  }
+
+  function getWrongAnswers(response) {
+    if (typeof response !== 'object') { return 0; }
+
+    return Object.keys(response).filter(key => !response[key].correct);
   }
 
   return (

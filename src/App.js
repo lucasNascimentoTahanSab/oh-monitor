@@ -30,7 +30,13 @@ function App() {
    * tempo de exibição atingido.
    */
   function unmountToastEvent() {
-    toastEvent.unmountToastEvent(setToastEvent, setShowToastEvent)
+    toastEvent?.unmountToastEvent(setToastEvent, setShowToastEvent)
+  }
+
+  function updateToastEvent(updatedToastEvent) {
+    unmountToastEvent();
+
+    setToastEvent(updatedToastEvent);
   }
 
   function getToastEvent() {
@@ -38,7 +44,7 @@ function App() {
   }
 
   return (
-    <ToastEventContext.Provider value={[toastEvent, setToastEvent]}>
+    <ToastEventContext.Provider value={[toastEvent, updateToastEvent]}>
       <div className='App' ref={appRef}>
         {getToastEvent()}
         <Classroom uid='subject' />

@@ -1,17 +1,7 @@
 import callouts from "../callouts/callout";
 
 export default class Validator {
-  /**
-   * Construtor recebe funções para exibição de erros, sucesso ou loading
-   * durante ou após validação.
-   * 
-   * @param {function} showError 
-   * @param {function} showSuccess 
-   * @param {function} showLoading 
-   */
-  constructor(showError, showSuccess, showLoading) {
-    this.showError = showError ?? function () { };
-    this.showSuccess = showSuccess ?? function () { };
+  constructor(showLoading) {
     this.showLoading = showLoading ?? function () { };
   }
 
