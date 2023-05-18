@@ -19,11 +19,13 @@ const ST_REQUEST = {
         getFilter('uid', req.params.subjectId) + '&' +
         getPopulate('tabs', 'sections.sections.elements.exercises.choices', '0') + '&' +
         getPopulate('tabs', 'sections.sections.elements.exercises.codes', '1') + '&' +
-        getPopulate('tabs', 'sections.sections.elements.elements', '2') + '&' +
-        getPopulate('tabs', 'sections.elements.exercises.choices', '3') + '&' +
-        getPopulate('tabs', 'sections.elements.exercises.codes', '4') + '&' +
-        getPopulate('tabs', 'sections.elements.elements', '5') + '&' +
-        getPopulate('tabs', 'navigation.navigationItems.navigationItems', '6')
+        getPopulate('tabs', 'sections.sections.elements.snippet.codes', '2') + '&' +
+        getPopulate('tabs', 'sections.sections.elements.elements', '3') + '&' +
+        getPopulate('tabs', 'sections.elements.exercises.choices', '4') + '&' +
+        getPopulate('tabs', 'sections.elements.exercises.codes', '5') + '&' +
+        getPopulate('tabs', 'sections.elements.snippet.codes', '6') + '&' +
+        getPopulate('tabs', 'sections.elements.elements', '7') + '&' +
+        getPopulate('tabs', 'navigation.navigationItems.navigationItems', '8')
       ,
       headers: { 'Authorization': process.env.ST_TOKEN },
     };

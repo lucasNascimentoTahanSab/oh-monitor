@@ -8,7 +8,7 @@ import CodeEditorMenuSettings from '../CodeEditorMenuSettings/CodeEditorMenuSett
 import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import Util from '../../../classes/util/Util.js';
 
-function CodeEditorMenu() {
+function CodeEditorMenu(props) {
   const [codes, setCodes] = useContext(CodesContext);
 
   /**
@@ -19,11 +19,11 @@ function CodeEditorMenu() {
   function getMenuItems() {
     if (!codes?.length) { return null; }
 
-    return codes.map(file =>
+    return codes.map(code =>
       <CodeEditorMenuItem
-        key={file.uid}
-        item={file}
-        group='code-editor-menu-radio-group'
+        key={`${code.uid}-code-menu`}
+        item={code}
+        group={`${code.uid}-code-menu`}
         selectorClassName='menu__item-radio'
         labelClassName='menu__item-label'
         onChange={Util.setCurrentItem(codes, setCodes)}

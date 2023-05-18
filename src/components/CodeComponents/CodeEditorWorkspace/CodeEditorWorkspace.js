@@ -7,22 +7,20 @@ import React, { useContext } from 'react';
 import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen.js';
 import CodeEditorFile from '../CodeEditorFile/CodeEditorFile.js';
 import CodeEditorMenu from '../CodeEditorMenu/CodeEditorMenu.js';
-import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
 import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import CodeContext from '../../Context/CodeContext/CodeContext.js';
 import Util from '../../../classes/util/Util.js';
 
-function CodeEditorWorkspace() {
-  const [currentExercise,] = useContext(ExerciseContext);
+function CodeEditorWorkspace(props) {
   const [codes, setCodes] = useContext(CodesContext);
   const [currentCode,] = useContext(CodeContext);
 
   return (
     <div className='code-editor__workspace'>
-      <CodeEditorMenu />
+      <CodeEditorMenu file={props.file} />
       <div className='code-editor__workspace-inner'>
-        <CodeEditorFile className='code-editor__file' code={currentCode} onChange={Util.updateCodeIn(codes, setCodes)} />
-        <AnimationScreen commands={currentExercise?.commands} />
+        <CodeEditorFile code={currentCode} onChange={Util.updateCodeIn(codes, setCodes)} />
+        <AnimationScreen commands={props.file?.commands} />
       </div>
     </div>
   );

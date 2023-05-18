@@ -3,14 +3,25 @@
  * recuperado em integração.
  * @copyright Lucas N. T. Sab 2023
  */
-import Element from './Element.js';
 
-export default class Snippet extends Element {
-  constructor(snippet, content) {
-    super(snippet);
+import Code from "./Code";
 
-    this.disabled = snippet?.disabled ?? true;
-    this.content = snippet?.content ?? content ?? null;
+export default class Snippet {
+  constructor(snippet) {
+    this.uid = snippet?.attributes?.uid ?? snippet?.uid ?? null;
+    this.createdAt = snippet?.attributes?.createdAt ?? snippet?.createdAt ?? null;
+    this.updatedAt = snippet?.attributes?.updatedAt ?? snippet?.updatedAt ?? null;
+    this.publishedAt = snippet?.attributes?.publishedAt ?? snippet?.publishedAt ?? null;
+    this.codes = this._getCodes(snippet?.attributes?.codes?.data ?? snippet?.codes);
+    this.result = snippet?.result ?? null;
     this.commands = snippet?.commands ?? [];
+    this.output = snippet?.output ?? [];
+    this.input = snippet?.input ?? [];
+  }
+
+  _getCodes(codes) {
+    if (!codes?.length) { return []; }
+
+    return codes.map(code => new Code(code));
   }
 }

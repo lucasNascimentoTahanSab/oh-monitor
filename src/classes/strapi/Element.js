@@ -3,6 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import Exercise from './Exercise.js';
+import Snippet from './Snippet.js';
 
 export default class Element {
   constructor(element) {
@@ -16,6 +17,9 @@ export default class Element {
     this.uid = element?.attributes?.uid ?? element?.uid ?? null;
     this.elements = this._getElements(element?.attributes?.elements?.data ?? element?.elements);
     this.exercises = this._getExercises(element?.attributes?.exercises?.data ?? element?.exercises);
+    this.snippet = element?.attributes?.snippet?.data ? new Snippet(element.attributes.snippet.data)
+      : element?.snippet ? new Snippet(element.snippet)
+        : null;
   }
 
   _getExercises(exercises) {
