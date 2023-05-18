@@ -3,20 +3,21 @@
  * tela para animação, terminal e demais configurações relacionadas. 
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { createElement, useEffect, useState, useContext, useCallback } from 'react';
+import React, { createElement, useEffect, useState, useContext, useCallback, useRef } from 'react';
 import { ReactComponent as Right } from '../../../svg/right.svg';
 import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace.js';
 import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt.js';
 import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext.js';
 import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import CodeContext from '../../Context/CodeContext/CodeContext.js';
-import TabContext from '../../Context/TabContext/TabContext';
-import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
+import TabContext from '../../Context/TabContext/TabContext.js';
+import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
 import ResultContext from '../../Context/ResultContext/ResultContext';
 import OutputContext from '../../Context/OutputContext/OutputContext.js';
 import InputContext from '../../Context/InputContext/InputContext.js';
 import RenderContext from '../../Context/RenderContext/RenderContext.js';
 import Code from '../../../classes/strapi/Code.js';
+import Fullscreen from '../../../classes/util/Fullscreen.js';
 import Util from '../../../classes/util/Util.js';
 import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
@@ -31,6 +32,12 @@ function CodeEditor() {
   const [input, setInput] = useState([getRightArrow('input')]);
   const [render, setRender] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const codeEditorRef = useRef(null);
+
+  useEffect(() => {
+    if (fullscreen) { Fullscreen.open(codeEditorRef.current); }
+    else { Fullscreen.close(); }
+  }, [fullscreen]);
 
   const getCodesCallback = useCallback(getCodes, [getCodes]);
 
@@ -221,7 +228,7 @@ function CodeEditor() {
           <InputContext.Provider value={[input, setInput]}>
             <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
               <RenderContext.Provider value={[render, setRender]}>
-                <div className={getCodeEditorClass()}>
+                <div className={getCodeEditorClass()} ref={codeEditorRef}>
                   <CodeEditorWorkspace />
                   <CodeEditorPrompt />
                 </div>

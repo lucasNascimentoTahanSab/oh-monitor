@@ -12,7 +12,7 @@ import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext
 import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
 
-function CodeEditorMenuSettings() {
+function CodeEditorMenuSettings(props) {
   const [currentTab, setCurrentTab] = useContext(TabContext);
   const [codes,] = useContext(CodesContext);
   const [currentCode, setCurrentCode] = useContext(CodeContext);
@@ -41,9 +41,13 @@ function CodeEditorMenuSettings() {
     setCurrentTab({ ...currentTab, loading: false });
   }
 
+  function getButtonPlay() {
+    return props.showButtonPlay ? <ButtonPlay height='.875rem' width='.875rem' color='#3498DB' onClick={handleSend} loading={loading} /> : null;
+  }
+
   return (
     <div className='code-editor__menu-settings'>
-      <ButtonPlay height='.875rem' width='.875rem' color='#3498DB' onClick={handleSend} loading={loading} />
+      {getButtonPlay()}
       <ButtonExpand height='.875rem' width='.875rem' color='#3498DB' onClick={() => setFullscreen(!fullscreen)} />
     </div>
   );

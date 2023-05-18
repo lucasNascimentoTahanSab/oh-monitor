@@ -10,7 +10,6 @@ import ClassroomNavigation from '../ClassroomNavigation/ClassroomNavigation.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
 import TabsContext from '../../Context/TabsContext/TabsContext.js';
 import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext.js';
-import PackagesContext from '../../Context/PackagesContext/PackagesContext.js';
 import Subject from '../../../classes/strapi/Subject.js';
 import Util from '../../../classes/util/Util.js';
 import callouts from '../../../classes/callouts/callout.js';
@@ -20,7 +19,6 @@ function Classroom(props) {
   const [tabs, setTabs] = useState([]);
   const [currentTab, setCurrentTab] = useState(null);
   const [snippets, setSnippets] = useState(new Map());
-  const [packages, setPackages] = useState(new Map());
 
   /**
    * Hook responsável pela obtenção do registro do assunto tratado na tela atual
@@ -66,13 +64,11 @@ function Classroom(props) {
     <TabsContext.Provider value={[tabs, updateTabs]}>
       <TabContext.Provider value={[currentTab, updateCurrentTab]}>
         <SnippetsContext.Provider value={[snippets, setSnippets]}>
-          <PackagesContext.Provider value={[packages, setPackages]}>
-            <div className='classroom'>
-              <ClassroomSidebar />
-              <ClassroomStage />
-              <ClassroomNavigation />
-            </div>
-          </PackagesContext.Provider>
+          <div className='classroom'>
+            <ClassroomSidebar />
+            <ClassroomStage />
+            <ClassroomNavigation />
+          </div>
         </SnippetsContext.Provider>
       </TabContext.Provider>
     </TabsContext.Provider>

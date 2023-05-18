@@ -34,7 +34,7 @@ function CodeEditorMenu() {
   return (
     <div className='code-editor__menu'>
       <div className='code-editor__menu-tabs'>{getMenuItems()}</div>
-      <CodeEditorMenuSettings />
+      <CodeEditorMenuSettings showButtonPlay />
     </div>
   );
 }
