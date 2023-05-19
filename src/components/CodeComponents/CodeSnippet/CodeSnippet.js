@@ -2,13 +2,16 @@
  * @file Módulo responsável pela exibição de code snippet em editor de código.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CodeEditor from '../CodeEditor/CodeEditor';
 import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
 import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt';
+import ElementsContext from '../../Context/ElementsContext/ElementsContext.js';
 import Element from '../../../classes/strapi/Element';
+import Util from '../../../classes/util/Util';
 
 function CodeSnippet(props) {
+  const [elements, setElements] = useContext(ElementsContext);
   const [snippet, setSnippet] = useState(null);
   const [currentElement, setCurrentElement] = useState(null);
 
@@ -16,6 +19,15 @@ function CodeSnippet(props) {
     setCurrentElement(props.element);
     setSnippet(props.element?.snippet);
   }, [props.element]);
+
+  /**
+   * Método repsonsável por atualizar elemento dentre demais elementos da seção atual.
+   * 
+   * @param {object} element 
+   */
+  function updateCurrentElement(element) {
+    Util.updateItemIn(elements, setElements)(element);
+  }
 
   /**
    * Método responsável pela atualização de snippet e correspondente em
@@ -26,7 +38,7 @@ function CodeSnippet(props) {
   function updateSnippet(snippet) {
     const newCurrentElement = new Element({ ...currentElement, snippet });
 
-    setCurrentElement(newCurrentElement);
+    updateCurrentElement(newCurrentElement);
   }
 
   return (

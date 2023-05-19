@@ -13,6 +13,7 @@ import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext.js';
 import Subject from '../../../classes/strapi/Subject.js';
 import Util from '../../../classes/util/Util.js';
 import callouts from '../../../classes/callouts/callout.js';
+import SubjectContext from '../../Context/SubjectContext/SubjectContext.js';
 
 function Classroom(props) {
   const [subject, setSubject] = useState(null);
@@ -61,17 +62,19 @@ function Classroom(props) {
   }
 
   return (
-    <TabsContext.Provider value={[tabs, updateTabs]}>
-      <TabContext.Provider value={[currentTab, updateCurrentTab]}>
-        <SnippetsContext.Provider value={[snippets, setSnippets]}>
-          <div className='classroom'>
-            <ClassroomSidebar />
-            <ClassroomStage />
-            <ClassroomNavigation />
-          </div>
-        </SnippetsContext.Provider>
-      </TabContext.Provider>
-    </TabsContext.Provider>
+    <SubjectContext.Provider value={[subject, setSubject]}>
+      <TabsContext.Provider value={[tabs, updateTabs]}>
+        <TabContext.Provider value={[currentTab, updateCurrentTab]}>
+          <SnippetsContext.Provider value={[snippets, setSnippets]}>
+            <div className='classroom'>
+              <ClassroomSidebar />
+              <ClassroomStage />
+              <ClassroomNavigation />
+            </div>
+          </SnippetsContext.Provider>
+        </TabContext.Provider>
+      </TabsContext.Provider>
+    </SubjectContext.Provider>
   );
 }
 

@@ -19,8 +19,10 @@ import Fullscreen from '../../../classes/util/Fullscreen.js';
 import Util from '../../../classes/util/Util.js';
 import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
+import SubjectContext from '../../Context/SubjectContext/SubjectContext';
 
 function CodeEditor(props) {
+  const [subject,] = useContext(SubjectContext);
   const [currentTab, setCurrentTab] = useContext(TabContext);
   const [currentFile, setCurrentFile] = useState(null);
   const [codes, setCodes] = useState([]);
@@ -76,6 +78,17 @@ function CodeEditor(props) {
     setCurrentCode(newCurrentCode);
 
     Util.handle(props.setFile, { ...currentFile, codes });
+  }
+
+  /**
+   * Método responsável pela atualização do arquivo atual em conjunto de arquivos.
+   * 
+   * @param {object} code 
+   */
+  function updateCurrentCode(code) {
+    Util.updateItemIn(codes, setCodes)(code);
+
+    updateCodes(codes);
   }
 
   /**
@@ -145,7 +158,7 @@ function CodeEditor(props) {
    * @returns {array}
    */
   function getOutputContent() {
-    if (!currentFile.output) { return []; }
+    if (!currentFile.output?.length) { return []; }
 
     return currentFile.output.map(item => [getItem('output', item), getRightArrow('output')]);
   }
@@ -186,7 +199,7 @@ function CodeEditor(props) {
 
   function getJustCommandsFromResult(result) {
     // A expressão regular considera apenas saídas que iniciem pelo UID especificado.
-    return result.output.split('\n')?.filter(line => line.match(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*/g));
+    return result.output.split('\n')?.filter(line => line.match(new RegExp(`${subject.uid}.*`, 'g')));
   }
 
   /**
@@ -200,7 +213,7 @@ function CodeEditor(props) {
     if (!result) { return currentFile.output; }
 
     if (result.error) { currentFile.output.push(result.error); }
-    else { currentFile.output.push(result.output.replaceAll(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*\n/g, '')); }
+    else { currentFile.output.push(result.output.replaceAll(new RegExp(`${subject.uid}.*\n`, 'g'), '')); }
 
     return currentFile.output;
   }
@@ -209,7 +222,7 @@ function CodeEditor(props) {
     <CodeEditorRefContext.Provider value={codeEditorRef}>
       <FileContext.Provider value={[currentFile, updateResult]}>
         <CodesContext.Provider value={[codes, updateCodes]}>
-          <CodeContext.Provider value={[currentCode, updateResult]}>
+          <CodeContext.Provider value={[currentCode, updateCurrentCode]}>
             <OutputContext.Provider value={[output, setOutput]}>
               <InputContext.Provider value={[input, setInput]}>
                 <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
