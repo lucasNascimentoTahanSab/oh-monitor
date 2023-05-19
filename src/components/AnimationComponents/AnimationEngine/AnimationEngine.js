@@ -33,6 +33,7 @@ function AnimationEngine(props) {
 
     Util.handle(props.setSnapshots, result);
 
+    setCommands([]);
     setRender(false);
   }
 
