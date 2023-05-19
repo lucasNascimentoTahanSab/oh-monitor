@@ -31,8 +31,8 @@ function CodeSnippet(props) {
 
   return (
     <CodeEditor updateResult={() => { }} file={snippet} setFile={updateSnippet}>
-      <CodeEditorWorkspace commands={snippet?.commands} />
-      <CodeEditorPrompt file={snippet} />
+      <CodeEditorWorkspace />
+      <CodeEditorPrompt />
     </CodeEditor>
   );
 }

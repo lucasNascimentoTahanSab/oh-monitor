@@ -1,3 +1,7 @@
+/**
+ * @file Módulo responsável pela exibição de exercício de codificação.
+ * @copyright Lucas N. T. Sab 2023
+ */
 import React, { useContext } from 'react';
 import ResultContext from '../../Context/ResultContext/ResultContext';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
@@ -25,8 +29,8 @@ function CodeExercise() {
 
   return (
     <CodeEditor updateResult={updateResultByExercise} file={currentExercise} setFile={setCurrentExercise}>
-      <CodeEditorWorkspace file={currentExercise} />
-      <CodeEditorPrompt file={currentExercise} />
+      <CodeEditorWorkspace />
+      <CodeEditorPrompt />
     </CodeEditor>
   );
 }

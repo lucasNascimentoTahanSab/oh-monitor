@@ -2,15 +2,17 @@
  * @file Módulo responsável pela exibição do terminal em editor de códigos.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import CodeEditorPromptMenu from '../CodeEditorPromptMenu/CodeEditorPromptMenu.js';
 import CodeEditorPromptContent from '../CodeEditorPromptContent/CodeEditorPromptContent.js';
 import PromptMenuItem from '../../../classes/prompt/PromptMenuItem.js';
+import FileContext from '../../Context/FileContext/FileContext.js';
 import Util from '../../../classes/util/Util.js';
 import Resizer from '../../../classes/util/Resizer.js';
 import config from '../../../config.json';
 
-function CodeEditorPrompt(props) {
+function CodeEditorPrompt() {
+  const [file,] = useContext(FileContext);
   const [menuItems, setMenuItems] = useState([]);
   const [currentMenuItem, setCurrentMenuItem] = useState(null);
   const [contentRef, setContentRef] = useState(null);
@@ -19,7 +21,7 @@ function CodeEditorPrompt(props) {
   const getMenuItemsCallback = useCallback(getMenuItems, [getMenuItems]);
 
   function getMenuItems() {
-    const newMenuItems = config.prompt.menu.map(item => new PromptMenuItem(item, props.file));
+    const newMenuItems = config.prompt.menu.map(item => new PromptMenuItem(item, file));
 
     setMenuItems(newMenuItems);
     setCurrentMenuItem(Util.getCurrentItem(newMenuItems));
@@ -29,11 +31,11 @@ function CodeEditorPrompt(props) {
    * Hook responsável por inicializar itens do menu no terminal.
    */
   useEffect(() => {
-    if (!props.file) { return; }
+    if (!file) { return; }
     if (menuItems.length) { return; }
 
     getMenuItemsCallback();
-  }, [menuItems, props.file, getMenuItemsCallback]);
+  }, [menuItems, file, getMenuItemsCallback]);
 
   useEffect(() => { if (contentRef) { setResizer(new Resizer(contentRef.current)) } }, [contentRef]);
 
@@ -52,7 +54,7 @@ function CodeEditorPrompt(props) {
     <div className='prompt'>
       <div className='prompt__resizer' onMouseDown={event => resizer.resize(event)}></div>
       <div className='prompt__content'>
-        <CodeEditorPromptMenu file={props.file} items={menuItems} setCurrentItem={Util.setCurrentItem(menuItems, updateMenuItems)} />
+        <CodeEditorPromptMenu items={menuItems} setCurrentItem={Util.setCurrentItem(menuItems, updateMenuItems)} />
         <CodeEditorPromptContent current={currentMenuItem} setContentRef={setContentRef} />
       </div>
     </div>

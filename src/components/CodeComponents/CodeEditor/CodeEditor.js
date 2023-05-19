@@ -13,6 +13,7 @@ import OutputContext from '../../Context/OutputContext/OutputContext.js';
 import InputContext from '../../Context/InputContext/InputContext.js';
 import RenderContext from '../../Context/RenderContext/RenderContext.js';
 import CodeEditorRefContext from '../../Context/CodeEditorRefContext/CodeEditorRefContext';
+import FileContext from '../../Context/FileContext/FileContext';
 import Code from '../../../classes/strapi/Code.js';
 import Fullscreen from '../../../classes/util/Fullscreen.js';
 import Util from '../../../classes/util/Util.js';
@@ -21,7 +22,7 @@ import config from '../../../config.json';
 
 function CodeEditor(props) {
   const [currentTab, setCurrentTab] = useContext(TabContext);
-  const [file, setFile] = useState(null);
+  const [currentFile, setCurrentFile] = useState(null);
   const [codes, setCodes] = useState([]);
   const [currentCode, setCurrentCode] = useState(null);
   const [output, setOutput] = useState([getRightArrow('output')]);
@@ -30,7 +31,7 @@ function CodeEditor(props) {
   const [fullscreen, setFullscreen] = useState(false);
   const codeEditorRef = useRef(null);
 
-  useEffect(() => { setFile(props.file); }, [props.file]);
+  useEffect(() => { setCurrentFile(props.file); }, [props.file]);
 
   useEffect(() => {
     if (fullscreen) { Fullscreen.open(codeEditorRef.current); }
@@ -45,7 +46,7 @@ function CodeEditor(props) {
    * @returns 
    */
   async function getCodes() {
-    if (!file?.codes?.length) { return; }
+    if (!currentFile?.codes?.length) { return; }
     if (codes.length) { return; }
 
     if (isThereAnyCodeToRetrieve()) {
@@ -60,7 +61,7 @@ function CodeEditor(props) {
 
     updateOutputContent();
 
-    Util.handle(props.updateResult, file.output);
+    Util.handle(props.updateResult, currentFile.output);
   }
 
   /**
@@ -74,7 +75,7 @@ function CodeEditor(props) {
     setCodes(codes);
     setCurrentCode(newCurrentCode);
 
-    Util.handle(props.setFile, { ...file, codes });
+    Util.handle(props.setFile, { ...currentFile, codes });
   }
 
   /**
@@ -84,7 +85,7 @@ function CodeEditor(props) {
    * @returns {Promise}
    */
   async function retrieveCodesFromRepo() {
-    return Promise.all(file.codes.map(getCode));
+    return Promise.all(currentFile.codes.map(getCode));
   }
 
   async function getCode(code) {
@@ -96,7 +97,7 @@ function CodeEditor(props) {
   }
 
   function isThereAnyCodeToRetrieve() {
-    return file.codes.find(code => code.content === null);
+    return currentFile.codes.find(code => code.content === null);
   }
 
   /**
@@ -104,28 +105,28 @@ function CodeEditor(props) {
    * quando previamente carregados, configurando arquivo principal.
    */
   useEffect(() => {
-    if (!file) { return; }
+    if (!currentFile) { return; }
     if (currentCode) { return; }
     if (currentTab.loading) { return; }
 
     getCodesCallback();
-  }, [currentCode, file, currentTab, getCodesCallback]);
+  }, [currentCode, currentFile, currentTab, getCodesCallback]);
 
   /**
    * Método responsável por configurar saída e comandos de acordo com resultado em exercício
    * obtido.
    * 
-   * @param {object} exercise 
+   * @param {object} file 
    */
-  function updateResult(exercise) {
-    file.result = exercise.result;
-    file.output = getOutput(exercise.result);
-    file.commands = getCommands(exercise.result);
+  function updateResult(file) {
+    currentFile.result = file.result;
+    currentFile.output = getOutput(file.result);
+    currentFile.commands = getCommands(file.result);
 
     updateOutputContent();
 
-    Util.handle(props.updateResult, file.output);
-    Util.handle(props.setFile, { ...file });
+    Util.handle(props.updateResult, currentFile.output);
+    Util.handle(props.setFile, { ...currentFile });
 
     setRender(true);
   }
@@ -144,18 +145,18 @@ function CodeEditor(props) {
    * @returns {array}
    */
   function getOutputContent() {
-    if (!file.output) { return []; }
+    if (!currentFile.output) { return []; }
 
-    return file.output.map(item => [getItem('output', item), getRightArrow('output')]);
+    return currentFile.output.map(item => [getItem('output', item), getRightArrow('output')]);
   }
 
   function getItem(content, item) {
-    return createElement('p', { key: `${file.uid}_${content}_${file[content].length}` }, item);
+    return createElement('p', { key: `${currentFile.uid}_${content}_${currentFile[content].length}` }, item);
   }
 
   function getRightArrow(content) {
     return createElement(Right, {
-      key: `${file?.uid ?? ''}_right-${content}_${file?.[content]?.length ?? ''}`,
+      key: `${currentFile?.uid ?? ''}_right-${content}_${currentFile?.[content]?.length ?? ''}`,
       style: { height: '1rem', width: '1rem', minHeight: '1rem' },
       alt: 'Arrow pointing to the right.'
     });
@@ -168,8 +169,8 @@ function CodeEditor(props) {
    * @returns {array}
    */
   function getCommands(result) {
-    if (!result || result.error) { return file.commands; }
-    if (!result.output) { return file.commands; }
+    if (!result || result.error) { return currentFile.commands; }
+    if (!result.output) { return currentFile.commands; }
 
     const justCommands = getJustCommandsFromResult(result);
 
@@ -196,31 +197,33 @@ function CodeEditor(props) {
    * @returns {array}
    */
   function getOutput(result) {
-    if (!result) { return file.output; }
+    if (!result) { return currentFile.output; }
 
-    if (result.error) { file.output.push(result.error); }
-    else { file.output.push(result.output.replaceAll(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*\n/g, '')); }
+    if (result.error) { currentFile.output.push(result.error); }
+    else { currentFile.output.push(result.output.replaceAll(/35a7bfa2-e0aa-11ed-b5ea-0242ac120002.*\n/g, '')); }
 
-    return file.output;
+    return currentFile.output;
   }
 
   return (
     <CodeEditorRefContext.Provider value={codeEditorRef}>
-      <CodesContext.Provider value={[codes, updateCodes]}>
-        <CodeContext.Provider value={[currentCode, updateResult]}>
-          <OutputContext.Provider value={[output, setOutput]}>
-            <InputContext.Provider value={[input, setInput]}>
-              <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
-                <RenderContext.Provider value={[render, setRender]}>
-                  <div className='code-editor' ref={codeEditorRef}>
-                    {props.children}
-                  </div>
-                </RenderContext.Provider>
-              </FullscreenContext.Provider>
-            </InputContext.Provider>
-          </OutputContext.Provider>
-        </CodeContext.Provider>
-      </CodesContext.Provider >
+      <FileContext.Provider value={[currentFile, updateResult]}>
+        <CodesContext.Provider value={[codes, updateCodes]}>
+          <CodeContext.Provider value={[currentCode, updateResult]}>
+            <OutputContext.Provider value={[output, setOutput]}>
+              <InputContext.Provider value={[input, setInput]}>
+                <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
+                  <RenderContext.Provider value={[render, setRender]}>
+                    <div className='code-editor' ref={codeEditorRef}>
+                      {props.children}
+                    </div>
+                  </RenderContext.Provider>
+                </FullscreenContext.Provider>
+              </InputContext.Provider>
+            </OutputContext.Provider>
+          </CodeContext.Provider>
+        </CodesContext.Provider >
+      </FileContext.Provider>
     </CodeEditorRefContext.Provider>
   );
 }
