@@ -3,7 +3,7 @@
  * assunto tratado.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ClassroomSidebar from '../ClassroomSidebar/ClassroomSidebar.js';
 import ClassroomStage from '../ClassroomStage/ClassroomStage.js';
 import ClassroomNavigation from '../ClassroomNavigation/ClassroomNavigation.js';
@@ -14,26 +14,44 @@ import Subject from '../../../classes/strapi/Subject.js';
 import Util from '../../../classes/util/Util.js';
 import callouts from '../../../classes/callouts/callout.js';
 import SubjectContext from '../../Context/SubjectContext/SubjectContext.js';
+import LoadingComponent from '../../LoadingComponents/LoadingComponent/LoadingComponent.js';
+import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
+import calloutError from '../../../classes/callouts/calloutError.js';
 
 function Classroom(props) {
+  const [, setToastEvent] = useContext(ToastEventContext);
   const [subject, setSubject] = useState(null);
   const [tabs, setTabs] = useState([]);
   const [currentTab, setCurrentTab] = useState(null);
   const [snippets, setSnippets] = useState(new Map());
+  const [loading, setLoading] = useState(false);
 
   /**
    * Hook responsável pela obtenção do registro do assunto tratado na tela atual
    * a partir do UID recebido.
    */
-  useEffect(() => { if (!subject) { getSubject(); } });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { getSubject(); }, []);
 
   async function getSubject() {
-    const retrievedSubject = new Subject((await callouts.content.getSubject(props.uid))?.data?.[0]);
+    setLoading(true);
+
+    callouts.content.getSubject(props.uid)
+      .then(result => updateSubject(result))
+      .catch(error => setToastEvent(calloutError.content(error)));
+  }
+
+  function updateSubject(result) {
+    // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
+    if (result.name === 'Error') { return setToastEvent(calloutError.content(result)); }
+
+    const retrievedSubject = new Subject(result?.data?.[0]);
     const retrievedCurrentTab = Util.getCurrentItem(retrievedSubject.tabs);
 
     setSubject(retrievedSubject);
     setTabs(retrievedSubject.tabs);
     setCurrentTab(retrievedCurrentTab);
+    setLoading(false);
   }
 
   /**
@@ -61,16 +79,26 @@ function Classroom(props) {
     Util.updateItemIn(tabs, updateTabs)(currentTab);
   }
 
+  function getClassroom() {
+    return loading ? (<LoadingComponent />) : getComponent();
+  }
+
+  function getComponent() {
+    return (
+      <div className='classroom'>
+        <ClassroomSidebar />
+        <ClassroomStage />
+        <ClassroomNavigation />
+      </div>
+    );
+  }
+
   return (
     <SubjectContext.Provider value={[subject, setSubject]}>
       <TabsContext.Provider value={[tabs, updateTabs]}>
         <TabContext.Provider value={[currentTab, updateCurrentTab]}>
           <SnippetsContext.Provider value={[snippets, setSnippets]}>
-            <div className='classroom'>
-              <ClassroomSidebar />
-              <ClassroomStage />
-              <ClassroomNavigation />
-            </div>
+            {getClassroom()}
           </SnippetsContext.Provider>
         </TabContext.Provider>
       </TabsContext.Provider>

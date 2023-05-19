@@ -4,6 +4,7 @@
  */
 import React, { useEffect, useRef } from 'react';
 import Util from '../../../classes/util/Util.js';
+import LoadingComponent from '../../LoadingComponents/LoadingComponent/LoadingComponent.js';
 
 function ButtonPlay(props) {
   const buttonRef = useRef(null);
@@ -42,14 +43,7 @@ function ButtonPlay(props) {
   }
 
   function getLoading() {
-    return (
-      <div className='button-play--loading' style={{ width: props.width, height: props.height }}>
-        <div style={{ width: props.width, height: props.height }}></div>
-        <div style={{ width: props.width, height: props.height }}></div>
-        <div style={{ width: props.width, height: props.height }}></div>
-        <div style={{ width: props.width, height: props.height }}></div>
-      </div>
-    );
+    return (<LoadingComponent width={props.width} height={props.height} />);
   }
 
   return (

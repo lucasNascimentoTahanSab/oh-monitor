@@ -6,6 +6,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Util from '../../../classes/util/Util.js';
 import TabsContext from '../../Context/TabsContext/TabsContext.js';
+import LoadingComponent from '../../LoadingComponents/LoadingComponent/LoadingComponent.js';
 
 function ClassroomSidebarItem(props) {
   const [tabs,] = useContext(TabsContext);
@@ -46,19 +47,19 @@ function ClassroomSidebarItem(props) {
    * @returns {ReactElement}
    */
   function getLoading() {
-    return (
-      <div className='button-play--loading'>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    );
+    return (<LoadingComponent />);
   }
 
   return (
     <div className='menu__item'>
-      <input id={tab?.uid} className='menu__item-radio' type='radio' name={props.group} checked={getChecked()} onChange={setCurrentitem} />
+      <input
+        id={tab?.uid}
+        className='menu__item-radio'
+        type='radio'
+        name={props.group}
+        checked={getChecked()}
+        disabled={Util.isTabDisabled(tabs, tab)}
+        onChange={setCurrentitem} />
       <label className={getItemClass()} htmlFor={tab?.uid}>{tab?.title}</label>
       {tab?.loading ? getLoading() : null}
     </div>

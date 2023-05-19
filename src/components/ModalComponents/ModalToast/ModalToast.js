@@ -24,7 +24,7 @@ function ModalToast(props) {
       overlayClassName='modal-toast__overlay'
       isOpen={props.isOpen}
       shouldFocusAfterRender={true}
-      shouldReturnFocusAfterClose={true}
+      shouldReturnFocusAfterClose={false}
       onRequestClose={() => Util.handle(props.unmountToast)}
       appElement={props.app?.current}>
       <header>
