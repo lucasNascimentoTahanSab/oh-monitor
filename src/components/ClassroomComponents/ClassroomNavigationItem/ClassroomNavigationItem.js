@@ -20,7 +20,7 @@ function ClassroomNavigationItem(props) {
    * @returns {ReactElement}
    */
   function getNavigationItem() {
-    return navigationItem?.uidParent ? getUnitaryNavigationItem() : getDropdownNavigationItem();
+    return navigationItem?.navigationItems?.length ? getDropdownNavigationItem() : getUnitaryNavigationItem();
   }
 
   /**
@@ -38,7 +38,14 @@ function ClassroomNavigationItem(props) {
           fill={`${navigationItem?.current ? '#3498DB' : '#84C7E6'}`}
           open={navigationItem?.open}
           onClick={() => Util.toggleOpen(navigationItems, setNavigationItems)(navigationItem.uid)} />
-        <span className={getItemClass()}>{navigationItem?.title}</span>
+        <input
+          id={navigationItem?.uid}
+          className='menu__item-radio'
+          type='radio'
+          name={props.group}
+          checked={getChecked()}
+          onChange={() => Util.handle(props.onChange, navigationItem)} />
+        <label className={getItemClass()} htmlFor={navigationItem?.uid}>{navigationItem?.title}</label>
       </div>
     );
   }

@@ -2,12 +2,14 @@
  * @file Módulo responsável pela exibição do editor de código.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
+import CodeEditorRefContext from '../../Context/CodeEditorRefContext/CodeEditorRefContext.js';
 import Util from '../../../classes/util/Util.js';
 import config from '../../../config.json';
 
 function CodeEditorFile(props) {
+  const codeEditorRef = useContext(CodeEditorRefContext);
   const [code, setCode] = useState(null);
   const [editor, setEditor] = useState(null);
 
@@ -23,8 +25,8 @@ function CodeEditorFile(props) {
   }
 
   useEffect(() => {
-    window.addEventListener('resize', resizeEditorCallback);
-  }, [resizeEditorCallback]);
+    codeEditorRef?.current?.addEventListener('fullscreenchange', resizeEditorCallback);
+  }, [codeEditorRef, resizeEditorCallback]);
 
   function handleComponentDidMount(editor) {
     setEditor(editor);
@@ -32,7 +34,6 @@ function CodeEditorFile(props) {
 
   return (
     <Editor
-      className={props.className}
       defaultLanguage={config.language}
       value={code?.content}
       theme='vs-dark'

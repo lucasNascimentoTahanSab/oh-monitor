@@ -2,31 +2,40 @@
  * @file Módulo responsável pela exibição do terminal em editor de códigos.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import CodeEditorPromptMenu from '../CodeEditorPromptMenu/CodeEditorPromptMenu.js';
 import CodeEditorPromptContent from '../CodeEditorPromptContent/CodeEditorPromptContent.js';
 import PromptMenuItem from '../../../classes/prompt/PromptMenuItem.js';
+import FileContext from '../../Context/FileContext/FileContext.js';
 import Util from '../../../classes/util/Util.js';
 import Resizer from '../../../classes/util/Resizer.js';
 import config from '../../../config.json';
 
-function CodeEditorPrompt(props) {
+function CodeEditorPrompt() {
+  const [file,] = useContext(FileContext);
   const [menuItems, setMenuItems] = useState([]);
-  const [currentMenuItem, setCurrentMenuItem] = useState([]);
+  const [currentMenuItem, setCurrentMenuItem] = useState(null);
   const [contentRef, setContentRef] = useState(null);
   const [resizer, setResizer] = useState(null);
 
-  /**
-   * Hook responsável por inicializar itens do menu no terminal.
-   */
-  useEffect(() => { if (!menuItems.length) { getMenuItems() } }, [menuItems]);
+  const getMenuItemsCallback = useCallback(getMenuItems, [getMenuItems]);
 
   function getMenuItems() {
-    const newMenuItems = config.prompt.menu.map(item => new PromptMenuItem(item));
+    const newMenuItems = config.prompt.menu.map(item => new PromptMenuItem(item, file));
 
     setMenuItems(newMenuItems);
     setCurrentMenuItem(Util.getCurrentItem(newMenuItems));
   }
+
+  /**
+   * Hook responsável por inicializar itens do menu no terminal.
+   */
+  useEffect(() => {
+    if (!file) { return; }
+    if (menuItems.length) { return; }
+
+    getMenuItemsCallback();
+  }, [menuItems, file, getMenuItemsCallback]);
 
   useEffect(() => { if (contentRef) { setResizer(new Resizer(contentRef.current)) } }, [contentRef]);
 

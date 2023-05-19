@@ -4,7 +4,7 @@
  */
 import React, { useContext, useEffect, useState } from 'react';
 import ExerciseChoices from '../ExerciseChoices/ExerciseChoices.js';
-import CodeEditor from '../../CodeComponents/CodeEditor/CodeEditor.js';
+import CodeExercise from '../../CodeComponents/CodeExercise/CodeExercise.js';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
 import Util from '../../../classes/util/Util.js';
@@ -17,7 +17,7 @@ function Exercise(props) {
 
   function getExercise() {
     if (currentExercise?.type === 'choice') { return <ExerciseChoices />; }
-    if (currentExercise?.type === 'code') { return <CodeEditor />; }
+    if (currentExercise?.type === 'code') { return <CodeExercise />; }
   }
 
   /**
