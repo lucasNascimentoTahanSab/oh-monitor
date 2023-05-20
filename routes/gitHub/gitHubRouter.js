@@ -15,7 +15,7 @@ const router = express.Router();
  */
 router.get('/*', (req, res) => {
   getFile(req.url)
-    .then(response => res.send({ data: response.data }))
+    .then(response => res.send(response.data))
     .catch(error => res.send(error));
 });
 
