@@ -92,6 +92,7 @@ button {
 .tcc-classroom {
   display: grid;
   grid-template-columns: .5fr 2fr;
+  width: 100%;
 }
 
 .tcc-classroom__section {
