@@ -313,4 +313,43 @@ export default class Util {
 
     return lastTab ? !lastTab.solved : false;
   }
+
+  /**
+   * Método reponsável por verificar se existem itens vazios dentre os
+   * itens recebidos.
+   * 
+   * @param {array} items 
+   * @returns {boolean}
+   */
+  static isThereBlankItems(items) {
+    if (!items?.length) { return null; }
+
+    return items.filter(item => !item).length > 0;
+  }
+
+  /**
+   * Método reponsável por verificar se ocorreram erros dentre os itens 
+   * recebidos.
+   * 
+   * @param {array} items 
+   * @returns {boolean}
+   */
+  static isThereErrors(result) {
+    if (typeof result !== 'object') { return null; }
+
+    return Object.keys(result).filter(key => !result[key].correct).length > 0;
+  }
+
+  /**
+   * Método responsável pela transformação da lista de resultados obtida
+   * por um objeto contendo, como chaves, os UID de cada exercício.
+   * 
+   * @param {array} results 
+   * @returns {object}
+   */
+  static getResult(results) {
+    if (!results?.length) { return null; }
+
+    return results.reduce((result, item) => { return { ...result, [item.uid]: item } }, {});
+  }
 }

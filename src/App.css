@@ -105,6 +105,9 @@ button {
 .tcc-sidebar {
   display: flex;
   gap: .625rem;
+  opacity: 0;
+  transform: translateY(15rem);
+  animation: show-up 1.5s forwards;
 }
 
 .tcc-sidebar__items {
@@ -139,17 +142,18 @@ button {
   color: var(--color-blue--light-dark);
 }
 
-/*  */
+/* ClassroomStage */
 
-.classroom-screen__content {
+.tcc-stage {
   display: flex;
   flex-direction: column;
   gap: 1.875rem;
   overflow: auto;
-  height: 100vh;
 }
 
-.classroom__content {
+/* ClassroomStageSection */
+
+.tcc-stage-section {
   display: flex;
   flex-direction: column;
   gap: 1.875rem;
@@ -158,24 +162,13 @@ button {
   animation: show-up 1.5s forwards;
 }
 
-@keyframes show-up {
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.classroom__content-sections {
+.tcc-stage-section__content {
   display: flex;
   flex-direction: column;
   gap: .9375rem;
 }
 
-.classroom__content-section {
-  display: flex;
-  flex-direction: column;
-  gap: .9375rem;
-}
+/* *** */
 
 .exercise__questions {
   list-style-position: inside;
@@ -850,6 +843,15 @@ button {
 }
 
 /* *** */
+
+/* KeyFrames */
+
+@keyframes show-up {
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
 /* LoadingProgress */
 

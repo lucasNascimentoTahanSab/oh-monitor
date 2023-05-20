@@ -23,7 +23,7 @@ export default class ShowToastEvent {
     Util.handle(setShowToastEvent, true);
 
     this._timer = setTimeout(() => {
-      this.unmountToastEvent(setToastEvent, setShowToastEvent)
+      this.unmountToastEvent(setToastEvent, setShowToastEvent);
     }, 6500);
   }
 

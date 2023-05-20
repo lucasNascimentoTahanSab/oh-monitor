@@ -9,12 +9,11 @@ import TabsContext from '../../Context/TabsContext/TabsContext.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
 import ElementsContext from '../../Context/ElementsContext/ElementsContext.js';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js';
-import ResultContext from '../../Context/ResultContext/ResultContext';
+import AnswerContext from '../../Context/AnswerContext/AnswerContext';
 import ValidationContext from '../../Context/ValidationContext/ValidationContext.js';
 import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
 import Element from '../../../classes/strapi/Element.js';
 import Validator from '../../../classes/util/Validator.js';
-import ShowToastEvent from '../../../classes/util/ShowToastEvent.js';
 import Util from '../../../classes/util/Util.js';
 
 function Exercises(props) {
@@ -22,24 +21,19 @@ function Exercises(props) {
   const [currentTab, setCurrentTab] = useContext(TabContext);
   const [elements, setElements] = useContext(ElementsContext);
   const [, setToastEvent] = useContext(ToastEventContext);
-  const [resultByExercise, setResultByExercise] = useState(new Map());
+  const [answersByExercise, setAnswersByExercise] = useState(new Map());
   const [exercises, setExercises] = useState([]);
   const [currentElement, setCurrentElement] = useState(null);
   const [validator, setValidator] = useState(null);
   const [validation, setValidation] = useState(null);
-  const [showLoading, setShowLoading] = useState(false);
-  const [next, setNext] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => { setValidator(new Validator(setShowLoading)); }, []);
+  useEffect(() => { setValidator(new Validator(setToastEvent, setLoading)); }, []);
 
   useEffect(() => {
     setCurrentElement(props.element);
     setExercises(props.element?.exercises);
   }, [props.element]);
-
-  useEffect(() => {
-    setNext(currentTab.solved);
-  }, [currentTab]);
 
   /**
    * Método responsável pela obtenção dos exercícios a serem exibidos na guia atual.
@@ -73,52 +67,38 @@ function Exercises(props) {
     updateCurrentElement(newCurrentElement);
   }
 
+  function getButtonValue() {
+    return currentTab?.solved ? 'Avançar' : 'Enviar';
+  }
+
+  function getButtonOnClick() {
+    return currentTab?.solved ? goToNextTab : validateAnswers;
+  }
+
   /**
    * Método responsável por validar respostas entregues pelo usuário.
    */
-  async function validateResult() {
-    if (resultByExercise.size < exercises.length) {
-      return setToastEvent(new ShowToastEvent(
-        'Não está se esquecendo de nada?',
-        'Responda as atividades restantes antes de enviar suas respostas!',
-        'info'
-      ));
-    }
-    if (resultsAreBlank()) {
-      return setToastEvent(new ShowToastEvent(
-        'Não está se esquecendo de nada?',
-        'O resultado entregue está incompleto, utilize a animação de apoio para garantir que não falta nada.',
-        'info'
-      ));
-    }
+  function validateAnswers() {
+    setLoading(true);
+    setToastEvent(null);
 
-    const response = await validator.validate(resultByExercise);
-
-    setValidation(response);
-    validateResponse(response);
+    validator.validateAnswers(answersByExercise, exercises)
+      ?.then(results => new Promise(resolve => resolve(Util.getResult(results))))
+      .then(validateResult);
   }
 
-  function validateResponse(response) {
-    const wrongAnswers = getWrongAnswers(response);
+  /**
+   * Método responsável pela validação dos resultados obtidos em validação.
+   * 
+   * @param {array} result
+   */
+  function validateResult(result) {
+    setValidation(result);
+    setLoading(false);
 
-    if (wrongAnswers.length > 0) {
-      setToastEvent(new ShowToastEvent('Ops...', 'Revise suas respostas e tente novamente!', 'error'));
-    } else {
-      setToastEvent(new ShowToastEvent('Sucesso!', 'Você acertou em cheio e já pode avançar para a próxima seção!', 'success'));
+    if (validator.validateResult(result)) {
       setCurrentTab({ ...currentTab, solved: true });
     }
-  }
-
-  function getWrongAnswers(response) {
-    if (typeof response !== 'object') { return 0; }
-
-    return Object.keys(response).filter(key => !response[key].correct);
-  }
-
-  function resultsAreBlank() {
-    if (!resultByExercise?.size) { return true; }
-
-    return Array.from(resultByExercise.values()).filter(value => !value).length > 0;
   }
 
   function goToNextTab() {
@@ -127,17 +107,17 @@ function Exercises(props) {
 
   return (
     <ExercisesContext.Provider value={[exercises, updateExercises]}>
-      <ResultContext.Provider value={[resultByExercise, setResultByExercise]}>
+      <AnswerContext.Provider value={[answersByExercise, setAnswersByExercise]}>
         <ValidationContext.Provider value={[validation, setValidation]}>
           <ol className='exercise__questions'>
             {getExercises()}
           </ol>
           <div className='exercise__confirmation'>
-            <ButtonConfirmation value={next ? 'Avançar' : 'Enviar'} loading={showLoading} onClick={next ? goToNextTab : validateResult} />
+            <ButtonConfirmation loading={loading} value={getButtonValue()} onClick={getButtonOnClick()} />
           </div>
         </ValidationContext.Provider>
-      </ResultContext.Provider >
-    </ExercisesContext.Provider >
+      </AnswerContext.Provider>
+    </ExercisesContext.Provider>
   );
 }
 

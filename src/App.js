@@ -18,10 +18,11 @@ function App() {
    * disparado internamente.
    */
   useEffect(() => {
+    if (!toastEvent && showToastEvent) { return unmountToastEvent(); }
     if (!toastEvent) { return; }
     if (showToastEvent) { return; }
 
-    toastEvent.show(setToastEvent, setShowToastEvent)
+    toastEvent.show(setToastEvent, setShowToastEvent);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toastEvent]);
 
@@ -30,7 +31,7 @@ function App() {
    * tempo de exibição atingido.
    */
   function unmountToastEvent() {
-    toastEvent?.unmountToastEvent(setToastEvent, setShowToastEvent)
+    toastEvent?.unmountToastEvent(setToastEvent, setShowToastEvent);
   }
 
   function updateToastEvent(updatedToastEvent) {

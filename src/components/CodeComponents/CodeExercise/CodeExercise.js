@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext } from 'react';
-import ResultContext from '../../Context/ResultContext/ResultContext';
+import AnswerContext from '../../Context/AnswerContext/AnswerContext';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
 import CodeEditor from '../CodeEditor/CodeEditor';
 import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
@@ -11,7 +11,7 @@ import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt';
 
 function CodeExercise() {
   const [currentExercise, setCurrentExercise] = useContext(ExerciseContext);
-  const [resultByExercise, setResultByExercise] = useContext(ResultContext);
+  const [answersByExercise, setAnswersByExercise] = useContext(AnswerContext);
 
   /**
    * Método responsável por atualizar resultados (no caso a saída do código executado) por 
@@ -22,9 +22,9 @@ function CodeExercise() {
   function updateResultByExercise(result) {
     if (result[result.length - 1] === undefined) { return; }
 
-    resultByExercise.set(currentExercise.uid, result[result.length - 1]);
+    answersByExercise.set(currentExercise.uid, result[result.length - 1]);
 
-    setResultByExercise(new Map(resultByExercise));
+    setAnswersByExercise(new Map(answersByExercise));
   }
 
   return (
