@@ -83,7 +83,11 @@ button {
 }
 
 .App {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
+  height: 100vh;
 }
 
 .section {
@@ -818,10 +822,6 @@ button {
 
 /* utils */
 
-.background-color--color-gray {
-  background-color: var(--color-gray);
-}
-
 .background-color--color-blue--light-dark {
   background-color: var(--color-blue--light-dark);
 }
@@ -855,6 +855,20 @@ button {
 
 .erase {
   display: none;
+}
+
+.skeleton {
+  animation: skeleton-animation 1s infinite alternate;
+}
+
+@keyframes skeleton-animation {
+  0% {
+    background-color: rgba(0, 0, 0, 0.22);
+  }
+
+  100% {
+    background-color: rgba(0, 0, 0, 0.32);
+  }
 }
 
 /* width */

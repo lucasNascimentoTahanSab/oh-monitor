@@ -31,6 +31,7 @@ function CodeEditor(props) {
   const [input, setInput] = useState([getRightArrow('input')]);
   const [render, setRender] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const [loadCodes, setLoadCodes] = useState(true);
   const codeEditorRef = useRef(null);
 
   useEffect(() => { setCurrentFile(props.file); }, [props.file]);
@@ -47,23 +48,33 @@ function CodeEditor(props) {
    * 
    * @returns 
    */
-  async function getCodes() {
-    if (!currentFile?.codes?.length) { return; }
-    if (codes.length) { return; }
+  function getCodes() {
+    if (isThereAnyCodeToRetrieve()) { loadCodesFromOrigin(); }
+    else { updateCodes(currentFile.codes); }
 
-    if (isThereAnyCodeToRetrieve()) {
-      setCurrentTab({ ...currentTab, loading: true });
+    setLoadCodes(false);
+  }
 
-      updateCodes(await retrieveCodesFromRepo());
+  function loadCodesFromOrigin() {
+    setCurrentTab({ ...currentTab, loading: true });
+    retrieveCodesFromOrigin();
+  }
 
-      setCurrentTab({ ...currentTab, loading: false });
-    } else {
-      updateCodes(await retrieveCodesFromRepo());
-    }
+  /**
+   * Método responsável pela requisição dos arquivos informados ao repositório ou recuperação
+   * em memória primária quando previamente carregados.
+   * 
+   * @returns {Promise}
+   */
+  function retrieveCodesFromOrigin() {
+    Promise.all(currentFile.codes.map(retrieveCodeFromOrigin))
+      .then(updateCodesFromOrigin)
+      .catch();
+  }
 
-    updateOutputContent();
-
-    Util.handle(props.updateResult, currentFile.output);
+  function updateCodesFromOrigin(codes) {
+    updateCodes(codes);
+    setCurrentTab({ ...currentTab, loading: false });
   }
 
   /**
@@ -80,6 +91,18 @@ function CodeEditor(props) {
     Util.handle(props.setFile, { ...currentFile, codes });
   }
 
+  function retrieveCodeFromOrigin(code) {
+    return new Promise((resolve, reject) => {
+      calloutCode(code)
+        .then(result => resolve(new Code({ ...code, content: result })))
+        .catch(error => reject(error))
+    });
+  }
+
+  function calloutCode(code) {
+    return callouts.repo.getCode(code.path, config.language, config.languages[config.language].extension);
+  }
+
   /**
    * Método responsável pela atualização do arquivo atual em conjunto de arquivos.
    * 
@@ -91,24 +114,6 @@ function CodeEditor(props) {
     updateCodes(codes);
   }
 
-  /**
-   * Método responsável pela requisição dos arquivos informados ao repositório ou recuperação
-   * em memória primária quando previamente carregados.
-   * 
-   * @returns {Promise}
-   */
-  async function retrieveCodesFromRepo() {
-    return Promise.all(currentFile.codes.map(getCode));
-  }
-
-  async function getCode(code) {
-    return code.content ? code : new Code({ ...code, content: (await calloutCode(code))?.data });
-  }
-
-  async function calloutCode(code) {
-    return await callouts.repo.getCode(code.path, config.language, config.languages[config.language].extension);
-  }
-
   function isThereAnyCodeToRetrieve() {
     return currentFile.codes.find(code => code.content === null);
   }
@@ -118,12 +123,12 @@ function CodeEditor(props) {
    * quando previamente carregados, configurando arquivo principal.
    */
   useEffect(() => {
+    if (!loadCodes) { return; }
     if (!currentFile) { return; }
     if (currentCode) { return; }
-    if (currentTab.loading) { return; }
 
     getCodesCallback();
-  }, [currentCode, currentFile, currentTab, getCodesCallback]);
+  }, [currentFile, currentCode, loadCodes, getCodesCallback]);
 
   /**
    * Método responsável por configurar saída e comandos de acordo com resultado em exercício
@@ -218,6 +223,10 @@ function CodeEditor(props) {
     return currentFile.output;
   }
 
+  function getClassName() {
+    return currentFile?.codes?.length ? 'code-editor' : 'code-editor skeleton';
+  }
+
   return (
     <CodeEditorRefContext.Provider value={codeEditorRef}>
       <FileContext.Provider value={[currentFile, updateResult]}>
@@ -227,8 +236,8 @@ function CodeEditor(props) {
               <InputContext.Provider value={[input, setInput]}>
                 <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
                   <RenderContext.Provider value={[render, setRender]}>
-                    <div className='code-editor' ref={codeEditorRef}>
-                      {props.children}
+                    <div className={getClassName()} ref={codeEditorRef}>
+                      {currentFile?.codes?.length ? props.children : null}
                     </div>
                   </RenderContext.Provider>
                 </FullscreenContext.Provider>

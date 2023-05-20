@@ -294,4 +294,23 @@ export default class Util {
 
     return items.map(item => item.uid)?.indexOf(uid);
   }
+
+  /**
+   * Método responsável por indicar se guia recebida está habilitada para
+   * seleção. O usuário não pode avançar para novas guias enquanto não
+   * solucionar a atual.
+   * 
+   * @param {array} tabs 
+   * @param {object} tab 
+   * @returns {boolean}
+   */
+  static isTabDisabled(tabs, tab) {
+    if (!tabs?.length) { return false; }
+    if (!tab) { return false; }
+
+    const tabIndex = Util.getItemIndex(tabs, tab.uid);
+    const lastTab = tabIndex === 0 ? null : tabs[tabIndex - 1];
+
+    return lastTab ? !lastTab.solved : false;
+  }
 }

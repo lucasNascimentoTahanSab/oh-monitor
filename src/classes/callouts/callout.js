@@ -7,7 +7,7 @@ import { endpoints } from './calloutEndpoint.js';
 
 const callouts = {
   code: {
-    post: async body => (
+    post: body => (
       new Promise((resolve, reject) => {
         fetch(endpoints.code.post(), requests.code.post(body))
           .then(response => resolve(response.json()))
@@ -16,14 +16,14 @@ const callouts = {
     )
   },
   content: {
-    getSubject: async uid => (
+    getSubject: uid => (
       new Promise((resolve, reject) => {
         fetch(endpoints.content.getSubject(uid), requests.content.getSubject())
           .then(response => resolve(response.json()))
           .catch(error => reject(error))
       })
     ),
-    getExerciseAnswer: async (exerciseUid, answer) => (
+    getExerciseAnswer: (exerciseUid, answer) => (
       new Promise((resolve, reject) => {
         fetch(endpoints.content.getExerciseAnswer(exerciseUid, answer), requests.content.getExerciseAnswer())
           .then(response => resolve(response.json()))
@@ -32,10 +32,11 @@ const callouts = {
     ),
   },
   repo: {
-    getCode: async (path, language, extension) => (
+    getCode: (path, language, extension) => (
       new Promise((resolve, reject) => {
         fetch(endpoints.repo.getCode(path, language, extension), requests.repo.getCode())
-          .then(response => resolve(response.json()))
+          .then(response => response.text())
+          .then(response => resolve(response))
           .catch(error => reject(error))
       })
     )
