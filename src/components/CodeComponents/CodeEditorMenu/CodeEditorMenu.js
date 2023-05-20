@@ -24,8 +24,8 @@ function CodeEditorMenu(props) {
         key={`${code.uid}-code-menu`}
         item={code}
         group={`${code.uid}-code-menu`}
-        selectorClassName='menu__item-radio'
-        labelClassName='menu__item-label'
+        selectorClassName='tcc-menu-item__radio'
+        labelClassName='tcc-menu-item__label'
         onChange={Util.setCurrentItem(codes, setCodes)}
       />
     );

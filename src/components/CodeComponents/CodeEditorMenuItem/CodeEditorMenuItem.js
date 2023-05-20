@@ -22,7 +22,7 @@ function CodeEditorMenuItem(props) {
   }
 
   return (
-    <div className='menu__item'>
+    <div className='tcc-menu-item'>
       <input
         id={menuItem?.uid}
         className={props.selectorClassName}

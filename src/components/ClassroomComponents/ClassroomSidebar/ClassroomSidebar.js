@@ -2,14 +2,15 @@
  * @file Módulo responsável pela exibição da seção de navegação pela sala de aula.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useState } from 'react';
 import ClassroomSidebarItem from '../ClassroomSidebarItem/ClassroomSidebarItem.js';
 import TabsContext from '../../Context/TabsContext/TabsContext.js';
 import Util from '../../../classes/util/Util.js';
+import LoadingProgress from '../../LoadingComponents/LoadingProgress/LoadingProgress.js';
 
 function ClassroomSidebar() {
   const [tabs, setTabs] = useContext(TabsContext);
-  const fillRef = useRef(null);
+  const [progress, setProgress] = useState(null);
 
   /**
    * Método responsável pela obtenção dos ClassroomSidebarItems a serem exibidos.
@@ -38,19 +39,16 @@ function ClassroomSidebar() {
    * @param {number} index 
    */
   function updateProgress(index) {
-    fillRef.current.style.height = `${Math.ceil(((index + 1) / tabs.length) * 100)}%`;
+    setProgress(index + 1);
   }
 
   return (
-    <nav className='section'>
-      <div className='sidebar'>
-        <div className='sidebar__progress'>
-          <div className='sidebar__progress-fill' ref={fillRef}>
-          </div>
-        </div>
-        <div className='sidebar__items'>
+    <nav className='tcc-classroom__section'>
+      <div className='tcc-sidebar'>
+        <LoadingProgress progress={progress} max={tabs?.length} />
+        <ul className='tcc-sidebar__items'>
           {getSidebarItems()}
-        </div>
+        </ul>
       </div>
     </nav>
   );

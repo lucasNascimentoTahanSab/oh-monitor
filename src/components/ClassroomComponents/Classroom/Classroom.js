@@ -85,10 +85,10 @@ function Classroom(props) {
 
   function getComponent() {
     return (
-      <div className='classroom'>
+      <div className='tcc-classroom'>
         <ClassroomSidebar />
         <ClassroomStage />
-        <ClassroomNavigation />
+        {/* <ClassroomNavigation /> */}
       </div>
     );
   }

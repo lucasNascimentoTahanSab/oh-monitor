@@ -49,10 +49,10 @@ function ExerciseChoice(props) {
   }
 
   return (
-    <li id={choice?.uid} className='menu__item exercise__question-choice'>
+    <li id={choice?.uid} className='tcc-menu-item exercise__question-choice'>
       <input
         id={`${choice?.uid}-input`}
-        className='menu__item-radio'
+        className='tcc-menu-item__radio'
         type='radio'
         checked={getChecked()}
         disabled={getDisabled()}

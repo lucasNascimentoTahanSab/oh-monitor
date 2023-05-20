@@ -12,7 +12,6 @@
   --color-blue--dark-medium: #212F3D;
   --color-blue--dark-light: #2C3E50;
   --color-blue--dark: #1E1E1E;
-  /* #17202A; */
 
   --font-family--ubuntu: 'Ubuntu', sans-serif;
 
@@ -20,11 +19,9 @@
   --font-size-12: .75rem;
   --font-size-14: .875rem;
   --font-size-18: 1.125rem;
-  --font-size-32: 2rem;
+  --font-size-24: 1.5rem;
 
   --line-height-18: 1.125rem;
-  --line-height-20: 1.25rem;
-  --line-height-40: 2.5rem;
 
   --font-weigth--bold: 700;
 }
@@ -34,7 +31,8 @@ h3,
 p,
 li,
 span,
-button {
+button,
+label {
   font-family: var(--font-family--ubuntu);
   color: var(--color-blue--dark);
 }
@@ -45,21 +43,20 @@ h3 {
 }
 
 h2 {
-  font-size: var(--font-size-32);
-  line-height: var(--line-height-40);
+  font-size: var(--font-size-24);
   letter-spacing: .08rem;
 }
 
 h3 {
   font-size: var(--font-size-18);
-  line-height: var(--line-height-20);
   letter-spacing: .04rem;
 }
 
 p,
 li,
 span,
-button {
+button,
+label {
   font-size: var(--font-size-14);
   line-height: var(--line-height-18);
   letter-spacing: .045rem;
@@ -90,69 +87,59 @@ button {
   height: 100vh;
 }
 
-.section {
+/* Classroom */
+
+.tcc-classroom {
+  display: grid;
+  grid-template-columns: .5fr 2fr;
+}
+
+.tcc-classroom__section {
   padding: 3.125rem;
   height: 100vh;
+  min-width: 0;
 }
 
-.classroom {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
-}
+/* ClassroomSidebar */
 
-.sidebar {
+.tcc-sidebar {
   display: flex;
   gap: .625rem;
 }
 
-.sidebar__progress {
-  position: relative;
-  width: .5rem;
-  background-color: var(--color-blue--light);
-}
-
-.sidebar__progress-fill {
-  position: absolute;
-  width: .5rem;
-  background-color: var(--color-blue--light-dark);
-  transition: .25s;
-}
-
-.sidebar__items {
+.tcc-sidebar__items {
   position: relative;
   display: flex;
   flex-direction: column;
-  flex: 1;
   gap: 2rem;
+  padding: 0;
   overflow: hidden;
 }
 
-.sidebar-item {
+/* ClassroomSidebarItem */
+
+.tcc-sidebar-item {
   display: flex;
-  gap: .3125rem;
   align-items: center;
-  cursor: pointer;
-  background: none;
-  border: none;
-  outline: none;
-  padding: 0;
+  gap: .625rem;
+  margin-bottom: 0 !important;
 }
 
-.sidebar-item__name {
-  font-family: var(--font-family--ubuntu);
-  font-size: var(--font-size-14);
+.tcc-sidebar-item__label {
   font-weight: var(--font-weigth--bold);
   color: var(--color-blue--light-medium);
   transition: .25s;
 }
 
-.sidebar-item__name:hover:not(.sidebar-item--selected) {
+.tcc-menu-item__radio:checked~.tcc-sidebar-item__label {
   color: var(--color-blue--light-dark);
 }
 
-.sidebar-item--selected {
+.tcc-menu-item__radio:not(:checked):not([disabled])~.tcc-sidebar-item__label:hover {
   color: var(--color-blue--light-dark);
 }
+
+/*  */
 
 .classroom-screen__content {
   display: flex;
@@ -403,34 +390,6 @@ button {
   display: flex;
   width: 100%;
   overflow: auto;
-}
-
-.menu__item {
-  display: flex;
-  gap: .625rem;
-  align-items: center;
-  cursor: pointer;
-}
-
-.menu__item-radio {
-  display: none;
-}
-
-.menu__item-radio:checked~.menu__item-label {
-  background-color: var(--color-blue--dark);
-}
-
-.menu__item-radio:not(:checked)~.menu__item-label:hover {
-  background-color: rgb(33, 47, 61, .75);
-}
-
-.menu__item-label {
-  padding: .625rem;
-  background-color: var(--color-blue--dark-medium);
-  font-family: var(--font-family--ubuntu);
-  font-size: var(--font-size-14);
-  color: var(--color-white);
-  cursor: pointer;
 }
 
 .code-editor__menu-settings {
@@ -709,8 +668,8 @@ button {
 .button-play--loading {
   display: inline-block;
   position: relative;
-  width: 1rem;
-  height: 1rem;
+  min-width: 1rem;
+  min-height: 1rem;
 }
 
 .button-play--loading div {
@@ -876,13 +835,64 @@ button {
   width: .75rem;
 }
 
+::-webkit-scrollbar-track {
+  background-color: var(--color-blue--light);
+}
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: var(--color-blue--light-medium);
-  border-radius: .5rem;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-blue--light-dark);
+}
+
+/* *** */
+
+/* LoadingProgress */
+
+.tcc-loading-progress {
+  position: relative;
+  min-width: .5rem;
+  background-color: var(--color-blue--light);
+}
+
+.tcc-loading-progress__fill {
+  position: absolute;
+  min-width: .5rem;
+  background-color: var(--color-blue--light-dark);
+  transition: .25s;
+}
+
+/* MenuItem */
+
+.tcc-menu-item {
+  display: flex;
+  gap: .625rem;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.tcc-menu-item__radio {
+  display: none;
+}
+
+.tcc-menu-item__radio:checked~.tcc-menu-item__label {
+  background-color: var(--color-blue--dark);
+}
+
+.tcc-menu-item__radio:not(:checked)~.tcc-menu-item__label:hover {
+  background-color: rgb(33, 47, 61, .75);
+}
+
+.tcc-menu-item__label {
+  padding: .625rem;
+  background-color: var(--color-blue--dark-medium);
+  font-family: var(--font-family--ubuntu);
+  font-size: var(--font-size-14);
+  color: var(--color-white);
+  cursor: pointer;
 }

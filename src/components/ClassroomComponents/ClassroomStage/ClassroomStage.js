@@ -39,7 +39,7 @@ function ClassroomStage() {
 
   return (
     <SectionsContext.Provider value={[sections, updateSections]}>
-      <div className='section classroom-screen__content'>
+      <div className='tcc-classroom__section classroom-screen__content'>
         {getSections()}
       </div>
     </SectionsContext.Provider>

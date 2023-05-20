@@ -31,7 +31,7 @@ function ClassroomNavigationItem(props) {
    */
   function getDropdownNavigationItem() {
     return (
-      <div className='menu__item'>
+      <div className='tcc-menu-item'>
         <ButtonArrow
           width='.875rem'
           height='.875rem'
@@ -40,7 +40,7 @@ function ClassroomNavigationItem(props) {
           onClick={() => Util.toggleOpen(navigationItems, setNavigationItems)(navigationItem.uid)} />
         <input
           id={navigationItem?.uid}
-          className='menu__item-radio'
+          className='tcc-menu-item__radio'
           type='radio'
           name={props.group}
           checked={getChecked()}
@@ -58,10 +58,10 @@ function ClassroomNavigationItem(props) {
    */
   function getUnitaryNavigationItem() {
     return (
-      <div className='menu__item'>
+      <div className='tcc-menu-item'>
         <input
           id={navigationItem?.uid}
-          className='menu__item-radio'
+          className='tcc-menu-item__radio'
           type='radio'
           name={props.group}
           checked={getChecked()}
@@ -72,7 +72,7 @@ function ClassroomNavigationItem(props) {
   }
 
   function getItemClass() {
-    return `sidebar-item__name navigation-item no-select overflow-ellipsis ${navigationItem?.current ? 'sidebar-item--selected' : ''}`;
+    return `tcc-sidebar-item__label navigation-item no-select overflow-ellipsis ${navigationItem?.current ? 'sidebar-item--selected' : ''}`;
   }
 
   function getChecked() {
