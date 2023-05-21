@@ -5,7 +5,7 @@ import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
 import Exercise from '../../../classes/strapi/Exercise.js';
 import AnswerContext from '../../Context/AnswerContext/AnswerContext.js';
 
-function ExerciseChoices(props) {
+function ExerciseQuestion() {
   const [currentExercise, setCurrentExercise] = useContext(ExerciseContext);
   const [answersByExercise, setAnswersByExercise] = useContext(AnswerContext);
   const [choices, setChoices] = useState(null);
@@ -66,13 +66,13 @@ function ExerciseChoices(props) {
   }
 
   return (
-    <li id={currentExercise?.uid} className='exercise__question-statement'>
+    <li id={currentExercise?.uid} className='tcc-exercise-question'>
       <span>{currentExercise?.statement}</span>
-      <ul className='exercise__question-choices'>
+      <ul className='tcc-exercise-question__choices'>
         {getExerciseAnswers()}
       </ul>
     </li>
   );
 }
 
-export default ExerciseChoices;
+export default ExerciseQuestion;

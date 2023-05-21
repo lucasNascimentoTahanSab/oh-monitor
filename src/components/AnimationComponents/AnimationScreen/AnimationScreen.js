@@ -279,8 +279,8 @@ function AnimationScreen(props) {
   }
 
   return (
-    <div className='code-snippet__animation' ref={animationScreen}>
-      <div className='animation-screen__screen' ref={animationCamera} onMouseDown={handleScreenMouseDown}>
+    <div className='tcc-animation-screen' ref={animationScreen}>
+      <div className='tcc-animation-screen__camera' ref={animationCamera} onMouseDown={handleScreenMouseDown}>
         <AnimationEngine
           commands={commands}
           setAnimationEngine={setAnimationEngine}
@@ -289,7 +289,7 @@ function AnimationScreen(props) {
           snapshot={snapshot}
           dragger={dragger} />
       </div>
-      <div className='animation-screen__control'>
+      <div className='tcc-animation-screen__control'>
         <ButtonPlay height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={toggleTimeline} playing={playing} />
         <InputRange theme={props.theme} max={totalTime} value={currentTime} onChange={onInputRangeChange} onMouseUp={onInputMouseUp} />
         <ButtonExpand height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={() => setFullscreen(!fullscreen)} />

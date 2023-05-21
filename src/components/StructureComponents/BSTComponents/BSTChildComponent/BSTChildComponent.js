@@ -30,7 +30,7 @@ function BSTChildComponent(props) {
   }
 
   return (
-    <div id={`_${props.node?.address}-subtree`} className={`animation-engine__subtree animation-engine__subtree--${props.direction}`}>
+    <div id={`_${props.node?.address}-subtree`} className={`tcc-bst-child tcc-bst-child--${props.direction}`}>
       {getNodeElement()}
       {getChildrenElement()}
     </div>

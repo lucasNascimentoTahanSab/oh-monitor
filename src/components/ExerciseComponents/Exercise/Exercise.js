@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
-import ExerciseChoices from '../ExerciseChoices/ExerciseChoices.js';
+import ExerciseQuestion from '../ExerciseQuestion/ExerciseQuestion.js';
 import CodeExercise from '../../CodeComponents/CodeExercise/CodeExercise.js';
 import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
@@ -16,7 +16,7 @@ function Exercise(props) {
   useEffect(() => { setCurrentExercise(props.exercise) }, [props.exercise]);
 
   function getExercise() {
-    if (currentExercise?.type === 'choice') { return <ExerciseChoices />; }
+    if (currentExercise?.type === 'choice') { return <ExerciseQuestion />; }
     if (currentExercise?.type === 'code') { return <CodeExercise />; }
   }
 

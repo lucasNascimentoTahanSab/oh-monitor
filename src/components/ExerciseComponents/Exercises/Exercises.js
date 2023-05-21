@@ -28,6 +28,7 @@ function Exercises(props) {
   const [validation, setValidation] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { setValidator(new Validator(setToastEvent, setLoading)); }, []);
 
   useEffect(() => {
@@ -109,10 +110,10 @@ function Exercises(props) {
     <ExercisesContext.Provider value={[exercises, updateExercises]}>
       <AnswerContext.Provider value={[answersByExercise, setAnswersByExercise]}>
         <ValidationContext.Provider value={[validation, setValidation]}>
-          <ol className='exercise__questions'>
+          <ol className='tcc-exercises'>
             {getExercises()}
           </ol>
-          <div className='exercise__confirmation'>
+          <div className='tcc-exercises__confirmation'>
             <ButtonConfirmation loading={loading} value={getButtonValue()} onClick={getButtonOnClick()} />
           </div>
         </ValidationContext.Provider>

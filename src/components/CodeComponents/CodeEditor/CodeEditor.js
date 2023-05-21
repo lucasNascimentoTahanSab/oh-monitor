@@ -224,7 +224,7 @@ function CodeEditor(props) {
   }
 
   function getClassName() {
-    return currentFile?.codes?.length ? 'code-editor' : 'code-editor skeleton';
+    return currentFile?.codes?.length ? 'tcc-code-editor' : 'tcc-code-editor skeleton';
   }
 
   return (

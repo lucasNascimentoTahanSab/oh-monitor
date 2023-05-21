@@ -9,7 +9,7 @@ import Util from '../../../classes/util/Util';
 
 function ModalToast(props) {
   function getModalToastClass() {
-    return `no-select modal-toast ${getModalToastAditionalStyle()}`;
+    return `modal-toast ${getModalToastAditionalStyle()} no-select`;
   }
 
   function getModalToastAditionalStyle() {

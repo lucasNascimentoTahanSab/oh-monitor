@@ -51,9 +51,9 @@ function CodeEditorPrompt() {
   }
 
   return (
-    <div className='prompt'>
-      <div className='prompt__resizer' onMouseDown={event => resizer.resize(event)}></div>
-      <div className='prompt__content'>
+    <div className='tcc-code-editor-prompt'>
+      <div className='tcc-code-editor-prompt__resizer' onMouseDown={event => resizer.resize(event)}></div>
+      <div className='tcc-code-editor-prompt__content'>
         <CodeEditorPromptMenu items={menuItems} setCurrentItem={Util.setCurrentItem(menuItems, updateMenuItems)} />
         <CodeEditorPromptContent current={currentMenuItem} setContentRef={setContentRef} />
       </div>

@@ -72,7 +72,7 @@ function ClassroomNavigationItem(props) {
   }
 
   function getItemClass() {
-    return `tcc-sidebar-item__label navigation-item no-select overflow-ellipsis ${navigationItem?.current ? 'sidebar-item--selected' : ''}`;
+    return `tcc-sidebar-item__label navigation-item ${navigationItem?.current ? 'sidebar-item--selected' : ''} no-select overflow-ellipsis`;
   }
 
   function getChecked() {
