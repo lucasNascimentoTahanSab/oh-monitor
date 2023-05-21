@@ -82,7 +82,7 @@ export default class Dragger {
     this.screen.removeEventListener('mousemove', this._handleScreenDraggerMouseMoveBind);
   }
 
-  _handleScreenDraggerMouseMoveBind = event => this._handleScreenDraggerMouseMove(event); s
+  _handleScreenDraggerMouseMoveBind = event => this._handleScreenDraggerMouseMove(event);
 
   /**
    * Método responsável por atualizar posição da tela de acordo com deslocamento do mouse.

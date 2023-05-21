@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import ValidationContext from '../../Context/ValidationContext/ValidationContext.js';
 import Util from '../../../classes/util/Util.js';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
+import ButtonChoice from '../../ButtonComponents/ButtonChoice/ButtonChoice.js';
 
 function ExerciseChoice(props) {
   const [currentExercise,] = useContext(ExerciseContext);
@@ -28,42 +29,14 @@ function ExerciseChoice(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [validation]);
 
-  function getLetterClass() {
-    return `no-select exercise__choice-letter ${getLetterAditionalStyling()}`;
-  }
-
-  function getLetterAditionalStyling() {
-    if (choice?.wrong) { return 'exercise__choice-letter--wrong'; }
-    if (choice?.correct) { return 'exercise__choice-letter--correct'; }
-    if (choice?.current) { return 'exercise__choice-letter--selected'; }
-
-    return '';
-  }
-
-  function getChecked() {
-    return choice?.current ?? false;
-  }
-
   function getDisabled() {
     return Boolean(Util.getCorrectItem(currentExercise?.choices));
   }
 
   return (
-    <li id={choice?.uid} className='menu__item exercise__question-choice'>
-      <input
-        id={`${choice?.uid}-input`}
-        className='menu__item-radio'
-        type='radio'
-        checked={getChecked()}
-        disabled={getDisabled()}
-        name={props.group}
-        onChange={() => Util.handle(props.selectChoice, choice.uid)}
-      >
-      </input>
-      <label className='exercise__choice-text' htmlFor={`${choice?.uid}-input`}>
-        <span className={getLetterClass()}>{Util.getLetterByIndex(props.index)}</span>
-        {choice?.statement}
-      </label>
+    <li id={choice?.uid} className='tcc-exercise-choice tcc-exercise-choice__statement'>
+      <ButtonChoice index={props.index} state={choice} disabled={getDisabled()} onClick={() => Util.handle(props.selectChoice, choice.uid)} />
+      <span>{choice?.statement}</span>
     </li>
   );
 }

@@ -6,13 +6,9 @@ import React from 'react';
 import Util from '../../../classes/util/Util';
 
 function InputRange(props) {
-  function getThemeClass() {
-    return props.theme === 'dark' ? 'progress-bar--light' : 'progress-bar--dark';
-  }
-
   return (
     <input
-      className={`progress-bar ${getThemeClass()}`}
+      className='tcc-input-range'
       type='range'
       step={1}
       min={0}

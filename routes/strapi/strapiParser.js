@@ -9,13 +9,13 @@ const ST_PARSER = {
 
     return JSON.parse(JSON.stringify(data).replaceAll(/"answer":(".+?"|null),?/g, ''));
   },
-  parseCorrectAnswers(data) {
-    if (typeof data !== 'object') { return { correct: false }; }
-    if (!Array.isArray(data.data)) { return { correct: false }; }
-    if (!data.data.length) { return { correct: false }; }
+  parseCorrectAnswers(key, data) {
+    if (typeof data !== 'object') { return { uid: key, correct: false }; }
+    if (!Array.isArray(data.data)) { return { uid: key, correct: false }; }
+    if (!data.data.length) { return { uid: key, correct: false }; }
 
-    return { correct: true };
-  },
+    return { uid: key, correct: true };
+  }
 };
 
 module.exports = ST_PARSER;

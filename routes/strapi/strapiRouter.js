@@ -23,7 +23,7 @@ router.get('/subjects/:subjectId', (req, res) => {
 
 router.get('/exercises?*', (req, res) => {
   axios.request(ST_REQUEST.getExerciseAnswerRequest(req))
-    .then(response => res.send(ST_PARSER.parseCorrectAnswers(response.data)))
+    .then(response => res.send(ST_PARSER.parseCorrectAnswers(req.query.exerciseUid, response.data)))
     .catch(error => res.send(error));
 });
 

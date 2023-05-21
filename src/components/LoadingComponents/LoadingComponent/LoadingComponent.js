@@ -1,8 +1,12 @@
 import React from 'react';
 
 function LoadingComponent(props) {
+  function getClassName() {
+    return `tcc-loading ${props.className ?? ''}`;
+  }
+
   return (
-    <div className='button-play--loading' style={{ width: props.width, height: props.height }}>
+    <div className={getClassName()} style={{ width: props.width, height: props.height }}>
       <div style={{ width: props.width, height: props.height }}></div>
       <div style={{ width: props.width, height: props.height }}></div>
       <div style={{ width: props.width, height: props.height }}></div>

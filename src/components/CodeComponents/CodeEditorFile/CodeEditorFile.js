@@ -18,15 +18,30 @@ function CodeEditorFile(props) {
   /**
    * Método responsável por reajustar dimensões do editor ao pôr ou remover tela cheia.
    */
+  const resizeEditorFullscreenCallback = useCallback(resizeEditorFullscreen, [resizeEditorFullscreen]);
+
+  function resizeEditorFullscreen() {
+    editor?.layout({});
+  }
+
+  /**
+   * Método responsável por reajustar dimensões do editor ao reajustar tamanho da tela.
+   */
   const resizeEditorCallback = useCallback(resizeEditor, [resizeEditor]);
 
   function resizeEditor() {
+    if (document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement) { return; }
+
     editor?.layout({});
   }
 
   useEffect(() => {
-    codeEditorRef?.current?.addEventListener('fullscreenchange', resizeEditorCallback);
-  }, [codeEditorRef, resizeEditorCallback]);
+    window.addEventListener('resize', resizeEditorCallback);
+    codeEditorRef?.current?.addEventListener('fullscreenchange', resizeEditorFullscreenCallback);
+    codeEditorRef?.current?.addEventListener('mozfullscreenchange', resizeEditorFullscreenCallback);
+    codeEditorRef?.current?.addEventListener('MSFullscreenChange', resizeEditorFullscreenCallback);
+    codeEditorRef?.current?.addEventListener('webkitfullscreenchange', resizeEditorFullscreenCallback);
+  }, [codeEditorRef, resizeEditorCallback, resizeEditorFullscreenCallback]);
 
   function handleComponentDidMount(editor) {
     setEditor(editor);

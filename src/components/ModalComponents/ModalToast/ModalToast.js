@@ -9,19 +9,19 @@ import Util from '../../../classes/util/Util';
 
 function ModalToast(props) {
   function getModalToastClass() {
-    return `no-select modal-toast ${getModalToastAditionalStyle()}`;
+    return `tcc-modal-toast ${getModalToastAditionalStyle()} tcc-no-select`;
   }
 
   function getModalToastAditionalStyle() {
-    if (props.toastEvent?.variant === 'info') { return 'modal-toast--info'; }
-    if (props.toastEvent?.variant === 'error') { return 'modal-toast--error'; }
-    if (props.toastEvent?.variant === 'success') { return 'modal-toast--success'; }
+    if (props.toastEvent?.variant === 'info') { return 'tcc-modal-toast--info'; }
+    if (props.toastEvent?.variant === 'error') { return 'tcc-modal-toast--error'; }
+    if (props.toastEvent?.variant === 'success') { return 'tcc-modal-toast--success'; }
   }
 
   return (
     <ReactModal
       className={getModalToastClass()}
-      overlayClassName='modal-toast__overlay'
+      overlayClassName='tcc-modal-toast__overlay'
       isOpen={props.isOpen}
       shouldFocusAfterRender={true}
       shouldReturnFocusAfterClose={false}
@@ -29,12 +29,10 @@ function ModalToast(props) {
       appElement={props.app?.current}>
       <header>
         <h3>{props.toastEvent?.title}</h3>
-        <ButtonCross width='1.5rem' height='1.5rem' onClick={() => Util.handle(props.unmountToast)} />
+        <ButtonCross width='1.75rem' height='1.75rem' onClick={() => Util.handle(props.unmountToast)} />
       </header>
-      <section className='modal-toast__section'>
-        <div>
-          <span>{props.toastEvent?.message}</span>
-        </div>
+      <section>
+        <span>{props.toastEvent?.message}</span>
       </section>
     </ReactModal>
   );

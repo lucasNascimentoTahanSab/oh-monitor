@@ -18,9 +18,9 @@ function CodeEditorWorkspace() {
   const [currentCode,] = useContext(CodeContext);
 
   return (
-    <div className='code-editor__workspace'>
+    <div className='tcc-code-editor-workspace'>
       <CodeEditorMenu />
-      <div className='code-editor__workspace-inner'>
+      <div className='tcc-code-editor-workspace__content'>
         <CodeEditorFile code={currentCode} onChange={Util.updateCodeIn(codes, setCodes)} />
         <AnimationScreen commands={file?.commands} />
       </div>

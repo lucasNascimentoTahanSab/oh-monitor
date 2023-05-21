@@ -79,18 +79,4 @@ function getFilter(object, item) {
   return `filters[${object}][$eq]=${item}`;
 }
 
-/**
- * Método responsável por obter comando para filtrar registros de acordo com
- * objeto e itens recebidos.
- * 
- * @param {string} object 
- * @param {string} items 
- * @returns {string}
- */
-function getFilterForValues(object, items) {
-  if (!items?.length) { return ''; }
-
-  return items.map((item, index) => `filters[${object}][$in][${index}]=${item}`, '').join('&');
-}
-
 module.exports = ST_REQUEST;

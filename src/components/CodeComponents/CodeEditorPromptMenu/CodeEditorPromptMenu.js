@@ -20,14 +20,14 @@ function CodeEditorPromptMenu(props) {
         item={item}
         group={`${item.uid}-prompt-menu`}
         onChange={props.setCurrentItem}
-        selectorClassName='prompt__menu-item-radio'
-        labelClassName='prompt__menu-item no-select'
+        selectorClassName='tcc-code-editor-menu-item__radio'
+        labelClassName='tcc-code-editor-menu-item tcc-no-select'
       />
     );
   }
 
   return (
-    <div className='code-editor__prompt-menu'>
+    <div className='tcc-code-editor-prompt-menu'>
       {getMenuItems()}
     </div>
   );

@@ -28,13 +28,13 @@ function BSTNodeComponent(props) {
    * @returns {string}
    */
   function getFocus() {
-    return node?.focus ? 'animation-engine__node--focus' : '';
+    return node?.focus ? 'tcc-bst-node--focus' : '';
   }
 
   return (
-    <span id={`_${node?.address}`} className={`animation-engine__node ${getFocus()}`} ref={nodeRef}>
-      {node?.value}
-    </span>
+    <div id={`_${node?.address}`} className={`tcc-bst-node ${getFocus()}`} title={node?.value} ref={nodeRef}>
+      <span className='tcc-truncate-string'>{node?.value}</span>
+    </div>
   );
 }
 

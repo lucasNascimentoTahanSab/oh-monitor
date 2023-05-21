@@ -37,10 +37,6 @@ function ClassroomSidebarItem(props) {
     Util.handle(props.setCurrentItem, tab.uid);
   }
 
-  function getItemClass() {
-    return `sidebar-item__name no-select overflow-ellipsis ${tab?.current ? 'sidebar-item--selected' : ''}`;
-  }
-
   /**
    * Método responsável pela exibição de loading enquanto guia estiver carregando.
    * 
@@ -51,18 +47,20 @@ function ClassroomSidebarItem(props) {
   }
 
   return (
-    <div className='menu__item'>
-      <input
-        id={tab?.uid}
-        className='menu__item-radio'
-        type='radio'
-        name={props.group}
-        checked={getChecked()}
-        disabled={Util.isTabDisabled(tabs, tab)}
-        onChange={setCurrentitem} />
-      <label className={getItemClass()} htmlFor={tab?.uid}>{tab?.title}</label>
+    <li className='tcc-sidebar-item'>
+      <div className='tcc-menu-item'>
+        <input
+          id={tab?.uid}
+          className='tcc-menu-item__radio'
+          type='radio'
+          name={props.group}
+          checked={getChecked()}
+          disabled={Util.isTabDisabled(tabs, tab)}
+          onChange={setCurrentitem} />
+        <label className='tcc-sidebar-item__label tcc-no-select tcc-truncate-string' htmlFor={tab?.uid}>{tab?.title}</label>
+      </div>
       {tab?.loading ? getLoading() : null}
-    </div>
+    </li>
   );
 }
 

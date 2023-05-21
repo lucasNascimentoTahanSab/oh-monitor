@@ -29,7 +29,7 @@ function BSTChildrenComponent(props) {
   }
 
   return (
-    <div id={`_${props.parent?.address}-children`} className='animation-engine__children'>
+    <div id={`_${props.parent?.address}-children`} className='tcc-bst-children'>
       {getLeftChildComponent()}
       {getRightChildComponent()}
     </div>

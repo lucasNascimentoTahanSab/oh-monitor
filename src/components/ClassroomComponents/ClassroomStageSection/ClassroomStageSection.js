@@ -80,9 +80,9 @@ function ClassroomStageSection(props) {
 
   return (
     <SectionContext.Provider value={[currentSection, updateCurrentSection]}>
-      <section id={currentSection?.uid} className='classroom__content'>
+      <section id={currentSection?.uid} className='tcc-stage-section'>
         <h2>{currentSection?.title}</h2>
-        <div className='classroom__content-section'>
+        <div className='tcc-stage-section__content'>
           <ElementsContext.Provider value={[elements, updateElements]}>
             {getElements()}
           </ElementsContext.Provider>

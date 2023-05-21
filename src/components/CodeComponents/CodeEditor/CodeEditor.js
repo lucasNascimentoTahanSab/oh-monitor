@@ -31,15 +31,16 @@ function CodeEditor(props) {
   const [input, setInput] = useState([getRightArrow('input')]);
   const [render, setRender] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const [fullscreenOperator,] = useState(new Fullscreen(setFullscreen));
   const [loadCodes, setLoadCodes] = useState(true);
   const codeEditorRef = useRef(null);
 
   useEffect(() => { setCurrentFile(props.file); }, [props.file]);
 
   useEffect(() => {
-    if (fullscreen) { Fullscreen.open(codeEditorRef.current); }
-    else { Fullscreen.close(); }
-  }, [fullscreen]);
+    if (fullscreen) { fullscreenOperator.open(codeEditorRef.current, setFullscreen); }
+    else { fullscreenOperator.close(codeEditorRef.current); }
+  }, [fullscreenOperator, fullscreen]);
 
   const getCodesCallback = useCallback(getCodes, [getCodes]);
 
@@ -218,13 +219,13 @@ function CodeEditor(props) {
     if (!result) { return currentFile.output; }
 
     if (result.error) { currentFile.output.push(result.error); }
-    else { currentFile.output.push(result.output.replaceAll(new RegExp(`${subject.uid}.*\n`, 'g'), '')); }
+    else if (result.output) { currentFile.output.push(result.output.replaceAll(new RegExp(`${subject.uid}.*\n`, 'g'), '')); }
 
     return currentFile.output;
   }
 
   function getClassName() {
-    return currentFile?.codes?.length ? 'code-editor' : 'code-editor skeleton';
+    return `tcc-code-editor ${fullscreen ? 'tcc-code-editor--fullscreen' : ''} ${!currentFile?.codes?.length ? 'tcc-skeleton' : ''}`;
   }
 
   return (
@@ -236,8 +237,10 @@ function CodeEditor(props) {
               <InputContext.Provider value={[input, setInput]}>
                 <FullscreenContext.Provider value={[fullscreen, setFullscreen]}>
                   <RenderContext.Provider value={[render, setRender]}>
-                    <div className={getClassName()} ref={codeEditorRef}>
-                      {currentFile?.codes?.length ? props.children : null}
+                    <div className="tcc-code-editor__container">
+                      <div className={getClassName()} ref={codeEditorRef}>
+                        {currentFile?.codes?.length ? props.children : null}
+                      </div>
                     </div>
                   </RenderContext.Provider>
                 </FullscreenContext.Provider>

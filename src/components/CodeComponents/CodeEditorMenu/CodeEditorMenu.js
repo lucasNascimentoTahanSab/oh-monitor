@@ -24,16 +24,16 @@ function CodeEditorMenu(props) {
         key={`${code.uid}-code-menu`}
         item={code}
         group={`${code.uid}-code-menu`}
-        selectorClassName='menu__item-radio'
-        labelClassName='menu__item-label'
+        selectorClassName='tcc-menu-item__radio'
+        labelClassName='tcc-menu-item__label'
         onChange={Util.setCurrentItem(codes, setCodes)}
       />
     );
   }
 
   return (
-    <div className='code-editor__menu'>
-      <div className='code-editor__menu-tabs'>{getMenuItems()}</div>
+    <div className='tcc-code-editor-menu'>
+      <div className='tcc-code-editor-menu__tabs'>{getMenuItems()}</div>
       <CodeEditorMenuSettings showButtonPlay />
     </div>
   );

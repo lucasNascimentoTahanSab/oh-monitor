@@ -46,7 +46,7 @@ function CodeEditorMenuSettings(props) {
   }
 
   return (
-    <div className='code-editor__menu-settings'>
+    <div className='tcc-code-editor-menu-settings'>
       {getButtonPlay()}
       <ButtonExpand height='.875rem' width='.875rem' color='#3498DB' onClick={() => setFullscreen(!fullscreen)} />
     </div>

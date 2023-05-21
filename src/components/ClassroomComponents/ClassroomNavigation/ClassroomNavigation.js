@@ -100,7 +100,7 @@ function ClassroomNavigation() {
 
   return (
     <NavigationItemsContext.Provider value={[navigationItems, updateNavigationItems]}>
-      <nav className='section classroom-stage__navigation'>
+      <nav className='tcc-classroom__section tcc-classroom-navigation'>
         {getNavigationItems()}
       </nav>
     </NavigationItemsContext.Provider>

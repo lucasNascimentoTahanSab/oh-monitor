@@ -3,11 +3,11 @@ import ExerciseChoice from '../ExerciseChoice/ExerciseChoice.js';
 import Util from '../../../classes/util/Util.js';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
 import Exercise from '../../../classes/strapi/Exercise.js';
-import ResultContext from '../../Context/ResultContext/ResultContext.js';
+import AnswerContext from '../../Context/AnswerContext/AnswerContext.js';
 
-function ExerciseChoices(props) {
+function ExerciseQuestion() {
   const [currentExercise, setCurrentExercise] = useContext(ExerciseContext);
-  const [resultByExercise, setResultByExercise] = useContext(ResultContext);
+  const [answersByExercise, setAnswersByExercise] = useContext(AnswerContext);
   const [choices, setChoices] = useState(null);
 
   useEffect(() => {
@@ -60,19 +60,19 @@ function ExerciseChoices(props) {
 
     if (!currentChoice) { return; }
 
-    resultByExercise.set(currentExercise.uid, currentChoice);
+    answersByExercise.set(currentExercise.uid, currentChoice);
 
-    setResultByExercise(new Map(resultByExercise));
+    setAnswersByExercise(new Map(answersByExercise));
   }
 
   return (
-    <li id={currentExercise?.uid} className='exercise__question-statement'>
+    <li id={currentExercise?.uid} className='tcc-exercise-question'>
       <span>{currentExercise?.statement}</span>
-      <ul className='exercise__question-choices'>
+      <ul className='tcc-exercise-question__choices'>
         {getExerciseAnswers()}
       </ul>
     </li>
   );
 }
 
-export default ExerciseChoices;
+export default ExerciseQuestion;

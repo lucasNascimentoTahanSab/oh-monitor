@@ -30,7 +30,7 @@ function BSTComponent(props) {
   }
 
   return (
-    <div id={`_${props.tree?.address}`} className='animation-engine__tree'>
+    <div id={`_${props.tree?.address}`} className='tcc-bst'>
       {getNodeElement()}
       {getChildrenElement()}
     </div>

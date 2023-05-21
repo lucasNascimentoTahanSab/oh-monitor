@@ -1,18 +1,46 @@
+import Util from "./Util";
+
 /**
  * @file Módulo responsável por controlar abertura e fechamento de tela cheia.
  * @copyright Lucas N. T. Sab 2023
  */
 export default class Fullscreen {
+  constructor(setFullscreen) {
+    this.setFullscreen = setFullscreen;
+  }
+
+  _updateFullscreenOnEscBind = () => this._updateFullscreenOnEsc();
+
   /**
    * Método responsável por abertura de tela cheia.
    * 
    * @returns {Promise}
    */
-  static open(ref) {
-    if (ref.requestFullscreen) { return ref.requestFullscreen(); }
-    if (ref.mozRequestFullScreen) { return Fullscreen._openOnFirefox(ref); }
-    if (ref.webkitRequestFullscreen) { return Fullscreen._openOnChrome(); }
-    if (ref.msRequestFullscreen) { return Fullscreen._openOnIE(); }
+  open(ref) {
+    if (ref.requestFullscreen) { ref.requestFullscreen(); }
+    else if (ref.mozRequestFullScreen) { this._openOnFirefox(ref); }
+    else if (ref.webkitRequestFullscreen) { this._openOnChrome(ref); }
+    else if (ref.msRequestFullscreen) { this._openOnIE(ref); }
+
+    this._addEventListenerForEscClosing(ref);
+  }
+
+  /**
+   * Método reponsável por atualizar estado da tela atual quando fechamento por ESC.
+   * 
+   * @param {object} ref 
+   */
+  _addEventListenerForEscClosing(ref) {
+    ref.addEventListener('fullscreenchange', this._updateFullscreenOnEscBind);
+    ref.addEventListener('mozfullscreenchange', this._updateFullscreenOnEscBind);
+    ref.addEventListener('MSFullscreenChange', this._updateFullscreenOnEscBind);
+    ref.addEventListener('webkitfullscreenchange', this._updateFullscreenOnEscBind);
+  }
+
+  _updateFullscreenOnEsc() {
+    if (document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement) { return; }
+
+    Util.handle(this.setFullscreen, false);
   }
 
   /**
@@ -20,17 +48,32 @@ export default class Fullscreen {
    * 
    * @returns {Promise}
    */
-  static close() {
-    if (document.fullscreenElement && document.exitFullscreen) { return document.exitFullscreen(); }
-    if (document.fullscreenElement && document.mozCancelFullScreen) { return Fullscreen._closeOnFirefox(); }
-    if (document.fullscreenElement && document.webkitExitFullscreen) { return Fullscreen._closeOnChrome(); }
-    if (document.fullscreenElement && document.msExitFullscreen) { return Fullscreen._closeOnIE(); }
+  close(ref) {
+    if (document.fullscreenElement && document.exitFullscreen) { document.exitFullscreen(); }
+    else if (document.fullscreenElement && document.mozCancelFullScreen) { this._closeOnFirefox(); }
+    else if (document.fullscreenElement && document.webkitExitFullscreen) { this._closeOnChrome(); }
+    else if (document.fullscreenElement && document.msExitFullscreen) { this._closeOnIE(); }
+
+    this._removeEventListenerForEscClosing(ref);
+  }
+
+  /**
+   * Método reponsável por remover listener para identificar fechamento por ESC quando
+   * saindo de tela cheia.
+   * 
+   * @param {object} ref 
+   */
+  _removeEventListenerForEscClosing(ref) {
+    ref.removeEventListener('fullscreenchange', this._updateFullscreenOnEscBind);
+    ref.removeEventListener('mozfullscreenchange', this._updateFullscreenOnEscBind);
+    ref.removeEventListener('MSFullscreenChange', this._updateFullscreenOnEscBind);
+    ref.removeEventListener('webkitfullscreenchange', this._updateFullscreenOnEscBind);
   }
 
   /**
    * Método responsável por remover tela cheia em navegador IE e Edge.
    */
-  static _closeOnIE() {
+  _closeOnIE() {
     return document.msExitFullscreen();
   }
 
@@ -38,14 +81,14 @@ export default class Fullscreen {
    * Método responsável por remover tela cheia em navegador Chrome, Safari 
    * e Opera.
    */
-  static _closeOnChrome() {
+  _closeOnChrome() {
     return document.webkitExitFullscreen();
   }
 
   /**
    * Método responsável por remover tela cheia em navegador Firefox. 
    */
-  static _closeOnFirefox() {
+  _closeOnFirefox() {
     return document.mozCancelFullScreen();
   }
 
@@ -55,7 +98,7 @@ export default class Fullscreen {
    * 
    * @param {object} ref 
    */
-  static _openOnIE(ref) {
+  _openOnIE(ref) {
     return ref.msRequestFullscreen();
   }
 
@@ -65,7 +108,7 @@ export default class Fullscreen {
    * 
    * @param {object} ref 
    */
-  static _openOnChrome(ref) {
+  _openOnChrome(ref) {
     return ref.webkitRequestFullscreen();
   }
 
@@ -75,7 +118,7 @@ export default class Fullscreen {
    * 
    * @param {object} ref 
    */
-  static _openOnFirefox(ref) {
+  _openOnFirefox(ref) {
     return ref.mozRequestFullScreen();
   }
 }

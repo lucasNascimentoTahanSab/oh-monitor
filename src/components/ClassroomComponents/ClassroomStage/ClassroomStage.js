@@ -2,7 +2,7 @@
  * @file Módulo responsável pela exibição do conteúdo da guia atual em sala de aula.
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import ClassroomStageSection from '../ClassroomStageSection/ClassroomStageSection.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
 import SectionsContext from '../../Context/SectionsContext/SectionsContext.js';
@@ -11,6 +11,9 @@ import Tab from '../../../classes/strapi/Tab.js';
 function ClassroomStage() {
   const [currentTab, setCurrentTab] = useContext(TabContext);
   const [sections, setSections] = useState([]);
+  const stageRef = useRef(null);
+
+  useEffect(() => { stageRef.current.focus(); }, []);
 
   useEffect(() => { setSections(currentTab?.sections) }, [currentTab?.sections]);
 
@@ -39,8 +42,10 @@ function ClassroomStage() {
 
   return (
     <SectionsContext.Provider value={[sections, updateSections]}>
-      <div className='section classroom-screen__content'>
-        {getSections()}
+      <div className='tcc-classroom__section-container'>
+        <div className='tcc-classroom__section tcc-stage' ref={stageRef}>
+          {getSections()}
+        </div>
       </div>
     </SectionsContext.Provider>
   );
