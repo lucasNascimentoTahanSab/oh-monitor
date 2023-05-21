@@ -29,12 +29,10 @@ function ModalToast(props) {
       appElement={props.app?.current}>
       <header>
         <h3>{props.toastEvent?.title}</h3>
-        <ButtonCross width='1.5rem' height='1.5rem' onClick={() => Util.handle(props.unmountToast)} />
+        <ButtonCross width='1.75rem' height='1.75rem' onClick={() => Util.handle(props.unmountToast)} />
       </header>
-      <section className='modal-toast__section'>
-        <div>
-          <span>{props.toastEvent?.message}</span>
-        </div>
+      <section>
+        <span>{props.toastEvent?.message}</span>
       </section>
     </ReactModal>
   );

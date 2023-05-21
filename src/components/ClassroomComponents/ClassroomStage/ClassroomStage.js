@@ -42,8 +42,10 @@ function ClassroomStage() {
 
   return (
     <SectionsContext.Provider value={[sections, updateSections]}>
-      <div className='tcc-classroom__section tcc-stage' ref={stageRef}>
-        {getSections()}
+      <div className='tcc-classroom__section-container'>
+        <div className='tcc-classroom__section tcc-stage' ref={stageRef}>
+          {getSections()}
+        </div>
       </div>
     </SectionsContext.Provider>
   );

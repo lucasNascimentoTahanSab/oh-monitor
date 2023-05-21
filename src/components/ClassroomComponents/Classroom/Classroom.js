@@ -80,7 +80,7 @@ function Classroom(props) {
   }
 
   function getClassroom() {
-    return loading ? (<LoadingComponent />) : getComponent();
+    return loading ? (<LoadingComponent width='1.75rem' height='1.75rem' />) : getComponent();
   }
 
   function getComponent() {

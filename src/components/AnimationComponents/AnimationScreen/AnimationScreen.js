@@ -30,6 +30,7 @@ function AnimationScreen(props) {
   const [reset, setReset] = useState(false);
   const [timer, setTimer] = useState(null);
   const [fullscreen, setFullscreen] = useState(false);
+  const [fullscreenOperator,] = useState(new Fullscreen(setFullscreen));
   const animationCamera = useRef(null);
   const animationScreen = useRef(null);
 
@@ -47,9 +48,9 @@ function AnimationScreen(props) {
   }, [animationEngine]);
 
   useEffect(() => {
-    if (fullscreen) { Fullscreen.open(animationScreen.current); }
-    else { Fullscreen.close(); }
-  }, [fullscreen]);
+    if (fullscreen) { fullscreenOperator.open(animationScreen.current, setFullscreen); }
+    else { fullscreenOperator.close(animationScreen.current); }
+  }, [fullscreenOperator, fullscreen]);
 
   const pauseTimelineCallback = useCallback(pauseTimeline, [pauseTimeline]);
 
@@ -89,6 +90,10 @@ function AnimationScreen(props) {
 
     resetTimelineCallback();
   }, [reset, totalTime, snapshots, playing, resetTimelineCallback]);
+
+  function getClassName() {
+    return `tcc-animation-screen ${fullscreen ? 'tcc-animation-screen--fullscreen' : ''}`;
+  }
 
   function configureSnapshots(result) {
     setReset(true);
@@ -279,7 +284,7 @@ function AnimationScreen(props) {
   }
 
   return (
-    <div className='tcc-animation-screen' ref={animationScreen}>
+    <div className={getClassName()} ref={animationScreen}>
       <div className='tcc-animation-screen__camera' ref={animationCamera} onMouseDown={handleScreenMouseDown}>
         <AnimationEngine
           commands={commands}

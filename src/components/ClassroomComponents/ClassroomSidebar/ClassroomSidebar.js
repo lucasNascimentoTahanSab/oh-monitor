@@ -43,7 +43,7 @@ function ClassroomSidebar() {
   }
 
   return (
-    <nav className='tcc-classroom__section'>
+    <nav className='tcc-classroom__section tcc-sidebar__section'>
       <div className='tcc-sidebar'>
         <LoadingProgress progress={progress} max={tabs?.length} />
         <ul className='tcc-sidebar__items'>

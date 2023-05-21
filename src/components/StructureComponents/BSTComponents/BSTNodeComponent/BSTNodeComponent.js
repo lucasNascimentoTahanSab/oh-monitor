@@ -32,9 +32,9 @@ function BSTNodeComponent(props) {
   }
 
   return (
-    <span id={`_${node?.address}`} className={`tcc-bst-node ${getFocus()}`} ref={nodeRef}>
-      {node?.value}
-    </span>
+    <div id={`_${node?.address}`} className={`tcc-bst-node ${getFocus()}`} title={node?.value} ref={nodeRef}>
+      <span className='tcc-truncate-string'>{node?.value}</span>
+    </div>
   );
 }
 

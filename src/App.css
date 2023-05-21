@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap');
 
 :root {
-  --color-white: #FFFFFF;
+  --color-white: #F8F8F8;
   --color-green: #42DC50;
   --color-red: #F94F49;
   --color-blue--light: #D4E6F1;
-  --color-blue--light-medium: #84C7E6;
-  --color-blue--light-dark: #3498DB;
-  --color-blue--dark-medium: #212F3D;
-  --color-blue--dark-light: #2C3E50;
-  --color-blue--dark: #1E1E1E;
+  --color-blue--medium: #84C7E6;
+  --color-blue--dark: #3498DB;
+  --color-black--light: #273746;
+  --color-black--medium: #212F3D;
+  --color-black--dark: #1E1E1E;
 
   --font-family--ubuntu: 'Ubuntu', sans-serif;
   --font-family--ubuntu-mono: 'Ubuntu Mono', monospace;
@@ -19,21 +19,29 @@
   --font-size-14: .875rem;
   --font-size-18: 1.125rem;
   --font-size-24: 1.5rem;
+  --font-size-40: 2.5rem;
 
-  --line-height-18: 1.125rem;
+  --line-height-32: 2rem;
 
+  --letter-spacing-072: .045rem;
+
+  --font-weigth--light: 300;
+  --font-weigth--regular: 400;
   --font-weigth--bold: 700;
+}
+
+body {
+  background-color: var(--color-white);
 }
 
 h2,
 h3,
 p,
 li,
-span,
 button,
 label {
   font-family: var(--font-family--ubuntu);
-  color: var(--color-blue--dark);
+  color: var(--color-black--medium);
 }
 
 h2,
@@ -42,23 +50,23 @@ h3 {
 }
 
 h2 {
-  font-size: var(--font-size-24);
-  letter-spacing: .08rem;
+  font-size: var(--font-size-40);
+  letter-spacing: var(--letter-spacing-072);
 }
 
 h3 {
-  font-size: var(--font-size-18);
-  letter-spacing: .04rem;
+  font-size: var(--font-size-24);
+  letter-spacing: var(--letter-spacing-072);
 }
 
 p,
 li,
-span,
 button,
 label {
-  font-size: var(--font-size-14);
-  line-height: var(--line-height-18);
-  letter-spacing: .045rem;
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weigth--regular);
+  line-height: var(--line-height-32);
+  letter-spacing: var(--letter-spacing-072);
 }
 
 li:not(:last-child) {
@@ -96,18 +104,33 @@ button {
 
 .tcc-classroom__section {
   padding: 3.125rem;
+  height: fit-content;
+  min-width: 0;
+  overflow: auto;
+}
+
+.tcc-classroom__section-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
   height: 100vh;
   min-width: 0;
 }
 
 /* ClassroomSidebar */
 
+.tcc-sidebar__section {
+  position: relative;
+}
+
 .tcc-sidebar {
+  position: fixed;
   display: flex;
   gap: .625rem;
   opacity: 0;
   transform: translateY(15rem);
   animation: show-up 1.5s forwards;
+  width: 12.5%;
 }
 
 .tcc-sidebar__items {
@@ -130,16 +153,16 @@ button {
 
 .tcc-sidebar-item__label {
   font-weight: var(--font-weigth--bold);
-  color: var(--color-blue--light-medium);
+  color: var(--color-blue--medium);
   transition: .25s;
 }
 
 .tcc-menu-item__radio:checked~.tcc-sidebar-item__label {
-  color: var(--color-blue--light-dark);
+  color: var(--color-blue--dark);
 }
 
 .tcc-menu-item__radio:not(:checked):not([disabled])~.tcc-sidebar-item__label:hover {
-  color: var(--color-blue--light-dark);
+  color: var(--color-blue--dark);
 }
 
 /* ClassroomStage */
@@ -148,7 +171,8 @@ button {
   display: flex;
   flex-direction: column;
   gap: 1.875rem;
-  overflow: auto;
+  overflow: visible;
+  width: 75%;
 }
 
 /* ClassroomStageSection */
@@ -187,6 +211,15 @@ button {
   margin-left: 1rem;
 }
 
+.tcc-exercise-question>span {
+  font-family: var(--font-family--ubuntu);
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weigth--regular);
+  color: var(--color-black--medium);
+  line-height: var(--line-height-32);
+  letter-spacing: var(--letter-spacing-072);
+}
+
 .tcc-exercise-question__choices {
   padding: .9375rem 0 0 .9375rem;
 }
@@ -203,23 +236,41 @@ button {
   gap: .625rem;
 }
 
+.tcc-exercise-choice__statement>span {
+  font-family: var(--font-family--ubuntu);
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weigth--regular);
+  color: var(--color-black--medium);
+  line-height: var(--line-height-32);
+  letter-spacing: var(--letter-spacing-072);
+}
+
 /* CodeEditor */
 
-.tcc-code-editor {
+.tcc-code-editor__container {
   position: relative;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+  width: 100%;
+  height: 40rem;
+  margin: 1.875rem 0;
+}
+
+.tcc-code-editor {
+  position: absolute;
+  top: 0;
+  left: -12.5%;
   display: grid;
   column-gap: .625rem;
   border-radius: .625rem;
-  box-shadow: rgba(0, 0, 0, 0.24) 0 .1875rem .5rem;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 1.1875rem 2.375rem, rgba(0, 0, 0, 0.22) 0 .9375rem .75rem;
   overflow: hidden;
-  width: 100%;
-  height: 40rem;
+  width: calc(100% + 25%);
+  height: inherit;
 }
 
-.tcc-code-editor:fullscreen,
-.tcc-code-editor:-ms-fullscreen,
-.tcc-code-editor:-moz-full-screen,
-.tcc-code-editor:-webkit-full-screen {
+.tcc-code-editor--fullscreen {
   border-radius: 0;
   box-shadow: none;
 }
@@ -236,7 +287,7 @@ button {
 .tcc-code-editor-workspace__content {
   display: flex;
   gap: 1.25rem;
-  background-color: var(--color-blue--dark);
+  background-color: var(--color-black--dark);
   padding: .625rem .625rem 3.5rem 0;
   width: 100%;
   height: 100%;
@@ -247,7 +298,7 @@ button {
 .tcc-code-editor-menu {
   display: flex;
   justify-content: space-between;
-  background-color: var(--color-blue--dark-light);
+  background-color: var(--color-black--light);
   width: 100%;
 }
 
@@ -266,7 +317,7 @@ button {
   padding: .625rem;
 }
 
-/*  */
+/* AnimationScreen */
 
 .tcc-animation-screen {
   position: relative;
@@ -276,6 +327,10 @@ button {
   overflow: hidden;
   width: 100%;
   min-height: 100%;
+}
+
+.tcc-animation-screen--fullscreen {
+  border-radius: 0;
 }
 
 .tcc-animation-screen__camera {
@@ -344,15 +399,22 @@ button {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  background-color: var(--color-black--dark);
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.tcc-bst-node>span {
+  padding: .625rem;
   color: var(--color-white);
+  font-family: var(--font-family--ubuntu);
+  font-size: var(--font-size-14);
   font-weight: var(--font-weigth--bold);
-  background-color: var(--color-blue--dark);
-  width: 2rem;
-  height: 2rem;
+  overflow: hidden;
 }
 
 .tcc-bst-node--focus {
-  background-color: var(--color-blue--light-dark);
+  background-color: var(--color-blue--dark);
 }
 
 /* BSTChildrenComponent */
@@ -390,7 +452,7 @@ button {
   position: absolute;
   z-index: 1;
   transform: translateY(-100%);
-  background: var(--color-blue--dark);
+  background: var(--color-black--dark);
   width: .0625rem;
   height: 2rem;
 }
@@ -401,7 +463,7 @@ button {
   z-index: 1;
   top: 0;
   transform: translateY(-100%) translateX(50%);
-  background: linear-gradient(to bottom right, #0000 49%, var(--color-blue--dark) 0, #0000 51%);
+  background: linear-gradient(to bottom right, #0000 49%, var(--color-black--dark) 0, #0000 51%);
   width: calc(25% + .25rem);
   height: 3rem;
 }
@@ -412,7 +474,7 @@ button {
   z-index: 1;
   top: 0;
   transform: translateY(-100%) translateX(-50%);
-  background: linear-gradient(to bottom left, #0000 49%, var(--color-blue--dark) 0, #0000 51%);
+  background: linear-gradient(to bottom left, #0000 49%, var(--color-black--dark) 0, #0000 51%);
   width: calc(25% + .25rem);
   height: 3rem;
 }
@@ -427,8 +489,8 @@ button {
 }
 
 .tcc-code-editor-prompt__resizer {
-  border-top: .125rem solid var(--color-blue--dark-light);
-  background-color: var(--color-blue--dark);
+  border-top: .125rem solid var(--color-black--light);
+  background-color: var(--color-black--dark);
   cursor: n-resize;
   transition: .25s;
   width: 100%;
@@ -443,7 +505,7 @@ button {
   display: flex;
   flex-direction: column;
   color: var(--color-white);
-  background-color: var(--color-blue--dark);
+  background-color: var(--color-black--dark);
   width: 100%;
   height: 100%;
 }
@@ -469,9 +531,12 @@ button {
 
 .tcc-code-editor-menu-item {
   cursor: pointer;
-  color: var(--color-blue--dark-light);
+  color: var(--color-black--light);
   font-size: var(--font-size-12);
-  padding-bottom: .4375rem;
+  font-weight: var(--font-weigth--light);
+  letter-spacing: unset;
+  line-height: unset;
+  padding-bottom: .5375rem;
 }
 
 .tcc-code-editor-menu-item__radio {
@@ -480,8 +545,8 @@ button {
 
 .tcc-code-editor-menu-item__radio:checked~.tcc-code-editor-menu-item {
   color: var(--color-white);
-  border-bottom: solid .0625rem var(--color-blue--light-dark);
-  padding-bottom: .375rem;
+  border-bottom: solid .0625rem var(--color-blue--dark);
+  padding-bottom: .475rem;
 }
 
 .tcc-code-editor-menu-item__radio:not(:checked)~.tcc-code-editor-menu-item:hover {
@@ -511,11 +576,10 @@ button {
 .tcc-code-editor-prompt-content__inner>* {
   color: var(--color-white);
   white-space: pre-wrap;
-}
-
-.tcc-code-editor-prompt-content__inner>p {
   margin-left: 1rem;
   font-family: var(--font-family--ubuntu-mono);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weigth--light);
 }
 
 .tcc-code-editor-prompt-content__inner::-webkit-scrollbar {
@@ -545,7 +609,7 @@ button {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: .0625rem solid var(--color-blue--dark);
+  border: .0625rem solid var(--color-black--dark);
   transition: .25s;
   height: 2rem;
   width: 2rem;
@@ -554,13 +618,13 @@ button {
 
 .tcc-button-choice:hover {
   color: var(--color-white);
-  background-color: var(--color-blue--light-medium);
+  background-color: var(--color-blue--medium);
   border: none;
 }
 
 .tcc-button-choice--selected {
   color: var(--color-white);
-  background-color: var(--color-blue--light-dark);
+  background-color: var(--color-blue--dark);
   border: none;
 }
 
@@ -586,14 +650,14 @@ button {
   border-radius: .3125rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0 .1875rem .5rem;
   color: var(--color-white);
-  background-color: var(--color-blue--light-dark);
+  background-color: var(--color-blue--dark);
   font-weight: var(--font-weigth--bold);
   transition: .25s;
   padding: .375rem 1.625rem;
 }
 
 .tcc-button-confirmation:hover {
-  background-color: var(--color-blue--light-medium);
+  background-color: var(--color-blue--medium);
 }
 
 .tcc-button-confirmation:active {
@@ -611,13 +675,13 @@ button {
 }
 
 .tcc-input-range::-webkit-slider-runnable-track {
-  background: var(--color-blue--dark);
+  background: var(--color-black--dark);
   height: .125rem;
   border-radius: .3125rem;
 }
 
 .tcc-input-range::-moz-range-track {
-  background: var(--color-blue--dark);
+  background: var(--color-black--dark);
   height: .125rem;
   border-radius: .3125rem;
 }
@@ -627,7 +691,7 @@ button {
   height: .875rem;
   border-radius: 50%;
   margin-top: -6px;
-  background-color: var(--color-blue--dark);
+  background-color: var(--color-black--dark);
   -webkit-appearance: none;
   appearance: none;
 }
@@ -637,7 +701,7 @@ button {
   height: .875rem;
   border-radius: 50%;
   margin-top: -6px;
-  background-color: var(--color-blue--dark);
+  background-color: var(--color-black--dark);
   -webkit-appearance: none;
   appearance: none;
 }
@@ -656,7 +720,7 @@ button {
   position: absolute;
   display: block;
   border: .15625rem solid;
-  border-color: var(--color-blue--light-dark) transparent transparent transparent;
+  border-color: var(--color-blue--dark) transparent transparent transparent;
   border-radius: 50%;
   animation: loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   width: 1rem;
@@ -690,12 +754,23 @@ button {
 
 .tcc-loading-progress__fill {
   position: absolute;
-  background-color: var(--color-blue--light-dark);
+  background-color: var(--color-blue--dark);
   transition: .25s;
   min-width: .5rem;
 }
 
 /* ModalToast */
+
+.tcc-modal-toast__overlay {
+  position: fixed;
+  top: -4rem;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 0;
+}
 
 .tcc-modal-toast {
   display: flex;
@@ -708,8 +783,7 @@ button {
   overflow: hidden;
   animation: show-toast .75s ease forwards, vanish .75s ease forwards 5s;
   height: fit-content;
-  width: 30rem;
-  margin: 0 auto;
+  width: 35rem;
   padding: 1rem;
 }
 
@@ -726,8 +800,16 @@ button {
   gap: .625rem;
 }
 
+.tcc-modal-toast>section>span {
+  font-family: var(--font-family--ubuntu);
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weigth--regular);
+  line-height: var(--line-height-32);
+  letter-spacing: var(--letter-spacing-072);
+}
+
 .tcc-modal-toast--info {
-  background: var(--color-blue--light-dark);
+  background: var(--color-blue--dark);
 }
 
 .tcc-modal-toast--error {
@@ -744,21 +826,14 @@ button {
   color: var(--color-white);
 }
 
-.tcc-modal-toast__overlay {
-  position: absolute;
-  top: -4rem;
-  left: 0;
-  width: 100%;
-}
-
 /* MenuItem */
 
 .tcc-menu-item {
   display: flex;
   gap: .625rem;
   align-items: center;
-  cursor: pointer;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .tcc-menu-item__radio {
@@ -766,7 +841,7 @@ button {
 }
 
 .tcc-menu-item__radio:checked~.tcc-menu-item__label {
-  background-color: var(--color-blue--dark);
+  background-color: var(--color-black--dark);
 }
 
 .tcc-menu-item__radio:not(:checked)~.tcc-menu-item__label:hover {
@@ -775,9 +850,11 @@ button {
 
 .tcc-menu-item__label {
   padding: .625rem;
-  background-color: var(--color-blue--dark-medium);
+  background-color: var(--color-black--medium);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weigth--light);
+  line-height: unset;
   color: var(--color-white);
-  cursor: pointer;
 }
 
 /* Utils */
@@ -805,7 +882,7 @@ button {
 /* Scroll bar */
 
 ::-webkit-scrollbar {
-  width: .75rem;
+  width: .875rem;
 }
 
 ::-webkit-scrollbar-track {
@@ -813,11 +890,11 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-blue--light-medium);
+  background: var(--color-blue--medium);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-blue--light-dark);
+  background: var(--color-blue--dark);
 }
 
 /* KeyFrames */
@@ -842,7 +919,7 @@ button {
 @keyframes show-toast {
   100% {
     opacity: 1;
-    transform: translateY(6rem);
+    transform: translateY(calc(100% + 2rem));
   }
 }
 
