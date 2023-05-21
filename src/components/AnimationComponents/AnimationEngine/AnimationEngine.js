@@ -45,7 +45,7 @@ function AnimationEngine(props) {
 
   return (
     <DraggerContext.Provider value={[dragger, setDragger]}>
-      <div className='tcc-animation-engine no-select' ref={animationEngine}>{snapshot}</div>
+      <div className='tcc-animation-engine tcc-no-select' ref={animationEngine}>{snapshot}</div>
     </DraggerContext.Provider>
   );
 }

@@ -9,19 +9,19 @@ import Util from '../../../classes/util/Util';
 
 function ModalToast(props) {
   function getModalToastClass() {
-    return `modal-toast ${getModalToastAditionalStyle()} no-select`;
+    return `tcc-modal-toast ${getModalToastAditionalStyle()} tcc-no-select`;
   }
 
   function getModalToastAditionalStyle() {
-    if (props.toastEvent?.variant === 'info') { return 'modal-toast--info'; }
-    if (props.toastEvent?.variant === 'error') { return 'modal-toast--error'; }
-    if (props.toastEvent?.variant === 'success') { return 'modal-toast--success'; }
+    if (props.toastEvent?.variant === 'info') { return 'tcc-modal-toast--info'; }
+    if (props.toastEvent?.variant === 'error') { return 'tcc-modal-toast--error'; }
+    if (props.toastEvent?.variant === 'success') { return 'tcc-modal-toast--success'; }
   }
 
   return (
     <ReactModal
       className={getModalToastClass()}
-      overlayClassName='modal-toast__overlay'
+      overlayClassName='tcc-modal-toast__overlay'
       isOpen={props.isOpen}
       shouldFocusAfterRender={true}
       shouldReturnFocusAfterClose={false}

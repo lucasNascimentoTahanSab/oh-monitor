@@ -6,7 +6,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ClassroomSidebar from '../ClassroomSidebar/ClassroomSidebar.js';
 import ClassroomStage from '../ClassroomStage/ClassroomStage.js';
-import ClassroomNavigation from '../ClassroomNavigation/ClassroomNavigation.js';
+// import ClassroomNavigation from '../ClassroomNavigation/ClassroomNavigation.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
 import TabsContext from '../../Context/TabsContext/TabsContext.js';
 import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext.js';

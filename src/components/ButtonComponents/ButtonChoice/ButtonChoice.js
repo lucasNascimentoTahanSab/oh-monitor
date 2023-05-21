@@ -12,7 +12,7 @@ function ButtonChoice(props) {
   useEffect(() => { setState(props.state); }, [props.state]);
 
   function getLetterClass() {
-    return `tcc-button-choice ${getLetterAditionalStyling()} no-select`;
+    return `tcc-button-choice ${getLetterAditionalStyling()} tcc-no-select`;
   }
 
   function getLetterAditionalStyling() {

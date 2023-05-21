@@ -21,7 +21,7 @@ function CodeEditorPromptMenu(props) {
         group={`${item.uid}-prompt-menu`}
         onChange={props.setCurrentItem}
         selectorClassName='tcc-code-editor-menu-item__radio'
-        labelClassName='tcc-code-editor-menu-item no-select'
+        labelClassName='tcc-code-editor-menu-item tcc-no-select'
       />
     );
   }

@@ -2,8 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap');
 
 :root {
-  --color-gray: #808B96;
-  --color-gray--medium: #6E6974;
   --color-white: #FFFFFF;
   --color-green: #42DC50;
   --color-red: #F94F49;
@@ -17,7 +15,6 @@
   --font-family--ubuntu: 'Ubuntu', sans-serif;
   --font-family--ubuntu-mono: 'Ubuntu Mono', monospace;
 
-  --font-size-10: .625rem;
   --font-size-12: .75rem;
   --font-size-14: .875rem;
   --font-size-18: 1.125rem;
@@ -206,44 +203,6 @@ button {
   gap: .625rem;
 }
 
-/* ButtonChoice */
-
-.tcc-button-choice {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: .0625rem solid var(--color-blue--dark);
-  transition: .25s;
-  height: 2rem;
-  width: 2rem;
-  min-width: 2rem;
-}
-
-.tcc-button-choice:hover {
-  color: var(--color-white);
-  background-color: var(--color-blue--light-medium);
-  border: none;
-}
-
-.tcc-button-choice--selected {
-  color: var(--color-white);
-  background-color: var(--color-blue--light-dark);
-  border: none;
-}
-
-.tcc-button-choice--correct {
-  color: var(--color-white);
-  background-color: var(--color-green);
-  border: none;
-}
-
-.tcc-button-choice--wrong {
-  color: var(--color-white);
-  background-color: var(--color-red);
-  border: none;
-}
-
 /* CodeEditor */
 
 .tcc-code-editor {
@@ -251,7 +210,7 @@ button {
   display: grid;
   column-gap: .625rem;
   border-radius: .625rem;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 .1875rem .5rem;
   overflow: hidden;
   width: 100%;
   height: 40rem;
@@ -563,75 +522,9 @@ button {
   width: .5rem;
 }
 
-/*  */
+/* ClassroomNavigation */
 
-.button--confirmation {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  background-color: var(--color-blue--light-dark);
-  color: var(--color-white);
-  font-family: var(--font-family--ubuntu);
-  font-size: var(--font-size-14);
-  font-weight: var(--font-weigth--bold);
-  border: none;
-  border-radius: .3125rem;
-  padding: .375rem 1.625rem;
-  cursor: pointer;
-  transition: .25s;
-}
-
-.button--confirmation:hover {
-  background-color: var(--color-blue--light-medium);
-}
-
-.button--confirmation:active {
-  box-shadow: none;
-}
-
-.code-snippet {
-  position: relative;
-  display: grid;
-  column-gap: .625rem;
-  border-radius: .625rem;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  width: 100%;
-  height: 27.125rem;
-  overflow: hidden;
-}
-
-.code-snippet:fullscreen {
-  border-radius: 0;
-  box-shadow: none;
-}
-
-.code-snippet__inner {
-  display: flex;
-  gap: 1.25rem;
-  width: 100%;
-  height: 100%;
-  padding: .625rem;
-  background-color: var(--color-blue--dark);
-}
-
-.code-snippet__file {
-  width: initial;
-  min-height: 22.5rem;
-}
-
-.code-snippet__editor {
-  border-radius: .3125rem;
-  overflow: hidden;
-  width: 100%;
-}
-
-.classroom-practice {
-  height: 100vh;
-  overflow: auto;
-}
-
-.classroom-stage__navigation {
+.tcc-classroom-navigation {
   display: flex;
   flex-direction: column;
   gap: .625rem;
@@ -639,30 +532,77 @@ button {
   overflow-x: hidden;
 }
 
-.navigation-item {
-  display: flex;
-  align-items: center;
-  gap: .3125rem;
-  cursor: pointer;
-  text-decoration: none;
-  padding: 0;
-}
+/* ClassroomNavigationItem */
 
-.navigation-item__name {
-  font-weight: var(--font-weigth--bold);
-  color: var(--color-blue--light-medium);
-}
-
-.navigation-item__name:hover {
-  color: var(--color-blue--light-dark);
-}
-
-.navigation-item__navigation-items {
+.tcc-classroom-navigation-item__items {
   padding: .3125rem 0 0 1.5rem;
   transition: .5s;
 }
 
-.progress-bar {
+/* ButtonChoice */
+
+.tcc-button-choice {
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: .0625rem solid var(--color-blue--dark);
+  transition: .25s;
+  height: 2rem;
+  width: 2rem;
+  min-width: 2rem;
+}
+
+.tcc-button-choice:hover {
+  color: var(--color-white);
+  background-color: var(--color-blue--light-medium);
+  border: none;
+}
+
+.tcc-button-choice--selected {
+  color: var(--color-white);
+  background-color: var(--color-blue--light-dark);
+  border: none;
+}
+
+.tcc-button-choice--correct {
+  color: var(--color-white);
+  background-color: var(--color-green);
+  border: none;
+}
+
+.tcc-button-choice--wrong {
+  color: var(--color-white);
+  background-color: var(--color-red);
+  border: none;
+}
+
+/* ButtonConfirmation */
+
+.tcc-button-confirmation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: .3125rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 .1875rem .5rem;
+  color: var(--color-white);
+  background-color: var(--color-blue--light-dark);
+  font-weight: var(--font-weigth--bold);
+  transition: .25s;
+  padding: .375rem 1.625rem;
+}
+
+.tcc-button-confirmation:hover {
+  background-color: var(--color-blue--light-medium);
+}
+
+.tcc-button-confirmation:active {
+  box-shadow: none;
+}
+
+/* InputRange */
+
+.tcc-input-range {
   width: 100%;
   outline: none;
   background: none;
@@ -670,19 +610,19 @@ button {
   appearance: none;
 }
 
-.progress-bar::-webkit-slider-runnable-track {
+.tcc-input-range::-webkit-slider-runnable-track {
   background: var(--color-blue--dark);
   height: .125rem;
   border-radius: .3125rem;
 }
 
-.progress-bar::-moz-range-track {
+.tcc-input-range::-moz-range-track {
   background: var(--color-blue--dark);
   height: .125rem;
   border-radius: .3125rem;
 }
 
-.progress-bar::-webkit-slider-thumb {
+.tcc-input-range::-webkit-slider-thumb {
   width: .875rem;
   height: .875rem;
   border-radius: 50%;
@@ -692,7 +632,7 @@ button {
   appearance: none;
 }
 
-.progress-bar::-moz-range-thumb {
+.tcc-input-range::-moz-range-thumb {
   width: .875rem;
   height: .875rem;
   border-radius: 50%;
@@ -702,214 +642,113 @@ button {
   appearance: none;
 }
 
-.button-play--loading {
-  display: inline-block;
+/* LoadingComponent */
+
+.tcc-loading {
   position: relative;
+  display: inline-block;
   min-width: 1rem;
   min-height: 1rem;
 }
 
-.button-play--loading div {
+.tcc-loading div {
   box-sizing: border-box;
-  display: block;
   position: absolute;
+  display: block;
+  border: .15625rem solid;
+  border-color: var(--color-blue--light-dark) transparent transparent transparent;
+  border-radius: 50%;
+  animation: loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   width: 1rem;
   height: 1rem;
-  border: .15625rem solid var(--color-blue--light-dark);
-  border-radius: 50%;
-  animation: button-play--loading 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: var(--color-blue--light-dark) transparent transparent transparent;
 }
 
-.button-play--loading--white div {
+.tcc-loading--white div {
   border: .15625rem solid var(--color-white);
   border-color: var(--color-white) transparent transparent transparent;
 }
 
-.button-play--loading div:nth-child(1) {
+.tcc-loading div:nth-child(1) {
   animation-delay: -0.45s;
 }
 
-.button-play--loading div:nth-child(2) {
+.tcc-loading div:nth-child(2) {
   animation-delay: -0.3s;
 }
 
-.button-play--loading div:nth-child(3) {
+.tcc-loading div:nth-child(3) {
   animation-delay: -0.15s;
-}
-
-@keyframes button-play--loading {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.modal-toast {
-  display: flex;
-  flex-direction: column;
-  gap: .625rem;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  background-color: var(--color-white);
-  border-radius: 0.5rem;
-  height: fit-content;
-  width: 30rem;
-  margin: 0 auto;
-  padding: 1rem;
-  animation: show-toast .75s ease forwards, vanish .75s ease forwards 5s;
-  overflow: hidden;
-  opacity: 0;
-}
-
-.modal-toast>header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: .625rem;
-}
-
-.modal-toast>section {
-  display: flex;
-  align-items: center;
-  gap: .625rem;
-}
-
-@keyframes show-toast {
-  100% {
-    opacity: 1;
-    transform: translateY(6rem);
-  }
-}
-
-@keyframes vanish {
-  100% {
-    opacity: 0;
-    transform: translateY(-6rem);
-  }
-}
-
-.modal-toast--info {
-  background: var(--color-blue--light-dark);
-}
-
-.modal-toast--error {
-  background: var(--color-red);
-}
-
-.modal-toast--success {
-  background: var(--color-green);
-}
-
-.modal-toast--info *,
-.modal-toast--error *,
-.modal-toast--success * {
-  color: var(--color-white);
-}
-
-.modal-toast__overlay {
-  position: absolute;
-  top: -4rem;
-  left: 0;
-  width: 100%;
-}
-
-/* utils */
-
-.background-color--color-blue--light-dark {
-  background-color: var(--color-blue--light-dark);
-}
-
-.background-color--color-blue--light {
-  background-color: var(--color-blue--light);
-}
-
-.background-color--color-blue--dark {
-  background-color: var(--color-blue--dark);
-}
-
-.color--color-blue--dark {
-  color: var(--color-blue--dark);
-}
-
-.overflow-ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.no-select {
-  -webkit-user-select: none;
-  /* Safari */
-  -ms-user-select: none;
-  /* IE 10 and IE 11 */
-  user-select: none;
-  /* Standard syntax */
-}
-
-.erase {
-  display: none;
-}
-
-.skeleton {
-  animation: skeleton-animation 1s infinite alternate;
-}
-
-@keyframes skeleton-animation {
-  0% {
-    background-color: rgba(0, 0, 0, 0.22);
-  }
-
-  100% {
-    background-color: rgba(0, 0, 0, 0.32);
-  }
-}
-
-/* width */
-::-webkit-scrollbar {
-  width: .75rem;
-}
-
-::-webkit-scrollbar-track {
-  background-color: var(--color-blue--light);
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: var(--color-blue--light-medium);
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-blue--light-dark);
-}
-
-/* *** */
-
-/* KeyFrames */
-
-@keyframes show-up {
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
 }
 
 /* LoadingProgress */
 
 .tcc-loading-progress {
   position: relative;
-  min-width: .5rem;
   background-color: var(--color-blue--light);
+  min-width: .5rem;
 }
 
 .tcc-loading-progress__fill {
   position: absolute;
-  min-width: .5rem;
   background-color: var(--color-blue--light-dark);
   transition: .25s;
+  min-width: .5rem;
+}
+
+/* ModalToast */
+
+.tcc-modal-toast {
+  display: flex;
+  flex-direction: column;
+  gap: .625rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 .1875rem .5rem;
+  background-color: var(--color-white);
+  border-radius: 0.5rem;
+  opacity: 0;
+  overflow: hidden;
+  animation: show-toast .75s ease forwards, vanish .75s ease forwards 5s;
+  height: fit-content;
+  width: 30rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.tcc-modal-toast>header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .625rem;
+}
+
+.tcc-modal-toast>section {
+  display: flex;
+  align-items: center;
+  gap: .625rem;
+}
+
+.tcc-modal-toast--info {
+  background: var(--color-blue--light-dark);
+}
+
+.tcc-modal-toast--error {
+  background: var(--color-red);
+}
+
+.tcc-modal-toast--success {
+  background: var(--color-green);
+}
+
+.tcc-modal-toast--info *,
+.tcc-modal-toast--error *,
+.tcc-modal-toast--success * {
+  color: var(--color-white);
+}
+
+.tcc-modal-toast__overlay {
+  position: absolute;
+  top: -4rem;
+  left: 0;
+  width: 100%;
 }
 
 /* MenuItem */
@@ -937,8 +776,89 @@ button {
 .tcc-menu-item__label {
   padding: .625rem;
   background-color: var(--color-blue--dark-medium);
-  font-family: var(--font-family--ubuntu);
-  font-size: var(--font-size-14);
   color: var(--color-white);
   cursor: pointer;
+}
+
+/* Utils */
+
+.tcc-truncate-string {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tcc-no-select {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.tcc-erase {
+  display: none;
+}
+
+.tcc-skeleton {
+  animation: skeleton-animation 1s infinite alternate;
+}
+
+/* Scroll bar */
+
+::-webkit-scrollbar {
+  width: .75rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-blue--light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-blue--light-medium);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-blue--light-dark);
+}
+
+/* KeyFrames */
+
+@keyframes show-up {
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes show-toast {
+  100% {
+    opacity: 1;
+    transform: translateY(6rem);
+  }
+}
+
+@keyframes vanish {
+  100% {
+    opacity: 0;
+    transform: translateY(-6rem);
+  }
+}
+
+@keyframes skeleton-animation {
+  0% {
+    background-color: rgba(0, 0, 0, 0.22);
+  }
+
+  100% {
+    background-color: rgba(0, 0, 0, 0.32);
+  }
 }

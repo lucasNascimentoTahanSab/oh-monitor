@@ -72,7 +72,7 @@ function ClassroomNavigationItem(props) {
   }
 
   function getItemClass() {
-    return `tcc-sidebar-item__label navigation-item ${navigationItem?.current ? 'sidebar-item--selected' : ''} no-select overflow-ellipsis`;
+    return 'tcc-sidebar-item__label tcc-no-select tcc-truncate-string';
   }
 
   function getChecked() {
@@ -98,7 +98,7 @@ function ClassroomNavigationItem(props) {
   }
 
   function getChildItemsClass() {
-    return `classroom-stage__navigation navigation-item__navigation-items ${!navigationItem?.open ? 'erase' : ''}`;
+    return `tcc-classroom-navigation tcc-classroom-navigation-item__items ${!navigationItem?.open ? 'tcc-erase' : ''}`;
   }
 
   return (
