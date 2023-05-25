@@ -16,11 +16,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, './public')));
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.resolve(__dirname, 'build')))
-  app.get('*', (req, res) => res.send(path.resolve(__dirname, 'build', 'index.html')))
+  app.use(express.static(path.resolve(__dirname, 'build')));
+  app.get('/', (req, res) => res.sendFile(path.resolve(__dirname, 'build', 'index.html')));
+} else {
+  app.use(express.static(path.resolve(__dirname, 'public')));
 }
 
 app.use('/api/code', CX.router);
