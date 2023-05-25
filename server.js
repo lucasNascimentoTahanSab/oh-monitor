@@ -18,9 +18,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, './public')));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, './build/index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.resolve(__dirname, 'build')))
+  app.get('*', (req, res) => res.send(path.resolve(__dirname, 'build', 'index.html')))
+}
 
 app.use('/api/code', CX.router);
 app.use('/api/content', ST.router);
