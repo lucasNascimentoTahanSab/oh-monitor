@@ -10,8 +10,10 @@ function ButtonPlay(props) {
   const buttonRef = useRef(null);
 
   useEffect(() => {
-    buttonRef.current.style.minWidth = `${buttonRef.current.getBoundingClientRect().width}px`
-    buttonRef.current.style.minHeight = `${buttonRef.current.getBoundingClientRect().height}px`
+    buttonRef.current.style.minWidth = `${buttonRef.current.getBoundingClientRect().width}px`;
+    buttonRef.current.style.minHeight = `${buttonRef.current.getBoundingClientRect().height}px`;
+    buttonRef.current.style.maxWidth = `${buttonRef.current.getBoundingClientRect().width}px`;
+    buttonRef.current.style.maxHeight = `${buttonRef.current.getBoundingClientRect().height}px`;
   }, []);
 
   function getShape() {

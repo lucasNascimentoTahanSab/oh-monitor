@@ -204,7 +204,7 @@ function CodeEditor(props) {
   }
 
   function getJustCommandsFromResult(result) {
-    // A expressão regular considera apenas saídas que iniciem pelo UID especificado.
+    // A expressão regular considera apenas saídas que iniciem por [UID].
     return result.output.split('\n')?.filter(line => line.match(new RegExp(`${subject.uid}.*`, 'g')));
   }
 
