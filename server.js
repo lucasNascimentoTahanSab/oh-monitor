@@ -26,4 +26,4 @@ app.use('/api/code', CX.router);
 app.use('/api/content', ST.router);
 app.use('/api/repo', GH.router);
 
-app.listen(process.env.PORT);
+app.listen(process.env.PORT || 3000);
