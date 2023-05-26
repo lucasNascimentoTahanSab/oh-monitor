@@ -14,10 +14,15 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/code', CX.router);
 app.use('/api/content', ST.router);
 app.use('/api/repo', GH.router);
 
-app.listen(process.env.PORT);
+if (process.env.NODE_ENV === 'production') {
+  app.use('/', express.static(path.resolve(__dirname, './build')));
+} else if (process.env.NODE_ENV === 'development') {
+  app.use(express.static(path.join(__dirname, 'public')));
+}
+
+app.listen(process.env.PORT || 3000);
