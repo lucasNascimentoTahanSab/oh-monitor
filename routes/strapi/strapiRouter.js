@@ -27,6 +27,12 @@ router.get('/exercises?*', (req, res) => {
     .catch(error => res.send(error));
 });
 
+router.post('/users', (req, res) => {
+  axios.post(`${process.env.ST_ENDPOINT}/auth/local/register`, req.body)
+    .then(response => res.send(response.data?.user))
+    .catch(error => res.send(error));
+})
+
 const ST = { router };
 
 module.exports = ST;

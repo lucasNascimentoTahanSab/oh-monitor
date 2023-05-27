@@ -7,10 +7,11 @@ export const endpoints = {
     post: () => '/api/code/submit'
   },
   content: {
-    getSubject: uid => `api/content/subjects/${encodeURI(uid)}`,
-    getExerciseAnswer: (exerciseUid, answer) => `api/content/exercises?exerciseUid=${encodeURI(exerciseUid)}&answer=${encodeURI(answer)}`
+    postUser: () => '/api/content/users',
+    getSubject: uid => `/api/content/subjects/${encodeURI(uid)}`,
+    getExerciseAnswer: (exerciseUid, answer) => `/api/content/exercises?exerciseUid=${encodeURI(exerciseUid)}&answer=${encodeURI(answer)}`
   },
   repo: {
-    getCode: (path, language, extension) => `api/repo/${encodeURI(language)}${encodeURI(path)}.${encodeURI(extension)}`
+    getCode: (path, language, extension) => `/api/repo/${encodeURI(language)}${encodeURI(path)}.${encodeURI(extension)}`
   }
 };

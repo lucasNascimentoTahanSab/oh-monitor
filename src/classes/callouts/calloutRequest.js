@@ -11,6 +11,11 @@ export const requests = {
     })
   },
   content: {
+    postUser: body => ({
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }),
     getSubject: () => ({
       method: 'GET'
     }),
