@@ -8,11 +8,14 @@ import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
 import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext.js';
+import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
 import callouts from '../../../classes/callouts/callout.js';
+import calloutError from '../../../classes/callouts/calloutError.js';
 import config from '../../../config.json';
 import FileContext from '../../Context/FileContext/FileContext.js';
 
 function CodeEditorMenuSettings(props) {
+  const [, setToastEvent] = useContext(ToastEventContext);
   const [file, setFile] = useContext(FileContext);
   const [currentTab, setCurrentTab] = useContext(TabContext);
   const [codes,] = useContext(CodesContext);
@@ -32,13 +35,25 @@ function CodeEditorMenuSettings(props) {
    * @returns {object}
    */
   function sendCode() {
-    callouts.code.post({ codes, config }).then(getResult).catch(getResult);
+    callouts.code.post({ codes, config })
+      .then(result => getResult(result))
+      .catch(error => showError(error));
+  }
+
+  function showError(error) {
+    setLoading(false);
+    setCurrentTab({ ...currentTab, loading: false });
+    setToastEvent(calloutError.code(error));
   }
 
   function getResult(result) {
-    setFile({ ...file, result });
     setLoading(false);
     setCurrentTab({ ...currentTab, loading: false });
+
+    // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
+    if (result.error) { return setToastEvent(calloutError.code(result.error)); }
+
+    setFile({ ...file, result });
   }
 
   function getButtonPlay() {

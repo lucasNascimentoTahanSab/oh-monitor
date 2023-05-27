@@ -7,16 +7,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import ClassroomSidebar from '../ClassroomSidebar/ClassroomSidebar.js';
 import ClassroomStage from '../ClassroomStage/ClassroomStage.js';
 // import ClassroomNavigation from '../ClassroomNavigation/ClassroomNavigation.js';
+import LoadingComponent from '../../LoadingComponents/LoadingComponent/LoadingComponent.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
 import TabsContext from '../../Context/TabsContext/TabsContext.js';
 import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext.js';
-import Subject from '../../../classes/strapi/Subject.js';
-import Util from '../../../classes/util/Util.js';
-import callouts from '../../../classes/callouts/callout.js';
 import SubjectContext from '../../Context/SubjectContext/SubjectContext.js';
-import LoadingComponent from '../../LoadingComponents/LoadingComponent/LoadingComponent.js';
 import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
+import Subject from '../../../classes/strapi/Subject.js';
+import callouts from '../../../classes/callouts/callout.js';
 import calloutError from '../../../classes/callouts/calloutError.js';
+import Util from '../../../classes/util/Util.js';
 
 function Classroom(props) {
   const [, setToastEvent] = useContext(ToastEventContext);
@@ -43,7 +43,7 @@ function Classroom(props) {
 
   function updateSubject(result) {
     // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
-    if (result.name === 'Error') { return setToastEvent(calloutError.content(result)); }
+    if (result.error) { return setToastEvent(calloutError.content(result.error)); }
 
     const retrievedSubject = new Subject(result?.data?.[0]);
     const retrievedCurrentTab = Util.getCurrentItem(retrievedSubject.tabs);

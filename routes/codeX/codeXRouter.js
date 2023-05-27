@@ -17,7 +17,7 @@ const router = express.Router();
 router.post('/submit', async (req, res) => {
   axios.request(await CX_REQUEST.getRequest(req))
     .then(response => res.send(response.data))
-    .catch(error => res.send(error));
+    .catch(error => res.send(error.response?.data));
 });
 
 const CX = { router };

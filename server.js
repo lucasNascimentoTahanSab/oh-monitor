@@ -3,6 +3,7 @@
  * @copyright Lucas N. T. Sab 2023 
  */
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const CX = require('./routes/codeX/codeXRouter');
 const ST = require('./routes/strapi/strapiRouter');
@@ -12,12 +13,27 @@ require('dotenv').config();
 
 const app = express();
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  saveUninitialized: false,
+  resave: false,
+  cookie: {
+    httpOnly: true,
+    maxAge: parseInt(process.env.SESSION_MAX_AGE)
+  }
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/code', CX.router);
 app.use('/api/content', ST.router);
 app.use('/api/repo', GH.router);
 
-app.listen(process.env.PORT);
+if (process.env.NODE_ENV === 'production') {
+  app.use('/', express.static(path.resolve(__dirname, './build')));
+} else if (process.env.NODE_ENV === 'development') {
+  app.use(express.static(path.join(__dirname, 'public')));
+}
+
+app.listen(process.env.PORT || 3000);

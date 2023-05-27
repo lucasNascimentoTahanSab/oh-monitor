@@ -16,7 +16,7 @@ const router = express.Router();
 router.get('/*', (req, res) => {
   getFile(req.url)
     .then(response => res.send(response.data))
-    .catch(error => res.send(error));
+    .catch(error => res.send(error.response?.data));
 });
 
 /**
@@ -30,7 +30,7 @@ function getFile(url) {
   return new Promise((resolve, reject) =>
     axios.request(GH_REQUEST.getRequest(url))
       .then(response => resolve(axios.request(GH_REQUEST.getRequestFor(response.data?.download_url))))
-      .catch(error => reject(error))
+      .catch(error => reject(error.response?.data))
   );
 }
 
