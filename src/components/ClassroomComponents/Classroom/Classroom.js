@@ -43,7 +43,7 @@ function Classroom(props) {
 
   function updateSubject(result) {
     // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
-    if (result.status === 'Error') { return setToastEvent(calloutError.content(result)); }
+    if (result.error) { return setToastEvent(calloutError.content(result.error)); }
 
     const retrievedSubject = new Subject(result?.data?.[0]);
     const retrievedCurrentTab = Util.getCurrentItem(retrievedSubject.tabs);

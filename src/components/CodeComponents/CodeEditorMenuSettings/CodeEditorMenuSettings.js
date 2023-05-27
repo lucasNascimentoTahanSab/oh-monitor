@@ -37,7 +37,13 @@ function CodeEditorMenuSettings(props) {
   function sendCode() {
     callouts.code.post({ codes, config })
       .then(result => getResult(result))
-      .catch(error => setToastEvent(calloutError.code(error)));
+      .catch(error => showError(error));
+  }
+
+  function showError(error) {
+    setLoading(false);
+    setCurrentTab({ ...currentTab, loading: false });
+    setToastEvent(calloutError.code(error));
   }
 
   function getResult(result) {
@@ -45,7 +51,7 @@ function CodeEditorMenuSettings(props) {
     setCurrentTab({ ...currentTab, loading: false });
 
     // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
-    if (result.status !== 200) { return setToastEvent(calloutError.code(result)); }
+    if (result.error) { return setToastEvent(calloutError.code(result.error)); }
 
     setFile({ ...file, result });
   }

@@ -19,11 +19,11 @@ function ButtonConfirmation(props) {
   }
 
   function getLoading() {
-    return (<LoadingComponent className='tcc-loading--white' width={props.width} height={props.height} />);
+    return (<LoadingComponent className='tcc-loading--white' />);
   }
 
   return (
-    <button className='tcc-button-confirmation' ref={buttonRef} onClick={event => Util.handle(props.onClick, event)}>
+    <button className='tcc-button-confirmation' style={{ width: props.width, height: props.height }} ref={buttonRef} onClick={event => Util.handle(props.onClick, event)}>
       {getValue()}
     </button>
   );
