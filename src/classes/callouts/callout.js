@@ -16,9 +16,16 @@ const callouts = {
     )
   },
   content: {
-    postUser: body => (
+    signUp: body => (
       new Promise((resolve, reject) => {
-        fetch(endpoints.content.postUser(), requests.content.postUser(body))
+        fetch(endpoints.content.signUp(), requests.content.signUp(body))
+          .then(response => resolve(response.json()))
+          .catch(error => reject(error));
+      })
+    ),
+    signIn: body => (
+      new Promise((resolve, reject) => {
+        fetch(endpoints.content.signIn(), requests.content.signIn(body))
           .then(response => resolve(response.json()))
           .catch(error => reject(error));
       })

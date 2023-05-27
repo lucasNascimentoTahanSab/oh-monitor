@@ -7,7 +7,8 @@ export const endpoints = {
     post: () => '/api/code/submit'
   },
   content: {
-    postUser: () => '/api/content/users',
+    signUp: () => '/api/content/signUp',
+    signIn: () => '/api/content/signIn',
     getSubject: uid => `/api/content/subjects/${encodeURI(uid)}`,
     getExerciseAnswer: (exerciseUid, answer) => `/api/content/exercises?exerciseUid=${encodeURI(exerciseUid)}&answer=${encodeURI(answer)}`
   },

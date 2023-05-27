@@ -11,7 +11,12 @@ export const requests = {
     })
   },
   content: {
-    postUser: body => ({
+    signUp: body => ({
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }),
+    signIn: body => ({
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
