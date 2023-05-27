@@ -30,8 +30,16 @@ app.use('/api/code', CX.router);
 app.use('/api/content', ST.router);
 app.use('/api/repo', GH.router);
 
+app.get('/', (req, res) => res.redirect('/signin'));
+
 if (process.env.NODE_ENV === 'production') {
   app.use('/', express.static(path.resolve(__dirname, './build')));
+  app.use('/signin', express.static(path.resolve(__dirname, './build')));
+  app.use('/signup', express.static(path.resolve(__dirname, './build')));
+  app.use('/tcle', express.static(path.resolve(__dirname, './build')));
+  app.use('/background', express.static(path.resolve(__dirname, './build')));
+  app.use('/classroom', express.static(path.resolve(__dirname, './build')));
+  app.use('/feedback', express.static(path.resolve(__dirname, './build')));
 } else if (process.env.NODE_ENV === 'development') {
   app.use(express.static(path.join(__dirname, 'public')));
 }
