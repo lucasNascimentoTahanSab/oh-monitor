@@ -38,8 +38,8 @@ function FormSignIn() {
   }
 
   return (
-    <div className='tcc-classroom__section-container'>
-      <div className='tcc-classroom__section tcc-sign-in'>
+    <div className='tcc-sign-in__container'>
+      <div className='tcc-sign-in'>
         <header>
           <h1>Bem-vinda(o) de volta!</h1>
         </header>
