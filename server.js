@@ -34,6 +34,7 @@ app.get('/', (req, res) => res.redirect('/signin'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use('/*', express.static(path.resolve(__dirname, './build')));
+  app.use('/*', (req, res) => res.sendFile(path.resolve(__dirname, './build/index.html')));
 } else if (process.env.NODE_ENV === 'development') {
   app.use(express.static(path.join(__dirname, 'public')));
 }
