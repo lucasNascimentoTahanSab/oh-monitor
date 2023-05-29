@@ -34,12 +34,7 @@ app.get('/', (req, res) => res.redirect('/signup'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'build')));
-  app.use('/signup', express.static(path.join(__dirname, 'build')));
-  app.use('/signin', express.static(path.join(__dirname, 'build')));
-  app.use('/tcle', express.static(path.join(__dirname, 'build')));
-  app.use('/background', express.static(path.join(__dirname, 'build')));
-  app.use('/classroom', express.static(path.join(__dirname, 'build')));
-  app.use('/feedback', express.static(path.join(__dirname, 'build')));
+  app.use('/*', express.static(path.join(__dirname, 'build')));
 } else if (process.env.NODE_ENV === 'development') {
   app.use(express.static(path.join(__dirname, 'public')));
 }
