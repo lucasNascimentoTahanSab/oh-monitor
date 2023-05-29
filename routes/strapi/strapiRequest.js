@@ -25,9 +25,8 @@ const ST_REQUEST = {
         getPopulate('tabs', 'sections.elements.exercises.codes', '5') + '&' +
         getPopulate('tabs', 'sections.elements.snippet.codes', '6') + '&' +
         getPopulate('tabs', 'sections.elements.elements', '7') + '&' +
-        getPopulate('tabs', 'navigation.navigationItems.navigationItems', '8')
-      ,
-      headers: { 'Authorization': process.env.ST_TOKEN },
+        getPopulate('tabs', 'navigation.navigationItems.navigationItems', '8'),
+      headers: { 'Authorization': `Bearer ${req.session.token}` }
     };
   },
   /**
@@ -43,7 +42,7 @@ const ST_REQUEST = {
       url: `${process.env.ST_ENDPOINT}/exercises?` +
         getFilter('uid', req.query.exerciseUid) + '&' +
         getFilter('answer', req.query.answer),
-      headers: { 'Authorization': process.env.ST_TOKEN },
+      headers: { 'Authorization': `Bearer ${req.session.token}` }
     };
   }
 };
