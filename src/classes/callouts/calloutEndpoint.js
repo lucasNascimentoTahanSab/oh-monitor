@@ -9,6 +9,7 @@ export const endpoints = {
   content: {
     signUp: () => '/api/content/signUp',
     signIn: () => '/api/content/signIn',
+    getMe: () => '/api/content/me',
     getSubject: uid => `/api/content/subjects/${encodeURI(uid)}`,
     getExerciseAnswer: (exerciseUid, answer) => `/api/content/exercises?exerciseUid=${encodeURI(exerciseUid)}&answer=${encodeURI(answer)}`
   },

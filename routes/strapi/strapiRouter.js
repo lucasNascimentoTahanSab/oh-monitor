@@ -13,6 +13,17 @@ require('dotenv').config();
 const router = express.Router();
 
 /**
+ * Endpoint responsável pela recuperação do usuário atual após entrada na plataforma. Os dados
+ * obtidos são utilizados para verificação da página atual em que se encontra o usuário e outras
+ * configurações.
+ */
+router.use('/me', ST_AUTH.validate, (req, res) => {
+  axios.request(ST_REQUEST.getMe(req))
+    .then(response => res.send(response.data))
+    .catch(error => res.send(error.response?.data));
+});
+
+/**
  * Endpoint responsável pela recuperação do conteúdo armazenado no CMS Strapi por meio do UID
  * do assunto desejado.
  */

@@ -12,14 +12,17 @@ import TabContext from '../../Context/TabContext/TabContext.js';
 import TabsContext from '../../Context/TabsContext/TabsContext.js';
 import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext.js';
 import SubjectContext from '../../Context/SubjectContext/SubjectContext.js';
+import UserContext from '../../Context/UserContext/UserContext.js';
 import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
 import Subject from '../../../classes/strapi/Subject.js';
 import callouts from '../../../classes/callouts/callout.js';
 import calloutError from '../../../classes/callouts/calloutError.js';
 import Util from '../../../classes/util/Util.js';
+import User from '../../../classes/strapi/User.js';
 
 function Classroom(props) {
   const [, setToastEvent] = useContext(ToastEventContext);
+  const [user, setUser] = useState(null);
   const [subject, setSubject] = useState(null);
   const [tabs, setTabs] = useState([]);
   const [currentTab, setCurrentTab] = useState(null);
@@ -30,10 +33,17 @@ function Classroom(props) {
    * Hook responsável pela obtenção do registro do assunto tratado na tela atual
    * a partir do UID recebido.
    */
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { getSubject(); }, []);
+  useEffect(() => {
+    getMe();
+    getSubject();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  async function getSubject() {
+  /**
+   * Método responsável pela recuperação do conteúdo a ser exibido em sala de
+   * aula a partir do UID recebido.
+   */
+  function getSubject() {
     setLoading(true);
 
     callouts.content.getSubject(props.uid)
@@ -43,7 +53,7 @@ function Classroom(props) {
 
   function updateSubject(result) {
     // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
-    if (result.error) { return setToastEvent(calloutError.content(result.error)); }
+    if (result?.error) { return setToastEvent(calloutError.content(result.error)); }
 
     const retrievedSubject = new Subject(result?.data?.[0]);
     const retrievedCurrentTab = Util.getCurrentItem(retrievedSubject.tabs);
@@ -52,6 +62,27 @@ function Classroom(props) {
     setTabs(retrievedSubject.tabs);
     setCurrentTab(retrievedCurrentTab);
     setLoading(false);
+  }
+
+  /**
+   * Método responsável pela recuperação do usuário atual a partir do token 
+   * definido em sessão (quando autenticado).
+   */
+  function getMe() {
+    setLoading(true);
+
+    callouts.content.getMe()
+      .then(result => updateUser(result))
+      .catch(error => setToastEvent(calloutError.content(error)));
+  }
+
+  function updateUser(result) {
+    // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
+    if (result?.error) { return setToastEvent(calloutError.content(result.error)); }
+
+    const newUser = new User(result);
+
+    setUser(newUser);
   }
 
   /**
@@ -79,6 +110,15 @@ function Classroom(props) {
     Util.updateItemIn(tabs, updateTabs)(currentTab);
   }
 
+  /**
+   * Método responsável pela atualização do usuário a partir das informações recebidas.
+   * 
+   * @param {object} user 
+   */
+  function updateUserState(user) {
+    setUser(new User(user));
+  }
+
   function getClassroom() {
     return loading ? (<LoadingComponent width='1.75rem' height='1.75rem' />) : getComponent();
   }
@@ -94,15 +134,17 @@ function Classroom(props) {
   }
 
   return (
-    <SubjectContext.Provider value={[subject, setSubject]}>
-      <TabsContext.Provider value={[tabs, updateTabs]}>
-        <TabContext.Provider value={[currentTab, updateCurrentTab]}>
-          <SnippetsContext.Provider value={[snippets, setSnippets]}>
-            {getClassroom()}
-          </SnippetsContext.Provider>
-        </TabContext.Provider>
-      </TabsContext.Provider>
-    </SubjectContext.Provider>
+    <UserContext.Provider value={[user, updateUserState]}>
+      <SubjectContext.Provider value={[subject, setSubject]}>
+        <TabsContext.Provider value={[tabs, updateTabs]}>
+          <TabContext.Provider value={[currentTab, updateCurrentTab]}>
+            <SnippetsContext.Provider value={[snippets, setSnippets]}>
+              {getClassroom()}
+            </SnippetsContext.Provider>
+          </TabContext.Provider>
+        </TabsContext.Provider>
+      </SubjectContext.Provider>
+    </UserContext.Provider>
   );
 }
 

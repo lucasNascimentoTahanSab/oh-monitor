@@ -7,6 +7,20 @@ require('dotenv').config();
 const ST_REQUEST = {
   /**
    * Método responsável pela obtenção de corpo da requisição ao Strapi a partir
+   * da requisição recebida para recuperação do usuário atual.
+   * 
+   * @param {object} req 
+   * @returns {object}
+   */
+  getMe(req) {
+    return {
+      method: 'GET',
+      url: `${process.env.ST_ENDPOINT}/users/me`,
+      headers: { 'Authorization': `Bearer ${req.session.token}` }
+    };
+  },
+  /**
+   * Método responsável pela obtenção de corpo da requisição ao Strapi a partir
    * da requisição recebida para recuperação do assunto desejado.
    * 
    * @param {object} req 
