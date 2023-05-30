@@ -6,6 +6,7 @@ const express = require('express');
 const axios = require('axios');
 const ST_REQUEST = require('./strapiRequest');
 const ST_PARSER = require('./strapiParser');
+const ST_AUTH = require('./strapiAuth');
 
 require('dotenv').config();
 
@@ -15,7 +16,7 @@ const router = express.Router();
  * Endpoint responsável pela recuperação do conteúdo armazenado no CMS Strapi por meio do UID
  * do assunto desejado.
  */
-router.get('/subjects/:subjectId', (req, res) => {
+router.use('/subjects/:subjectId', ST_AUTH.validate, (req, res) => {
   axios.request(ST_REQUEST.getSubjectRequest(req))
     .then(response => res.send(ST_PARSER.parse(response.data)))
     .catch(error => res.send(error.response?.data));
@@ -25,7 +26,7 @@ router.get('/subjects/:subjectId', (req, res) => {
  * Endpoint responsável pela recuperação dos exercícios a partir do UID recebido e resposta
  * dada pelo usuário, retornando verdadeiro quando correta e falso do contrário.
  */
-router.get('/exercises?*', (req, res) => {
+router.use('/exercises?*', ST_AUTH.validate, (req, res) => {
   axios.request(ST_REQUEST.getExerciseAnswerRequest(req))
     .then(response => res.send(ST_PARSER.parseCorrectAnswers(req.query.exerciseUid, response.data)))
     .catch(error => res.send(error.response?.data));
