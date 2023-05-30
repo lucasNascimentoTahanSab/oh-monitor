@@ -30,6 +30,13 @@ const callouts = {
           .catch(error => reject(error));
       })
     ),
+    getMe: () => (
+      new Promise((resolve, reject) => {
+        fetch(endpoints.content.getMe(), requests.content.getMe())
+          .then(response => resolve(response.json()))
+          .catch(error => reject(error));
+      })
+    ),
     getSubject: uid => (
       new Promise((resolve, reject) => {
         fetch(endpoints.content.getSubject(uid), requests.content.getSubject())

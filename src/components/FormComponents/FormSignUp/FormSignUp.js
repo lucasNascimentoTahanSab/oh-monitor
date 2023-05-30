@@ -1,10 +1,14 @@
+/**
+ * @file Módulo responsável pela apresentação do formulário de inscrição do usuário na plataforma.
+ * @copyright Lucas N. T. Sab 2023
+ */
 import React, { useContext, useState } from 'react';
+import Form from '../Form/Form.js';
+import FormField from '../FormField/FormField.js';
 import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation.js';
 import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
 import callouts from '../../../classes/callouts/callout.js';
 import calloutError from '../../../classes/callouts/calloutError.js';
-import Form from '../Form/Form.js';
-import FormField from '../FormField/FormField.js';
 
 function FormSignUp() {
   const [, setToastEvent] = useContext(ToastEventContext);
@@ -17,6 +21,12 @@ function FormSignUp() {
     signUp(event.target);
   }
 
+  /**
+   * Método responsável pela inscrição do usuário na plataforma, enviando nome
+   * de usuário, email e senha na operação.
+   * 
+   * @param {array} param0 
+   */
   function signUp([username, email, password]) {
     callouts.content.signUp({ username: username.value, email: email.value, password: password.value })
       .then(result => redirectUser(result))
@@ -50,7 +60,7 @@ function FormSignUp() {
             <FormField id='sign-password' name='password' type='password' label='Senha:' />
           </section>
           <div className='tcc-form__submit'>
-            <ButtonConfirmation value='Confirmar' width='100%' loading={loading} />
+            <ButtonConfirmation value='Cadastrar' width='100%' loading={loading} />
             <span>Já possui conta? Clique <a href='/signin'>aqui</a>.</span>
           </div>
         </Form>
