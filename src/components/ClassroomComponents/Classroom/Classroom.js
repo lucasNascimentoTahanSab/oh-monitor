@@ -18,7 +18,7 @@ import Subject from '../../../classes/strapi/Subject.js';
 import callouts from '../../../classes/callouts/callout.js';
 import calloutError from '../../../classes/callouts/calloutError.js';
 import Util from '../../../classes/util/Util.js';
-import User from '../../../classes/strapi/User.js';
+import User from '../../../classes/strapi/user/User.js';
 
 function Classroom(props) {
   const [, setToastEvent] = useContext(ToastEventContext);
@@ -117,6 +117,8 @@ function Classroom(props) {
    */
   function updateUserState(user) {
     setUser(new User(user));
+
+    console.log(new User(user));
   }
 
   function getClassroom() {

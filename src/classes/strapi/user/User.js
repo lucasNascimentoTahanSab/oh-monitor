@@ -1,3 +1,5 @@
+import UserState from "./UserState";
+
 /**
  * @file Módulo responsável pela construção de usuário na plataforma.
  * @copyright Lucas N. T. Sab 2023
@@ -12,7 +14,7 @@ export default class User {
     this.blocked = user?.blocked ?? null;
     this.createdAt = user?.createdAt ?? null;
     this.updatedAt = user?.updatedAt ?? null;
-    this.state = user?.state ?? null;
+    this.state = user?.state ? new UserState(user.state) : new UserState();
     this.screen = user?.screen ?? null;
   }
 }

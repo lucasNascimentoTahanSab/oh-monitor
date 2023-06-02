@@ -31,7 +31,7 @@ app.use('/api/content', ST.router);
 app.use('/api/code', ST_AUTH.validate, CX.router);
 app.use('/api/repo', ST_AUTH.validate, GH.router);
 
-app.get('/', (req, res) => res.redirect('/signup'));
+app.get('/', (req, res) => res.redirect('/signin'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'build')));

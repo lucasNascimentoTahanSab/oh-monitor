@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ExerciseChoice from '../ExerciseChoice/ExerciseChoice.js';
-import Util from '../../../classes/util/Util.js';
+import UserContext from '../../Context/UserContext/UserContext.js';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
-import Exercise from '../../../classes/strapi/Exercise.js';
 import AnswerContext from '../../Context/AnswerContext/AnswerContext.js';
+import Exercise from '../../../classes/strapi/Exercise.js';
+import Util from '../../../classes/util/Util.js';
 
 function ExerciseQuestion() {
+  const [user, setUser] = useContext(UserContext);
   const [currentExercise, setCurrentExercise] = useContext(ExerciseContext);
   const [answersByExercise, setAnswersByExercise] = useContext(AnswerContext);
   const [choices, setChoices] = useState(null);
@@ -13,6 +15,7 @@ function ExerciseQuestion() {
   useEffect(() => {
     setChoices(currentExercise?.choices);
     updateResultByExercise(currentExercise?.choices);
+    updateUserStateWithExercise(currentExercise);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentExercise?.choices]);
 
@@ -45,8 +48,21 @@ function ExerciseQuestion() {
     const newCurrentExercise = new Exercise({ ...currentExercise, choices });
 
     updateResultByExercise(choices);
+    updateUserStateWithExercise(newCurrentExercise);
 
     setCurrentExercise(newCurrentExercise);
+  }
+
+  /**
+   * Método responsável pela atualização de exercício em estado do usuário
+   * para registro.
+   * 
+   * @param {object} exercise 
+   */
+  function updateUserStateWithExercise(exercise) {
+    user.state.exercises.set(exercise.uid, exercise);
+
+    setUser({ ...user, state: { ...user.state, exercises: user.state.exercises } });
   }
 
   /**
