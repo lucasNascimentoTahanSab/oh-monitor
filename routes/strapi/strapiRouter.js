@@ -24,6 +24,15 @@ router.use('/me', ST_AUTH.validate, (req, res) => {
 });
 
 /**
+ * Endpoint responsável pela atualização do usuário no Strapi.
+ */
+router.use('/me/update', ST_AUTH.validate, (req, res) => {
+  axios.request(ST_REQUEST.updateMe(req))
+    .then(response => res.send(response.data))
+    .catch(error => res.send(error.response?.data));
+})
+
+/**
  * Endpoint responsável pela recuperação do conteúdo armazenado no CMS Strapi por meio do UID
  * do assunto desejado.
  */

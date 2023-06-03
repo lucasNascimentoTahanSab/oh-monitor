@@ -24,6 +24,17 @@ export const requests = {
     getMe: () => ({
       method: 'GET'
     }),
+    updateMe: body => ({
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        screen: body.screen,
+        state: {
+          exercises: JSON.stringify(Array.from(body.state.exercises.entries())),
+          snippets: JSON.stringify(Array.from(body.state.snippets.entries()))
+        }
+      })
+    }),
     getSubject: () => ({
       method: 'GET'
     }),

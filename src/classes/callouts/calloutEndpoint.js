@@ -10,6 +10,7 @@ export const endpoints = {
     signUp: () => '/api/content/signUp',
     signIn: () => '/api/content/signIn',
     getMe: () => '/api/content/me',
+    updateMe: () => '/api/content/me/update',
     getSubject: uid => `/api/content/subjects/${encodeURI(uid)}`,
     getExerciseAnswer: (exerciseUid, answer) => `/api/content/exercises?exerciseUid=${encodeURI(exerciseUid)}&answer=${encodeURI(answer)}`
   },
