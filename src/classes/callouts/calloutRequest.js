@@ -27,13 +27,7 @@ export const requests = {
     updateMe: body => ({
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        screen: body.screen,
-        state: {
-          exercises: JSON.stringify(Array.from(body.state.exercises.entries())),
-          snippets: JSON.stringify(Array.from(body.state.snippets.entries()))
-        }
-      })
+      body: JSON.stringify({ ...body, state: JSON.stringify(Array.from(body.state.entries())) })
     }),
     getSubject: () => ({
       method: 'GET'
