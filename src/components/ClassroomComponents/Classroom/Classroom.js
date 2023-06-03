@@ -33,11 +33,8 @@ function Classroom(props) {
    * Hook responsável pela obtenção do registro do assunto tratado na tela atual
    * a partir do UID recebido.
    */
-  useEffect(() => {
-    getMe();
-    getSubject();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { getSubject(); }, []);
 
   /**
    * Método responsável pela recuperação do conteúdo a ser exibido em sala de

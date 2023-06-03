@@ -12,7 +12,7 @@ export default class User {
     this.blocked = user?.blocked ?? null;
     this.createdAt = user?.createdAt ?? null;
     this.updatedAt = user?.updatedAt ?? null;
-    this.state = user?.state ?? null;
+    this.state = user?.state ? new Map(user.state) : new Map();
     this.screen = user?.screen ?? null;
   }
 }

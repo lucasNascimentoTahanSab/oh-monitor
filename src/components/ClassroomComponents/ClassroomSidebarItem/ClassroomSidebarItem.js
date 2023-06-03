@@ -55,7 +55,6 @@ function ClassroomSidebarItem(props) {
           type='radio'
           name={props.group}
           checked={getChecked()}
-          disabled={Util.isTabDisabled(tabs, tab)}
           onChange={setCurrentitem} />
         <label className='tcc-sidebar-item__label tcc-no-select tcc-truncate-string' htmlFor={tab?.uid}>{tab?.title}</label>
       </div>

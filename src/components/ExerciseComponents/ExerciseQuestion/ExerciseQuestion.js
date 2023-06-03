@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ExerciseChoice from '../ExerciseChoice/ExerciseChoice.js';
-import Util from '../../../classes/util/Util.js';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
-import Exercise from '../../../classes/strapi/Exercise.js';
 import AnswerContext from '../../Context/AnswerContext/AnswerContext.js';
+import Exercise from '../../../classes/strapi/Exercise.js';
+import Util from '../../../classes/util/Util.js';
 
 function ExerciseQuestion() {
   const [currentExercise, setCurrentExercise] = useContext(ExerciseContext);
