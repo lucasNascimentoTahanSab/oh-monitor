@@ -21,6 +21,7 @@ const ALLOWED = {
   '/classroom/:uid': ['background', 'classroom'],
   '/classroom': [],
   '/feedback': ['classroom', 'feedback'],
+  '/thanks': ['feedback', 'thanks'],
 };
 
 /**
@@ -44,6 +45,10 @@ const REDIRECT = {
   '/classroom': (user, res) => { res.redirect(user.screen); },
   '/feedback': (user, res, next) => {
     if (user.screen === '/' || isAllowed(user.screen, '/feedback')) { next(); }
+    else { res.redirect(user.screen); }
+  },
+  '/thanks': (user, res, next) => {
+    if (user.screen === '/' || isAllowed(user.screen, '/thanks')) { next(); }
     else { res.redirect(user.screen); }
   }
 };
@@ -119,6 +124,16 @@ router.get('/classroom', ST_AUTH.validate, (req, res) => {
 router.get('/feedback', ST_AUTH.validate, (req, res, next) => {
   ST.getMe(req)
     .then(user => REDIRECT['/feedback'](user, res, next))
+    .catch(() => res.redirect('/signin'));
+});
+
+/**
+ * Endpoint responsável por encaminhar o usuário à tela /thanks, quando permitido, 
+ * ou à tela atual, caso contrário.
+ */
+router.get('/thanks', ST_AUTH.validate, (req, res, next) => {
+  ST.getMe(req)
+    .then(user => REDIRECT['/thanks'](user, res, next))
     .catch(() => res.redirect('/signin'));
 });
 

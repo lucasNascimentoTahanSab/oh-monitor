@@ -41,6 +41,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use('/background', ST_AUTH.validate, express.static(path.join(__dirname, 'build')));
   app.use('/classroom/:uid', ST_AUTH.validate, express.static(path.join(__dirname, 'build')));
   app.use('/feedback', ST_AUTH.validate, express.static(path.join(__dirname, 'build')));
+  app.use('/thanks', ST_AUTH.validate, express.static(path.join(__dirname, 'build')));
 } else if (process.env.NODE_ENV === 'development') {
   app.use(express.static(path.join(__dirname, 'public')));
 }
