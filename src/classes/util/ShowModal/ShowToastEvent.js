@@ -2,13 +2,13 @@
  * @file Módulo responsável por controlar/configurar exibição de modal toast.
  * @copyright Lucas N. T. Sab 2023 
  */
-import Util from "./Util";
+import ShowModalEvent from "./ShowModalEvent";
+import Util from "../Util";
 
-export default class ShowToastEvent {
-  constructor(title, message, variant) {
-    this.title = title ?? null;
-    this.message = message ?? null;
-    this.variant = variant ?? null;
+export default class ShowToastEvent extends ShowModalEvent {
+  constructor(toast) {
+    super(toast);
+
     this._timer = null;
   }
 
@@ -23,7 +23,7 @@ export default class ShowToastEvent {
     Util.handle(setShowToastEvent, true);
 
     this._timer = setTimeout(() => {
-      this.unmountToastEvent(setToastEvent, setShowToastEvent);
+      this.unmountToastEvent(setToastEvent, setShowToastEvent)
     }, 6500);
   }
 
@@ -35,8 +35,7 @@ export default class ShowToastEvent {
    * @param {function} setShowToastEvent 
    */
   unmountToastEvent(setToastEvent, setShowToastEvent) {
-    Util.handle(setShowToastEvent, false);
-    Util.handle(setToastEvent, null);
+    this.unmountModalEvent(setToastEvent, setShowToastEvent);
 
     clearTimeout(this._timer);
   }

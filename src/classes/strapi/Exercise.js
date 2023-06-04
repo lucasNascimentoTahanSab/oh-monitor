@@ -12,7 +12,6 @@ export default class Exercise {
     this.updatedAt = exercise?.attributes?.updatedAt ?? exercise?.updatedAt ?? null;
     this.publishedAt = exercise?.attributes?.publishedAt ?? exercise?.publishedAt ?? null;
     this.type = exercise?.attributes?.type ?? exercise?.type ?? null;
-    this.answer = exercise?.attributes?.answer ?? exercise?.answer ?? null;
     this.statement = exercise?.attributes?.statement ?? exercise?.statement ?? null;
     this.codes = this._getCodes(exercise?.attributes?.codes?.data ?? exercise?.codes);
     this.choices = this._getChoices(exercise?.attributes?.choices?.data ?? exercise?.choices);
