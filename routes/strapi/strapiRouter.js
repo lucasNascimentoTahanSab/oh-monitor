@@ -17,7 +17,7 @@ const router = express.Router();
  * obtidos são utilizados para verificação da página atual em que se encontra o usuário e outras
  * configurações.
  */
-router.use('/me', ST_AUTH.validate, (req, res) => {
+router.get('/me', ST_AUTH.validate, (req, res) => {
   axios.request(ST_REQUEST.getMe(req))
     .then(response => res.send(response.data))
     .catch(error => res.send(error.response?.data));
@@ -26,11 +26,11 @@ router.use('/me', ST_AUTH.validate, (req, res) => {
 /**
  * Endpoint responsável pela atualização do usuário no Strapi.
  */
-router.use('/me/update', ST_AUTH.validate, (req, res) => {
+router.put('/me/update', ST_AUTH.validate, (req, res) => {
   axios.request(ST_REQUEST.updateMe(req))
     .then(response => res.send(response.data))
     .catch(error => res.send(error.response?.data));
-})
+});
 
 /**
  * Endpoint responsável pela recuperação do conteúdo armazenado no CMS Strapi por meio do UID

@@ -4,11 +4,13 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
-import Util from '../../../classes/util/Util.js';
-import TabsContext from '../../Context/TabsContext/TabsContext.js';
 import LoadingComponent from '../../LoadingComponents/LoadingComponent/LoadingComponent.js';
+import TabsContext from '../../Context/TabsContext/TabsContext.js';
+import PromisesContext from '../../Context/PromisesContext/PromisesContext.js';
+import Util from '../../../classes/util/Util.js';
 
 function ClassroomSidebarItem(props) {
+  const [, clearPromises] = useContext(PromisesContext);
   const [tabs,] = useContext(TabsContext);
   const [tab, setTab] = useState(null);
 
@@ -32,6 +34,8 @@ function ClassroomSidebarItem(props) {
    */
   function setCurrentitem() {
     if (Util.getLoadingItem(tabs)) { return; }
+
+    clearPromises();
 
     Util.handle(props.onChange, props.index);
     Util.handle(props.setCurrentItem, tab.uid);

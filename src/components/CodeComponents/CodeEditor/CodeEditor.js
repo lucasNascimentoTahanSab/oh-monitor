@@ -8,7 +8,7 @@ import { ReactComponent as Right } from '../../../svg/right.svg';
 import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext.js';
 import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import CodeContext from '../../Context/CodeContext/CodeContext.js';
-import TabContext from '../../Context/TabContext/TabContext.js';
+import PromisesContext from '../../Context/PromisesContext/PromisesContext.js';
 import OutputContext from '../../Context/OutputContext/OutputContext.js';
 import InputContext from '../../Context/InputContext/InputContext.js';
 import RenderContext from '../../Context/RenderContext/RenderContext.js';
@@ -19,11 +19,9 @@ import Fullscreen from '../../../classes/util/Fullscreen.js';
 import Util from '../../../classes/util/Util.js';
 import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
-import SubjectContext from '../../Context/SubjectContext/SubjectContext';
 
 function CodeEditor(props) {
-  const [subject,] = useContext(SubjectContext);
-  const [currentTab, setCurrentTab] = useContext(TabContext);
+  const [setPromiseInPromises] = useContext(PromisesContext);
   const [currentFile, setCurrentFile] = useState(null);
   const [codes, setCodes] = useState([]);
   const [currentCode, setCurrentCode] = useState(null);
@@ -57,7 +55,8 @@ function CodeEditor(props) {
   }
 
   function loadCodesFromOrigin() {
-    setCurrentTab({ ...currentTab, loading: true });
+    setPromiseInPromises({ uid: currentFile.uid, loading: true });
+
     retrieveCodesFromOrigin();
   }
 
@@ -68,14 +67,14 @@ function CodeEditor(props) {
    * @returns {Promise}
    */
   function retrieveCodesFromOrigin() {
-    Promise.all(currentFile.codes.map(retrieveCodeFromOrigin))
+    Promise.all(currentFile.codes.map(getCodeFromOrigin))
       .then(updateCodesFromOrigin)
       .catch();
   }
 
   function updateCodesFromOrigin(codes) {
     updateCodes(codes);
-    setCurrentTab({ ...currentTab, loading: false });
+    setPromiseInPromises({ uid: currentFile.uid, loading: false });
   }
 
   /**
@@ -90,6 +89,20 @@ function CodeEditor(props) {
     setCurrentCode(newCurrentCode);
 
     Util.handle(props.setFile, { ...currentFile, codes });
+
+    updateOutputContent();
+  }
+
+  /**
+   * Método responsável pela obtenção de código em origem quando conteúdo não 
+   * estiver previamente carregado (quando edição desabilitada, o conteúdo é 
+   * carregado vazio).
+   * 
+   * @param {object} code 
+   * @returns {object}
+   */
+  function getCodeFromOrigin(code) {
+    return code.content ? code : retrieveCodeFromOrigin(code);
   }
 
   function retrieveCodeFromOrigin(code) {
@@ -116,7 +129,7 @@ function CodeEditor(props) {
   }
 
   function isThereAnyCodeToRetrieve() {
-    return currentFile.codes.find(code => code.content === null);
+    return currentFile.codes.find(code => !code.content);
   }
 
   /**
@@ -205,7 +218,7 @@ function CodeEditor(props) {
 
   function getJustCommandsFromResult(result) {
     // A expressão regular considera apenas saídas que iniciem por [UID].
-    return result.output.split('\n')?.filter(line => line.match(new RegExp(`${subject.uid}.*`, 'g')));
+    return result.output.split('\n')?.filter(line => line.match(new RegExp(`${Util.getURLLastPathname()}.*`, 'g')));
   }
 
   /**
@@ -219,7 +232,7 @@ function CodeEditor(props) {
     if (!result) { return currentFile.output; }
 
     if (result.error) { currentFile.output.push(result.error); }
-    else if (result.output) { currentFile.output.push(result.output.replaceAll(new RegExp(`${subject.uid}.*\n`, 'g'), '')); }
+    else if (result.output) { currentFile.output.push(result.output.replaceAll(new RegExp(`${Util.getURLLastPathname()}.*\n`, 'g'), '')); }
 
     return currentFile.output;
   }

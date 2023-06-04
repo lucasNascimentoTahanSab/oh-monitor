@@ -6,7 +6,7 @@ import Tab from './Tab.js';
 
 export default class Subject {
   constructor(subject) {
-    this.id = subject?.id ?? null;
+    this.id = subject?.attributes?.id ?? subject?.id ?? null;
     this.title = subject?.attributes?.title ?? subject?.title ?? null;
     this.description = subject?.attributes?.description ?? subject?.description ?? null;
     this.createdAt = subject?.attributes?.createdAt ?? subject?.createdAt ?? null;
