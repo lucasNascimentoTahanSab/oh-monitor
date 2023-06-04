@@ -9,6 +9,7 @@ const CX = require('./routes/codeX/codeXRouter');
 const ST = require('./routes/strapi/strapiRouter');
 const GH = require('./routes/gitHub/gitHubRouter');
 const ST_AUTH = require('./routes/strapi/strapiAuth');
+const SERVER = require('./routes/server/serverRouter');
 
 require('dotenv').config();
 
@@ -27,11 +28,10 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/', SERVER.router);
 app.use('/api/content', ST.router);
 app.use('/api/code', ST_AUTH.validate, CX.router);
 app.use('/api/repo', ST_AUTH.validate, GH.router);
-
-app.get('/', (req, res) => res.redirect('/signin'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use('/', express.static(path.join(__dirname, 'build')));

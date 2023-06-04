@@ -25,7 +25,7 @@ function Classroom(props) {
   const [loading, setLoading] = useState(true);
   const [promises, setPromises] = useState(new Map());
 
-  useEffect(() => { setUser(props.user); }, [props.user]);
+  useEffect(() => { setUser({ ...props.user, screen: window.location.pathname }); }, [props.user]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { getSubject() }, []);
