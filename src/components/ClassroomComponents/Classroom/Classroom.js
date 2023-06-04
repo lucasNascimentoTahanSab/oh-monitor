@@ -28,6 +28,9 @@ function Classroom(props) {
   useEffect(() => { setUser(props.user); }, [props.user]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { Util.handle(props.setUser, { ...props.user, screen: window.location.pathname }); }, []);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { getSubject() }, []);
 
   /**
