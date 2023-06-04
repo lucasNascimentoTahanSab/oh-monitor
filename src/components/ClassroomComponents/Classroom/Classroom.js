@@ -11,11 +11,11 @@ import TabContext from '../../Context/TabContext/TabContext.js';
 import TabsContext from '../../Context/TabsContext/TabsContext.js';
 import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
 import PromisesContext from '../../Context/PromisesContext/PromisesContext.js';
+import User from '../../../classes/strapi/user/User.js';
 import Subject from '../../../classes/strapi/Subject.js';
 import Util from '../../../classes/util/Util.js';
 import callouts from '../../../classes/callouts/callout.js';
 import calloutError from '../../../classes/callouts/calloutError.js';
-import User from '../../../classes/strapi/user/User.js';
 
 function Classroom(props) {
   const [, setToastEvent] = useContext(ToastEventContext);
@@ -84,8 +84,7 @@ function Classroom(props) {
    * 
    * @param {array} tabs 
    */
-  function updateTabs(tabs, origin) {
-    console.log('updateTabs: ' + origin);
+  function updateTabs(tabs) {
     const newUser = new User(user);
     const oldSubject = newUser.state.get(Util.getURLLastPathname());
     const newSubject = new Subject({ ...oldSubject, tabs });
@@ -106,9 +105,8 @@ function Classroom(props) {
    * 
    * @param {object} currentTab 
    */
-  function updateCurrentTab(currentTab, origin) {
-    console.log('updateCurrentTab: ' + origin);
-    Util.updateItemIn(tabs, updateTabs)(currentTab, origin);
+  function updateCurrentTab(currentTab) {
+    Util.updateItemIn(tabs, updateTabs)(currentTab);
   }
 
   function getClassroom() {
