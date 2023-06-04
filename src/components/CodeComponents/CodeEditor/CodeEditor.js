@@ -56,6 +56,7 @@ function CodeEditor(props) {
 
   function loadCodesFromOrigin() {
     setPromiseInPromises({ uid: currentFile.uid, loading: true });
+
     retrieveCodesFromOrigin();
   }
 
@@ -66,7 +67,7 @@ function CodeEditor(props) {
    * @returns {Promise}
    */
   function retrieveCodesFromOrigin() {
-    Promise.all(currentFile.codes.map(retrieveCodeFromOrigin))
+    Promise.all(currentFile.codes.map(getCodeFromOrigin))
       .then(updateCodesFromOrigin)
       .catch();
   }
@@ -88,6 +89,20 @@ function CodeEditor(props) {
     setCurrentCode(newCurrentCode);
 
     Util.handle(props.setFile, { ...currentFile, codes });
+
+    updateOutputContent();
+  }
+
+  /**
+   * Método responsável pela obtenção de código em origem quando conteúdo não 
+   * estiver previamente carregado (quando edição desabilitada, o conteúdo é 
+   * carregado vazio).
+   * 
+   * @param {object} code 
+   * @returns {object}
+   */
+  function getCodeFromOrigin(code) {
+    return code.content ? code : retrieveCodeFromOrigin(code);
   }
 
   function retrieveCodeFromOrigin(code) {
@@ -114,7 +129,7 @@ function CodeEditor(props) {
   }
 
   function isThereAnyCodeToRetrieve() {
-    return currentFile.codes.find(code => code.content === null);
+    return currentFile.codes.find(code => !code.content);
   }
 
   /**
