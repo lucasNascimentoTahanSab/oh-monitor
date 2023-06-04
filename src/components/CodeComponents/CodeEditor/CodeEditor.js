@@ -19,10 +19,8 @@ import Fullscreen from '../../../classes/util/Fullscreen.js';
 import Util from '../../../classes/util/Util.js';
 import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
-import SubjectContext from '../../Context/SubjectContext/SubjectContext';
 
 function CodeEditor(props) {
-  const [subject,] = useContext(SubjectContext);
   const [currentTab, setCurrentTab] = useContext(TabContext);
   const [currentFile, setCurrentFile] = useState(null);
   const [codes, setCodes] = useState([]);
@@ -205,7 +203,8 @@ function CodeEditor(props) {
 
   function getJustCommandsFromResult(result) {
     // A expressão regular considera apenas saídas que iniciem por [UID].
-    return result.output.split('\n')?.filter(line => line.match(new RegExp(`${subject.uid}.*`, 'g')));
+    // return result.output.split('\n')?.filter(line => line.match(new RegExp(`${subject.uid}.*`, 'g')));
+    return result.output.split('\n');
   }
 
   /**
@@ -219,7 +218,8 @@ function CodeEditor(props) {
     if (!result) { return currentFile.output; }
 
     if (result.error) { currentFile.output.push(result.error); }
-    else if (result.output) { currentFile.output.push(result.output.replaceAll(new RegExp(`${subject.uid}.*\n`, 'g'), '')); }
+    // else if (result.output) { currentFile.output.push(result.output.replaceAll(new RegExp(`${subject.uid}.*\n`, 'g'), '')); }
+    else if (result.output) { currentFile.output.push(result.output); }
 
     return currentFile.output;
   }

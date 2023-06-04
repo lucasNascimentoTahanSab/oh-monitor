@@ -29,8 +29,9 @@ const ST_REQUEST = {
   updateMe(req) {
     return {
       method: 'PUT',
-      url: `${process.env.ST_ENDPOINT}/users/${req.body.user.id}`,
-      body: req.body
+      url: `${process.env.ST_ENDPOINT}/users/${req.body.id}`,
+      headers: { 'Authorization': `Bearer ${req.session.token}` },
+      data: req.body
     };
   },
   /**

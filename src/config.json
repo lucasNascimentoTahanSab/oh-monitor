@@ -30,5 +30,8 @@
         "allowInput": true
       }
     ]
+  },
+  "user": {
+    "timeout": 5000
   }
 }
