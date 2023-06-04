@@ -31,9 +31,58 @@ app.use('/api/content', ST.router);
 app.use('/api/code', ST_AUTH.validate, CX.router);
 app.use('/api/repo', ST_AUTH.validate, GH.router);
 
-app.get('/', (req, res) => res.redirect('/signin'));
-
 if (process.env.NODE_ENV === 'production') {
+  app.get('/', ST_AUTH.validate, (req, res) => {
+    ST.getMe(req)
+      .then(response => res.redirect(response.screen))
+      .catch(() => res.redirect('/signin'));
+  });
+
+  app.get('/tcle', ST_AUTH.validate, (req, res, next) => {
+    ST.getMe(req)
+      .then(response => {
+        if (response.screen !== '/' && !response.screen?.includes('tcle')) { res.redirect(response.screen); }
+        else { next(); }
+      })
+      .catch(() => res.redirect('/signin'));
+  });
+
+  app.get('/background', ST_AUTH.validate, (req, res, next) => {
+    ST.getMe(req)
+      .then(response => {
+        if (!response.screen !== '/' && !response.screen?.includes('tcle') && !response.screen?.includes('background')) { res.redirect(response.screen); }
+        else { next(); }
+      })
+      .catch(() => res.redirect('/signin'));
+  });
+
+  app.get('/classroom/:uid', ST_AUTH.validate, (req, res, next) => {
+    ST.getMe(req)
+      .then(response => {
+        if (!response.screen !== '/' && !response.screen?.includes('background') && !response.screen?.includes('classroom')) { res.redirect(response.screen); }
+        else { next(); }
+      })
+      .catch(() => res.redirect('/signin'));
+  });
+
+  app.get('/classroom', ST_AUTH.validate, (req, res, next) => {
+    ST.getMe(req)
+      .then(response => {
+        if (!response.screen !== '/' && !response.screen?.includes('background')) { res.redirect(response.screen); }
+        else { res.redirect('/signin'); }
+      })
+      .catch(() => res.redirect('/signin'));
+  })
+
+  app.get('/feedback', ST_AUTH.validate, (req, res, next) => {
+    ST.getMe(req)
+      .then(response => {
+        if (!response.screen !== '/' && !response.screen?.includes('classroom') && !response.screen?.includes('feedback')) { res.redirect(response.screen); }
+        else { next(); }
+      })
+      .catch(() => res.redirect('/signin'));
+  });
+
   app.use('/', express.static(path.join(__dirname, 'build')));
   app.use('/signup', express.static(path.join(__dirname, 'build')));
   app.use('/signin', express.static(path.join(__dirname, 'build')));

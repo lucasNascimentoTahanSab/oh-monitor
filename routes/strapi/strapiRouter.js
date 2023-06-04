@@ -18,10 +18,18 @@ const router = express.Router();
  * configurações.
  */
 router.get('/me', ST_AUTH.validate, (req, res) => {
-  axios.request(ST_REQUEST.getMe(req))
-    .then(response => res.send(response.data))
-    .catch(error => res.send(error.response?.data));
+  getMe(req)
+    .then(response => res.send(response))
+    .catch(error => res.send(error));
 });
+
+function getMe(req) {
+  return new Promise((resolve, reject) => {
+    axios.request(ST_REQUEST.getMe(req))
+      .then(response => resolve(response.data))
+      .catch(error => reject(error.response?.data));
+  });
+}
 
 /**
  * Endpoint responsável pela atualização do usuário no Strapi.
@@ -78,6 +86,6 @@ function subscribeUser(req, res, response) {
   res.send(response.data?.user);
 }
 
-const ST = { router };
+const ST = { router, getMe };
 
 module.exports = ST;
