@@ -10,12 +10,12 @@ import ModalToast from './components/ModalComponents/ModalToast/ModalToast';
 import IframeComponent from './components/IframeComponents/IframeComponent/IframeComponent';
 import FormSignIn from './components/FormComponents/FormSignIn/FormSignIn';
 import FormSignUp from './components/FormComponents/FormSignUp/FormSignUp';
+import LoadingComponent from './components/LoadingComponents/LoadingComponent/LoadingComponent';
 import ToastEventContext from './components/Context/ToastEventContext/ToastEventContext';
 import User from './classes/strapi/user/User.js';
 import callouts from './classes/callouts/callout.js';
 import calloutError from './classes/callouts/calloutError.js';
 import config from './config.json';
-import LoadingComponent from './components/LoadingComponents/LoadingComponent/LoadingComponent';
 
 const USER = { timeout: null };
 
@@ -100,10 +100,8 @@ function App() {
    * 
    * @param {object} user 
    */
-  function updateUser(user, state) {
+  function updateUser(user) {
     const newUser = new User(user);
-
-    newUser.updateState(state);
 
     setUser(newUser);
 
@@ -154,7 +152,7 @@ function App() {
   }
 
   function getClassroom() {
-    return loading ? (<LoadingComponent width='1.75rem' height='1.75rem' />) : (<Classroom user={user} setUser={updateUser} uid='subject' />);
+    return loading ? (<LoadingComponent width='1.75rem' height='1.75rem' />) : (<Classroom user={user} setUser={updateUser} />);
   }
 
   function getFeedbackForm() {
@@ -178,7 +176,7 @@ function App() {
             <Route path='/signin' element={getSignIn()} />
             <Route path='/tcle' element={getTCLEForm()} />
             <Route path='/background' element={getBackgroundForm()} />
-            <Route path='/classroom' element={getClassroom()} />
+            <Route path='/classroom/:uid' element={getClassroom()} />
             <Route path='/feedback' element={getFeedbackForm()} />
           </Routes>
         </BrowserRouter>

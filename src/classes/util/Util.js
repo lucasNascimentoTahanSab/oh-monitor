@@ -121,7 +121,7 @@ export default class Util {
    * @param {function} setItems 
    * @returns {function}
    */
-  static setCurrentItem(items, setItems) {
+  static setCurrentItem(items, setItems, ...params) {
     if (typeof setItems !== 'function') { return function () { }; }
     if (!items?.length) { return function () { }; }
 
@@ -130,7 +130,7 @@ export default class Util {
       unselectWrongItem();
       unselectCorrectItem();
       selectItemByUid(uid);
-      setItems([...items]);
+      setItems([...items], ...params);
 
       function selectItemByUid(uid) {
         const newItem = Util.getItemByUid(items, uid);
@@ -166,7 +166,7 @@ export default class Util {
    * @param {function} setItems 
    * @returns {function}
    */
-  static updateItemIn(items, setItems) {
+  static updateItemIn(items, setItems, ...params) {
     if (typeof setItems !== 'function') { return function () { }; }
     if (!items?.length) { return function () { }; }
 
@@ -175,7 +175,7 @@ export default class Util {
 
       Util.matchObjects(item, Util.getItemByUid(items, item.uid));
 
-      setItems([...items]);
+      setItems([...items], ...params);
     }
   }
 
@@ -186,13 +186,13 @@ export default class Util {
    * @param {function} setItems 
    * @returns {function}
    */
-  static toggleOpen(items, setItems) {
+  static toggleOpen(items, setItems, ...params) {
     if (typeof setItems !== 'function') { return function () { }; }
     if (!items?.length) { return function () { }; }
 
     return function (uid) {
       openItemByUid(uid);
-      setItems([...items]);
+      setItems([...items], ...params);
 
       function openItemByUid(uid) {
         const item = Util.getItemByUid(items, uid);
@@ -258,10 +258,10 @@ export default class Util {
     if (typeof setItems !== 'function') { return function () { }; }
     if (!item?.length) { return function () { }; }
 
-    return function (uid) {
+    return function (uid, ...params) {
       const nextTabUid = Util.getNextItemUid(item, uid);
 
-      Util.setCurrentItem(item, setItems)(nextTabUid);
+      Util.setCurrentItem(item, setItems)(nextTabUid, ...params);
     }
   }
 
@@ -332,5 +332,17 @@ export default class Util {
     if (!results?.length) { return null; }
 
     return results.reduce((result, item) => { return { ...result, [item.uid]: item } }, {});
+  }
+
+  /**
+   * Método responsável pela obtenção da última parte do pathname, contendo
+   * o UID do assunto tratado.
+   * 
+   * @returns {string}
+   */
+  static getURLLastPathname() {
+    const pathname = window.location.pathname.split('/')?.filter(path => Boolean(path));
+
+    return pathname[pathname.length - 1];
   }
 }

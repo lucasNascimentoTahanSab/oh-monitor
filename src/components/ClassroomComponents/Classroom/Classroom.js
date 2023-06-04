@@ -9,21 +9,21 @@ import ClassroomStage from '../ClassroomStage/ClassroomStage.js';
 import LoadingComponent from '../../LoadingComponents/LoadingComponent/LoadingComponent.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
 import TabsContext from '../../Context/TabsContext/TabsContext.js';
-import SnippetsContext from '../../Context/SnippetsContext/SnippetsContext.js';
 import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
+import PromisesContext from '../../Context/PromisesContext/PromisesContext.js';
 import Subject from '../../../classes/strapi/Subject.js';
 import Util from '../../../classes/util/Util.js';
 import callouts from '../../../classes/callouts/callout.js';
 import calloutError from '../../../classes/callouts/calloutError.js';
+import User from '../../../classes/strapi/user/User.js';
 
 function Classroom(props) {
   const [, setToastEvent] = useContext(ToastEventContext);
   const [user, setUser] = useState(null);
-  const [subject, setSubject] = useState(null);
   const [tabs, setTabs] = useState([]);
   const [currentTab, setCurrentTab] = useState(null);
-  const [snippets, setSnippets] = useState(new Map());
   const [loading, setLoading] = useState(true);
+  const [promises, setPromises] = useState(new Map());
 
   useEffect(() => { setUser(props.user); }, [props.user]);
 
@@ -37,7 +37,7 @@ function Classroom(props) {
   function getSubject() {
     setLoading(true);
 
-    callouts.content.getSubject(props.uid)
+    callouts.content.getSubject(Util.getURLLastPathname())
       .then(result => updateSubject(result))
       .catch(error => setToastEvent(calloutError.content(error)));
   }
@@ -46,15 +46,36 @@ function Classroom(props) {
     // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
     if (result?.error) { return setToastEvent(calloutError.content(result.error)); }
 
-    const retrievedSubject = new Subject(result?.data?.[0]);
-    const retrievedCurrentTab = Util.getCurrentItem(retrievedSubject.tabs);
+    const newUser = new User(props.user);
 
-    Util.handle(props.setUser, props.user, retrievedSubject);
+    newUser.updateState(new Subject(result?.data?.[0]));
 
-    setSubject(retrievedSubject);
-    setTabs(retrievedSubject.tabs);
-    setCurrentTab(retrievedCurrentTab);
+    Util.handle(props.setUser, newUser);
+
+    const newSubject = newUser.state.get(Util.getURLLastPathname());
+    const newCurrentTab = Util.getCurrentItem(newSubject.tabs);
+
+    setTabs(newSubject.tabs);
+    setCurrentTab(newCurrentTab);
     setLoading(false);
+  }
+
+  /**
+   * Método responsável pela atualização do status das Promises disparadas por guia
+   * antes de permitir a transição do usuário entre guias.
+   * 
+   * @param {object} promise 
+   */
+  function updatePromiseInPromises(promise) {
+    promises.set(promise.uid, promise);
+
+    setPromises(promises);
+
+    updateCurrentTab({ ...currentTab, loading: Boolean(Util.getLoadingItem(Array.from(promises.values()))) });
+  }
+
+  function clearPromises() {
+    setPromises(new Map());
   }
 
   /**
@@ -63,13 +84,18 @@ function Classroom(props) {
    * 
    * @param {array} tabs 
    */
-  function updateTabs(tabs) {
-    const newSubject = new Subject({ ...subject, tabs });
+  function updateTabs(tabs, origin) {
+    console.log('updateTabs: ' + origin);
+    const newUser = new User(user);
+    const oldSubject = newUser.state.get(Util.getURLLastPathname());
+    const newSubject = new Subject({ ...oldSubject, tabs });
+
+    newUser.state.set(oldSubject.uid, newSubject);
+
+    Util.handle(props.setUser, newUser);
+
     const retrievedCurrentTab = Util.getCurrentItem(newSubject.tabs);
 
-    Util.handle(props.setUser, user, newSubject);
-
-    setSubject(newSubject);
     setTabs(newSubject.tabs);
     setCurrentTab(retrievedCurrentTab);
   }
@@ -80,8 +106,9 @@ function Classroom(props) {
    * 
    * @param {object} currentTab 
    */
-  function updateCurrentTab(currentTab) {
-    Util.updateItemIn(tabs, updateTabs)(currentTab);
+  function updateCurrentTab(currentTab, origin) {
+    console.log('updateCurrentTab: ' + origin);
+    Util.updateItemIn(tabs, updateTabs)(currentTab, origin);
   }
 
   function getClassroom() {
@@ -98,13 +125,13 @@ function Classroom(props) {
   }
 
   return (
-    <TabsContext.Provider value={[tabs, updateTabs]}>
-      <TabContext.Provider value={[currentTab, updateCurrentTab]}>
-        <SnippetsContext.Provider value={[snippets, setSnippets]}>
+    <PromisesContext.Provider value={[updatePromiseInPromises, clearPromises]}>
+      <TabsContext.Provider value={[tabs, updateTabs]}>
+        <TabContext.Provider value={[currentTab, updateCurrentTab]}>
           {getClassroom()}
-        </SnippetsContext.Provider>
-      </TabContext.Provider>
-    </TabsContext.Provider>
+        </TabContext.Provider>
+      </TabsContext.Provider>
+    </PromisesContext.Provider>
   );
 }
 

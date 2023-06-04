@@ -34,12 +34,12 @@ app.use('/api/repo', ST_AUTH.validate, GH.router);
 app.get('/', (req, res) => res.redirect('/signin'));
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'build')));
+  app.use('/', express.static(path.join(__dirname, 'build')));
   app.use('/signup', express.static(path.join(__dirname, 'build')));
   app.use('/signin', express.static(path.join(__dirname, 'build')));
   app.use('/tcle', ST_AUTH.validate, express.static(path.join(__dirname, 'build')));
   app.use('/background', ST_AUTH.validate, express.static(path.join(__dirname, 'build')));
-  app.use('/classroom', ST_AUTH.validate, express.static(path.join(__dirname, 'build')));
+  app.use('/classroom/:uid', ST_AUTH.validate, express.static(path.join(__dirname, 'build')));
   app.use('/feedback', ST_AUTH.validate, express.static(path.join(__dirname, 'build')));
 } else if (process.env.NODE_ENV === 'development') {
   app.use(express.static(path.join(__dirname, 'public')));
