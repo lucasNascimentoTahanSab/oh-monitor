@@ -704,23 +704,6 @@ button {
   width: .5rem;
 }
 
-/* ClassroomNavigation */
-
-.tcc-classroom-navigation {
-  display: flex;
-  flex-direction: column;
-  gap: .625rem;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-/* ClassroomNavigationItem */
-
-.tcc-classroom-navigation-item__items {
-  padding: .3125rem 0 0 1.5rem;
-  transition: .5s;
-}
-
 /* ButtonChoice */
 
 .tcc-button-choice {

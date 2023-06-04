@@ -1,3 +1,7 @@
+/**
+ * @file Módulo responsável pela exibição de loading em tela.
+ * @copyright Lucas N. T. Sab 2023
+ */
 import React from 'react';
 
 function LoadingComponent(props) {
