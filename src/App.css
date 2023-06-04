@@ -883,7 +883,7 @@ button {
   border-radius: 0.5rem;
   opacity: 0;
   overflow: hidden;
-  animation: show-toast .75s ease forwards, vanish .75s ease forwards 5s;
+  animation: translate-toast .75s ease forwards, vanish .75s ease forwards 5s;
   height: fit-content;
   width: 35rem;
   padding: 1rem;
@@ -926,6 +926,68 @@ button {
 .tcc-modal-toast--error *,
 .tcc-modal-toast--success * {
   color: var(--color-white);
+}
+
+/* ModalConfirmation */
+
+.tcc-modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, .15);
+  animation: show-toast .75s ease forwards;
+  width: 100%;
+  height: 100%;
+}
+
+.tcc-modal {
+  display: flex;
+  flex-direction: column;
+  gap: .625rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 .1875rem .5rem;
+  background-color: var(--color-white);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  height: fit-content;
+  width: 45rem;
+}
+
+.tcc-modal>header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .625rem;
+  background-color: var(--color-blue--dark);
+  padding: 1rem;
+}
+
+.tcc-modal>header>h3 {
+  color: var(--color-white);
+}
+
+.tcc-modal>section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.tcc-modal>section>div>span {
+  font-family: var(--font-family--ubuntu);
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weigth--regular);
+  line-height: var(--line-height-32);
+  letter-spacing: var(--letter-spacing-072);
+}
+
+.tcc-modal>section>footer {
+  display: flex;
+  justify-content: flex-end;
 }
 
 /* MenuItem */
@@ -1019,6 +1081,12 @@ button {
 }
 
 @keyframes show-toast {
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes translate-toast {
   100% {
     opacity: 1;
     transform: translateY(calc(100% + 2rem));

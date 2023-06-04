@@ -5,6 +5,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Exercise from '../Exercise/Exercise.js';
 import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation.js';
+import UserContext from '../../Context/UserContext/UserContext.js';
 import TabsContext from '../../Context/TabsContext/TabsContext.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
 import ElementsContext from '../../Context/ElementsContext/ElementsContext.js';
@@ -12,15 +13,21 @@ import ExercisesContext from '../../Context/ExercisesContext/ExercisesContext.js
 import AnswerContext from '../../Context/AnswerContext/AnswerContext';
 import ValidationContext from '../../Context/ValidationContext/ValidationContext.js';
 import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
+import ModalEventContext from '../../Context/ModalEventContext/ModalEventContext.js';
 import Element from '../../../classes/strapi/Element.js';
+import ShowModalConfirmationEvent from '../../../classes/util/ShowModal/ShowModalConfirmationEvent.js';
 import Validator from '../../../classes/util/Validator.js';
 import Util from '../../../classes/util/Util.js';
+import callouts from '../../../classes/callouts/callout.js';
+import calloutError from '../../../classes/callouts/calloutError.js';
 
 function Exercises(props) {
+  const [user,] = useContext(UserContext);
   const [tabs, setTabs] = useContext(TabsContext);
   const [currentTab, setCurrentTab] = useContext(TabContext);
   const [elements, setElements] = useContext(ElementsContext);
   const [, setToastEvent] = useContext(ToastEventContext);
+  const [, setModalEvent] = useContext(ModalEventContext);
   const [answersByExercise, setAnswersByExercise] = useState(new Map());
   const [exercises, setExercises] = useState([]);
   const [currentElement, setCurrentElement] = useState(null);
@@ -72,8 +79,18 @@ function Exercises(props) {
     return currentTab?.solved ? 'Avançar' : 'Enviar';
   }
 
+  /**
+   * Método responsável por determinar função do botão de envio, validando respostas, 
+   * avançando guias ou concluindo sala de aula.
+   * 
+   * @returns {function}
+   */
   function getButtonOnClick() {
-    return currentTab?.solved ? goToNextTab : validateAnswers;
+    if (Util.getItemIndex(tabs, currentTab.uid) === tabs.length - 1) {
+      return sendClassroom;
+    }
+
+    return currentTab?.solved ? () => updateUser(goToNextTab)(setLoading) : validateAnswers;
   }
 
   /**
@@ -104,6 +121,50 @@ function Exercises(props) {
 
   function goToNextTab() {
     Util.goToNextItem(tabs, setTabs)(currentTab.uid);
+  }
+
+  /**
+   * Método responsável pela exibição de modal de confirmação ao usuário tentar
+   * concluir sala de aula.
+   */
+  function sendClassroom() {
+    setModalEvent(new ShowModalConfirmationEvent({
+      title: 'Tem certeza que deseja continuar?',
+      message: 'Ao enviar os exercícios realizados, você será redirecionado para o formulário de feedback e não será possível rever os resultados. Tem certeza que deseja continuar?',
+      action: updateUser(redirectUser)
+    }));
+  }
+
+  /**
+   * Método responsável pelo redirecionamento do usuário para formulário de feedback
+   * após confirmação de envio.
+   * 
+   * @param {object} result 
+   * @param {function} setLoading 
+   * @returns 
+   */
+  function redirectUser(result, setLoading) {
+    Util.handle(setLoading, false);
+
+    // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
+    if (result?.error) { return setToastEvent(calloutError.content(result.error)); }
+
+    window.location.href = '/feedback';
+  }
+
+  /**
+   * Método responsável pela atualização do usuário após confirmação de envio.
+   * 
+   * @param {function} then 
+   */
+  function updateUser(then) {
+    return setLoading => {
+      Util.handle(setLoading, true);
+
+      callouts.content.updateMe(user)
+        .then(result => Util.handle(then, result, setLoading))
+        .catch(error => setToastEvent(calloutError.content(error)));
+    }
   }
 
   return (

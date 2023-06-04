@@ -11,11 +11,15 @@ import IframeComponent from './components/IframeComponents/IframeComponent/Ifram
 import FormSignIn from './components/FormComponents/FormSignIn/FormSignIn';
 import FormSignUp from './components/FormComponents/FormSignUp/FormSignUp';
 import LoadingComponent from './components/LoadingComponents/LoadingComponent/LoadingComponent';
+import UserContext from './components/Context/UserContext/UserContext';
 import ToastEventContext from './components/Context/ToastEventContext/ToastEventContext';
+import ModalEventContext from './components/Context/ModalEventContext/ModalEventContext';
 import User from './classes/strapi/user/User.js';
 import callouts from './classes/callouts/callout.js';
 import calloutError from './classes/callouts/calloutError.js';
 import config from './config.json';
+import Modal from './components/ModalComponents/Modal/Modal';
+import ModalConfirmation from './components/ModalComponents/ModalConfirmation/ModalConfirmation';
 
 const USER = { timeout: null };
 
@@ -23,21 +27,16 @@ function App() {
   const [user, setUser] = useState(null);
   const [toastEvent, setToastEvent] = useState(null);
   const [showToastEvent, setShowToastEvent] = useState(false);
+  const [modalConfirmationEvent, setModalConfirmationEvent] = useState(null);
+  const [showModalConfirmationEvent, setShowModalConfirmationEvent] = useState(false);
   const [loading, setLoading] = useState(true);
   const appRef = useRef(null);
 
-  /**
-   * Hook responsável pela apresentação de toast ao usuário quando evento
-   * disparado internamente.
-   */
-  useEffect(() => {
-    if (!toastEvent && showToastEvent) { return unmountToastEvent(); }
-    if (!toastEvent) { return; }
-    if (showToastEvent) { return; }
+  function updateToastEvent(updatedToastEvent) {
+    unmountToastEvent();
 
-    toastEvent.show(setToastEvent, setShowToastEvent);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toastEvent]);
+    setToastEvent(updatedToastEvent);
+  }
 
   /**
    * Método responsável pelo fechamento do modal, por decisão do usuário ou
@@ -47,14 +46,49 @@ function App() {
     toastEvent?.unmountToastEvent(setToastEvent, setShowToastEvent);
   }
 
-  function updateToastEvent(updatedToastEvent) {
-    unmountToastEvent();
-
-    setToastEvent(updatedToastEvent);
+  function getToastEvent() {
+    return (
+      <Modal
+        modalEvent={toastEvent}
+        setModalEvent={setToastEvent}
+        showModalEvent={showToastEvent}
+        setShowModalEvent={setShowToastEvent}
+        unmount={unmountToastEvent}>
+        <ModalToast
+          app={appRef}
+          toastEvent={toastEvent}
+          isOpen={showToastEvent}
+          unmountToast={unmountToastEvent} />;
+      </Modal>
+    );
   }
 
-  function getToastEvent() {
-    return showToastEvent ? <ModalToast toastEvent={toastEvent} app={appRef} isOpen={showToastEvent} unmountToast={unmountToastEvent} /> : null;
+  function updateModalConfirmationEvent(updatedModalConfirmationEvent) {
+    setModalConfirmationEvent(updatedModalConfirmationEvent);
+  }
+
+  /**
+   * Método responsável pelo fechamento do modal de confirmação.
+   */
+  function unmountModalConfirmationEvent() {
+    modalConfirmationEvent?.unmountModalEvent(setModalConfirmationEvent, setShowModalConfirmationEvent);
+  }
+
+  function getModalConfirmationEvent() {
+    return (
+      <Modal
+        modalEvent={modalConfirmationEvent}
+        setModalEvent={setModalConfirmationEvent}
+        showModalEvent={showModalConfirmationEvent}
+        setShowModalEvent={setShowModalConfirmationEvent}
+        unmount={unmountModalConfirmationEvent}>
+        <ModalConfirmation
+          app={appRef}
+          modalConfirmationEvent={modalConfirmationEvent}
+          isOpen={showModalConfirmationEvent}
+          unmountModal={unmountModalConfirmationEvent} />;
+      </Modal>
+    );
   }
 
   /**
@@ -168,19 +202,24 @@ function App() {
 
   return (
     <ToastEventContext.Provider value={[toastEvent, updateToastEvent]}>
-      <div className='App' ref={appRef}>
-        {getToastEvent()}
-        <BrowserRouter>
-          <Routes>
-            <Route path='/signup' element={getSignUp()} />
-            <Route path='/signin' element={getSignIn()} />
-            <Route path='/tcle' element={getTCLEForm()} />
-            <Route path='/background' element={getBackgroundForm()} />
-            <Route path='/classroom/:uid' element={getClassroom()} />
-            <Route path='/feedback' element={getFeedbackForm()} />
-          </Routes>
-        </BrowserRouter>
-      </div>
+      <UserContext.Provider value={[user, updateUser]}>
+        <ModalEventContext.Provider value={[modalConfirmationEvent, updateModalConfirmationEvent]}>
+          <div className='App' ref={appRef}>
+            {getToastEvent()}
+            {getModalConfirmationEvent()}
+            <BrowserRouter>
+              <Routes>
+                <Route path='/signup' element={getSignUp()} />
+                <Route path='/signin' element={getSignIn()} />
+                <Route path='/tcle' element={getTCLEForm()} />
+                <Route path='/background' element={getBackgroundForm()} />
+                <Route path='/classroom/:uid' element={getClassroom()} />
+                <Route path='/feedback' element={getFeedbackForm()} />
+              </Routes>
+            </BrowserRouter>
+          </div>
+        </ModalEventContext.Provider>
+      </UserContext.Provider>
     </ToastEventContext.Provider>
   );
 }

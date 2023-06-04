@@ -1,4 +1,4 @@
-import ShowToastEvent from "./ShowToastEvent";
+import ShowToastEvent from "./ShowModal/ShowToastEvent";
 import callouts from "../callouts/callout";
 import Util from "./Util";
 
@@ -116,34 +116,34 @@ export default class Validator {
   }
 
   _showErrorForWrongAnswers() {
-    this._setToastEvent(new ShowToastEvent(
-      'Ops...',
-      'Revise suas respostas e tente novamente!',
-      'error'
-    ));
+    this._setToastEvent(new ShowToastEvent({
+      title: 'Ops...',
+      message: 'Revise suas respostas e tente novamente!',
+      variant: 'error'
+    }));
   }
 
   _showInfoForBlank() {
-    this._setToastEvent(new ShowToastEvent(
-      'Não está se esquecendo de nada?',
-      'O resultado entregue está incompleto, utilize a animação de apoio para garantir que não falta nada.',
-      'info'
-    ));
+    this._setToastEvent(new ShowToastEvent({
+      title: 'Não está se esquecendo de nada?',
+      message: 'O resultado entregue está incompleto, utilize a animação de apoio para garantir que não falta nada.',
+      variant: 'info'
+    }));
   }
 
   _showInfoForLength() {
-    this._setToastEvent(new ShowToastEvent(
-      'Não está se esquecendo de nada?',
-      'Responda as atividades restantes antes de enviar suas respostas!',
-      'info'
-    ));
+    this._setToastEvent(new ShowToastEvent({
+      title: 'Não está se esquecendo de nada?',
+      message: 'Responda as atividades restantes antes de enviar suas respostas!',
+      variant: 'info'
+    }));
   }
 
   _showSuccessMessage() {
-    this._setToastEvent(new ShowToastEvent(
-      'Sucesso!',
-      'Você acertou em cheio e já pode avançar para a próxima seção!',
-      'success'
-    ));
+    this._setToastEvent(new ShowToastEvent({
+      title: 'Sucesso!',
+      message: 'Você acertou em cheio e já pode avançar para a próxima seção!',
+      variant: 'success'
+    }));
   }
 }
