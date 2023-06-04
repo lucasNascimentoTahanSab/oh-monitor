@@ -211,6 +211,31 @@ button {
   padding: 3.125rem;
 }
 
+/* SignInComponent */
+
+.tcc-thank-you__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.tcc-thank-you {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5rem;
+  opacity: 0;
+  transform: translateY(15rem);
+  animation: show-up 1.5s forwards;
+  overflow: auto;
+  width: 100%;
+  padding: 3.125rem;
+}
+
 /* Classroom */
 
 .tcc-classroom {

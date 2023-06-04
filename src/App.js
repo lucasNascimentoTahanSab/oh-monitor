@@ -6,11 +6,14 @@ import './App.css';
 import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Classroom from './components/ClassroomComponents/Classroom/Classroom.js';
-import ModalToast from './components/ModalComponents/ModalToast/ModalToast';
 import IframeComponent from './components/IframeComponents/IframeComponent/IframeComponent';
+import ThankYou from './components/ThankYouComponents/ThankYou/ThankYou';
 import FormSignIn from './components/FormComponents/FormSignIn/FormSignIn';
 import FormSignUp from './components/FormComponents/FormSignUp/FormSignUp';
 import LoadingComponent from './components/LoadingComponents/LoadingComponent/LoadingComponent';
+import Modal from './components/ModalComponents/Modal/Modal';
+import ModalToast from './components/ModalComponents/ModalToast/ModalToast';
+import ModalConfirmation from './components/ModalComponents/ModalConfirmation/ModalConfirmation';
 import UserContext from './components/Context/UserContext/UserContext';
 import ToastEventContext from './components/Context/ToastEventContext/ToastEventContext';
 import ModalEventContext from './components/Context/ModalEventContext/ModalEventContext';
@@ -18,8 +21,6 @@ import User from './classes/strapi/user/User.js';
 import callouts from './classes/callouts/callout.js';
 import calloutError from './classes/callouts/calloutError.js';
 import config from './config.json';
-import Modal from './components/ModalComponents/Modal/Modal';
-import ModalConfirmation from './components/ModalComponents/ModalConfirmation/ModalConfirmation';
 
 const USER = { timeout: null };
 
@@ -200,6 +201,10 @@ function App() {
     );
   }
 
+  function getThankYou() {
+    return loading ? (<LoadingComponent width='1.75rem' height='1.75rem' />) : (<ThankYou user={user} setUser={updateUser} />);
+  }
+
   return (
     <ToastEventContext.Provider value={[toastEvent, updateToastEvent]}>
       <UserContext.Provider value={[user, updateUser]}>
@@ -215,6 +220,7 @@ function App() {
                 <Route path='/background' element={getBackgroundForm()} />
                 <Route path='/classroom/:uid' element={getClassroom()} />
                 <Route path='/feedback' element={getFeedbackForm()} />
+                <Route path='/thanks' element={getThankYou()} />
               </Routes>
             </BrowserRouter>
           </div>
