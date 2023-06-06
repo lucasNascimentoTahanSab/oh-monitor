@@ -11,7 +11,7 @@ export default class UserSnippet extends Snippet {
   constructor(snippet, state) {
     super(snippet);
 
-    this.codes = this._getUserCodes(snippet?.attributes?.codes?.data ?? snippet?.codes, state?.codes);
+    this.codes = this._getUserCodes(this.codes, state?.codes);
     this.result = state?.result ?? this.result;
     this.commands = state?.commands ?? this.commands;
     this.output = state?.output ?? this.output;

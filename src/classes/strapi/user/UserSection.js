@@ -10,8 +10,8 @@ export default class UserSection extends Section {
   constructor(section, state) {
     super(section);
 
-    this.sections = this._getUserSections(section?.attributes?.sections?.data ?? section?.sections, state?.sections);
-    this.elements = this._getUserElements(section?.attributes?.elements?.data ?? section?.elements, state?.elements);
+    this.sections = this._getUserSections(this.sections, state?.sections);
+    this.elements = this._getUserElements(this.elements, state?.elements);
   }
 
   _getUserElements(elements, state) {

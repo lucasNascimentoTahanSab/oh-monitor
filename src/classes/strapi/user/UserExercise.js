@@ -11,8 +11,8 @@ export default class UserExercise extends Exercise {
   constructor(exercise, state) {
     super(exercise);
 
-    this.codes = this._getUserCodes(exercise?.attributes?.codes?.data ?? exercise?.codes, state?.codes);
-    this.choices = this._getUserChoices(exercise?.attributes?.choices?.data ?? exercise?.choices, state?.choices);
+    this.codes = this._getUserCodes(this.codes, state?.codes);
+    this.choices = this._getUserChoices(this.choices, state?.choices);
     this.result = state?.result ?? this.result;
     this.commands = state?.commands ?? this.commands;
     this.output = state?.output ?? this.output;

@@ -11,11 +11,9 @@ export default class UserElement extends Element {
   constructor(element, state) {
     super(element);
 
-    this.elements = this._getUserElements(element?.attributes?.elements?.data ?? element?.elements, state?.elements);
-    this.exercises = this._getUserExercises(element?.attributes?.exercises?.data ?? element?.exercises, state?.exercises);
-    this.snippet = element?.attributes?.snippet?.data ? new UserSnippet(element.attributes.snippet.data, state?.snippet)
-      : element?.snippet ? new UserSnippet(element.snippet, state?.snippet)
-        : null;
+    this.elements = this._getUserElements(this.elements, state?.elements);
+    this.exercises = this._getUserExercises(this.exercises, state?.exercises);
+    this.snippet = this.snippet ? new UserSnippet(this.snippet, state?.snippet) : null;
   }
 
   _getUserExercises(exercises, state) {
