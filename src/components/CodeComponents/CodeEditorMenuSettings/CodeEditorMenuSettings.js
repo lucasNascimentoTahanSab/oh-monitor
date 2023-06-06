@@ -35,7 +35,7 @@ function CodeEditorMenuSettings(props) {
    * @returns {object}
    */
   function sendCode() {
-    callouts.code.post({ codes, config })
+    callouts.code.post({ codes, config, input: file?.args })
       .then(result => getResult(result))
       .catch(error => showError(error));
   }
@@ -49,10 +49,6 @@ function CodeEditorMenuSettings(props) {
   function getResult(result) {
     setLoading(false);
     setCurrentTab({ ...currentTab, loading: false });
-
-    // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
-    if (result.error) { return setToastEvent(calloutError.code(result.error)); }
-
     setFile({ ...file, result });
   }
 
