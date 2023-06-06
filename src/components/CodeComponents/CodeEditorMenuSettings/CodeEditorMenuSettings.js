@@ -13,19 +13,35 @@ import callouts from '../../../classes/callouts/callout.js';
 import calloutError from '../../../classes/callouts/calloutError.js';
 import config from '../../../config.json';
 import FileContext from '../../Context/FileContext/FileContext.js';
+import ButtonReload from '../../ButtonComponents/ButtonReload/ButtonReload.js';
 
-function CodeEditorMenuSettings(props) {
+function CodeEditorMenuSettings() {
   const [, setToastEvent] = useContext(ToastEventContext);
-  const [file, setFile] = useContext(FileContext);
+  const [file, setFile, reloadCodes, updateCodesFromOrigin] = useContext(FileContext);
   const [currentTab, setCurrentTab] = useContext(TabContext);
   const [codes,] = useContext(CodesContext);
   const [fullscreen, setFullscreen] = useContext(FullscreenContext);
-  const [loading, setLoading] = useState(false);
+  const [loadingPlay, setLoadingPlay] = useState(false);
+  const [loadingReload, setLoadingReload] = useState(false);
 
-  async function handleSend() {
+  function handleSend() {
     setCurrentTab({ ...currentTab, loading: true });
-    setLoading(true);
+    setLoadingPlay(true);
     sendCode();
+  }
+
+  /**
+   * Método responsável pelo recarregamento dos códigos do arquivo atual pela origem.
+   */
+  function handleReload() {
+    setLoadingReload(true);
+
+    reloadCodes().then(afterReload).catch();
+  }
+
+  function afterReload(codes) {
+    updateCodesFromOrigin(codes);
+    setLoadingReload(false);
   }
 
   /**
@@ -35,34 +51,27 @@ function CodeEditorMenuSettings(props) {
    * @returns {object}
    */
   function sendCode() {
-    callouts.code.post({ codes, config })
+    callouts.code.post({ codes, config, input: file?.args })
       .then(result => getResult(result))
       .catch(error => showError(error));
   }
 
   function showError(error) {
-    setLoading(false);
+    setLoadingPlay(false);
     setCurrentTab({ ...currentTab, loading: false });
     setToastEvent(calloutError.code(error));
   }
 
   function getResult(result) {
-    setLoading(false);
+    setLoadingPlay(false);
     setCurrentTab({ ...currentTab, loading: false });
-
-    // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
-    if (result.error) { return setToastEvent(calloutError.code(result.error)); }
-
     setFile({ ...file, result });
-  }
-
-  function getButtonPlay() {
-    return props.showButtonPlay ? <ButtonPlay height='.875rem' width='.875rem' color='#3498DB' onClick={handleSend} loading={loading} /> : null;
   }
 
   return (
     <div className='tcc-code-editor-menu-settings'>
-      {getButtonPlay()}
+      <ButtonReload height='.875rem' width='.875rem' color='#3498DB' onClick={handleReload} loading={loadingReload} />
+      <ButtonPlay height='.875rem' width='.875rem' color='#3498DB' onClick={handleSend} loading={loadingPlay} />
       <ButtonExpand height='.875rem' width='.875rem' color='#3498DB' onClick={() => setFullscreen(!fullscreen)} />
     </div>
   );

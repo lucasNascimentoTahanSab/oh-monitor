@@ -12,7 +12,7 @@ export default class UserTab extends Tab {
 
     this.current = state?.current ?? this.current;
     this.solved = state?.solved ?? this.solved;
-    this.sections = this._getUserSections(tab?.attributes?.sections?.data ?? tab?.sections, state?.sections);
+    this.sections = this._getUserSections(this.sections, state?.sections);
   }
 
   _getUserSections(sections, state) {

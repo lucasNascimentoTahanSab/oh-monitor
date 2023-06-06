@@ -13,6 +13,8 @@ const CX_REQUEST = {
     encodedParams.append('code', await CX_BUILDER.build(req.body.codes, req.body.config));
     encodedParams.append('language', req.body.config?.language);
 
+    if (req.body.input) { encodedParams.append('input', req.body.input); }
+
     return {
       method: 'POST',
       url: process.env.CX_ENDPOINT,

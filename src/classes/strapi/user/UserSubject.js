@@ -10,7 +10,7 @@ export default class UserSubject extends Subject {
   constructor(subject, state) {
     super(subject);
 
-    this.tabs = this._getUserTabs(subject?.attributes?.tabs?.data ?? subject?.tabs, state?.tabs);
+    this.tabs = this._getUserTabs(this.tabs, state?.tabs);
   }
 
   _getUserTabs(tabs, state) {

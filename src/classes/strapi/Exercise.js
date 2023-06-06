@@ -13,6 +13,7 @@ export default class Exercise {
     this.publishedAt = exercise?.attributes?.publishedAt ?? exercise?.publishedAt ?? null;
     this.type = exercise?.attributes?.type ?? exercise?.type ?? null;
     this.statement = exercise?.attributes?.statement ?? exercise?.statement ?? null;
+    this.args = exercise?.attributes?.args ?? exercise?.args ?? null;
     this.codes = this._getCodes(exercise?.attributes?.codes?.data ?? exercise?.codes);
     this.choices = this._getChoices(exercise?.attributes?.choices?.data ?? exercise?.choices);
     this.result = exercise?.result ?? null;
