@@ -118,6 +118,13 @@ function CodeEditor(props) {
   }
 
   /**
+   * Método responsável pelo recarregamento dos códigos pela origem.
+   */
+  async function reloadCodes() {
+    return Promise.all(currentFile.codes.map(retrieveCodeFromOrigin));
+  }
+
+  /**
    * Método responsável pela atualização do arquivo atual em conjunto de arquivos.
    * 
    * @param {object} code 
@@ -243,7 +250,7 @@ function CodeEditor(props) {
 
   return (
     <CodeEditorRefContext.Provider value={codeEditorRef}>
-      <FileContext.Provider value={[currentFile, updateResult]}>
+      <FileContext.Provider value={[currentFile, updateResult, reloadCodes, updateCodesFromOrigin]}>
         <CodesContext.Provider value={[codes, updateCodes]}>
           <CodeContext.Provider value={[currentCode, updateCurrentCode]}>
             <OutputContext.Provider value={[output, setOutput]}>

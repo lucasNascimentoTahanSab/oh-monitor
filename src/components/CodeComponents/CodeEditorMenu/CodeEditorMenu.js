@@ -34,7 +34,7 @@ function CodeEditorMenu(props) {
   return (
     <div className='tcc-code-editor-menu'>
       <div className='tcc-code-editor-menu__tabs'>{getMenuItems()}</div>
-      <CodeEditorMenuSettings showButtonPlay />
+      <CodeEditorMenuSettings />
     </div>
   );
 }
