@@ -68,9 +68,7 @@ const ST_REQUEST = {
   getExerciseAnswerRequest(req) {
     return {
       method: 'GET',
-      url: `${process.env.ST_ENDPOINT}/exercises?` +
-        getFilter('uid', req.query.exerciseUid) + '&' +
-        getFilter('answer', req.query.answer),
+      url: `${process.env.ST_ENDPOINT}/exercises?${getFilter('uid', req.params.exerciseId)}`,
       headers: { 'Authorization': `Bearer ${req.session.token}` }
     };
   }

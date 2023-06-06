@@ -9,12 +9,12 @@ const ST_PARSER = {
 
     return JSON.parse(JSON.stringify(data).replaceAll(/"answer":(".+?"|null),?/g, ''));
   },
-  parseCorrectAnswers(key, data) {
+  parseCorrectAnswers(key, answer, data) {
     if (typeof data !== 'object') { return { uid: key, correct: false }; }
     if (!Array.isArray(data.data)) { return { uid: key, correct: false }; }
     if (!data.data.length) { return { uid: key, correct: false }; }
 
-    return { uid: key, correct: true };
+    return { uid: key, correct: answer === data.data[0].attributes.answer };
   }
 };
 

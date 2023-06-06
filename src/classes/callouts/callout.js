@@ -53,7 +53,7 @@ const callouts = {
     ),
     getExerciseAnswer: (exerciseUid, answer) => (
       new Promise((resolve, reject) => {
-        fetch(endpoints.content.getExerciseAnswer(exerciseUid, answer), requests.content.getExerciseAnswer())
+        fetch(endpoints.content.getExerciseAnswer(exerciseUid), requests.content.getExerciseAnswer({ answer }))
           .then(response => resolve(response.json()))
           .catch(error => reject(error));
       })

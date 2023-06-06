@@ -627,6 +627,7 @@ button {
 .tcc-code-editor-prompt {
   position: absolute;
   bottom: 0;
+  z-index: 100;
   width: 100%;
   max-height: 100%;
 }

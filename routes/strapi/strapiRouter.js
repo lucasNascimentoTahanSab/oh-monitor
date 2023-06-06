@@ -54,9 +54,9 @@ router.use('/subjects/:subjectId', ST_AUTH.validate, (req, res) => {
  * Endpoint responsável pela recuperação dos exercícios a partir do UID recebido e resposta
  * dada pelo usuário, retornando verdadeiro quando correta e falso do contrário.
  */
-router.use('/exercises?*', ST_AUTH.validate, (req, res) => {
+router.use('/exercises/:exerciseId', ST_AUTH.validate, (req, res) => {
   axios.request(ST_REQUEST.getExerciseAnswerRequest(req))
-    .then(response => res.send(ST_PARSER.parseCorrectAnswers(req.query.exerciseUid, response.data)))
+    .then(response => res.send(ST_PARSER.parseCorrectAnswers(req.params.exerciseId, req.body.answer, response.data)))
     .catch(error => res.send(error.response?.data));
 });
 
