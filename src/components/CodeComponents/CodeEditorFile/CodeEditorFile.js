@@ -68,6 +68,7 @@ function CodeEditorFile(props) {
           other: 'on',
           strings: 'on'
         },
+        tabSize: 2,
         selectOnLineNumbers: true,
         selectionHighlight: true,
         snippetSuggestions: 'top'
