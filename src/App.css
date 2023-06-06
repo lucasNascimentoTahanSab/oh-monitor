@@ -727,7 +727,19 @@ button {
 }
 
 .tcc-code-editor-prompt-content__inner::-webkit-scrollbar {
-  width: .5rem;
+  width: .875rem;
+}
+
+.tcc-code-editor-prompt-content__inner::-webkit-scrollbar-track {
+  background: none;
+}
+
+.tcc-code-editor-prompt-content__inner::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, .5);
+}
+
+.tcc-code-editor-prompt-content__inner::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(155, 155, 155, .8);
 }
 
 /* ButtonChoice */
