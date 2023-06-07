@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useCallback, useEffect, useRef } from 'react';
-import Util from '../../../classes/util/Util';
+import Util from '../../../classes/util/Util.js';
 
 function ButtonReload(props) {
   const buttonRef = useRef();
