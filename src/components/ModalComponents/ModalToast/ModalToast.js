@@ -4,8 +4,8 @@
  */
 import React from 'react';
 import ReactModal from 'react-modal';
-import ButtonCross from '../../ButtonComponents/ButtonCross/ButtonCross';
-import Util from '../../../classes/util/Util';
+import ButtonCross from '../../ButtonComponents/ButtonCross/ButtonCross.js';
+import Util from '../../../classes/util/Util.js';
 
 function ModalToast(props) {
   function getModalToastClass() {

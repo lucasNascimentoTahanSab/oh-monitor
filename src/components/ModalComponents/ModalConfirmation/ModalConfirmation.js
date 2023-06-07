@@ -4,9 +4,9 @@
  */
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
-import ButtonCross from '../../ButtonComponents/ButtonCross/ButtonCross';
-import Util from '../../../classes/util/Util';
-import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation';
+import ButtonCross from '../../ButtonComponents/ButtonCross/ButtonCross.js';
+import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/ButtonConfirmation.js';
+import Util from '../../../classes/util/Util.js';
 
 function ModalConfirmation(props) {
   const [loading, setLoading] = useState(false);
