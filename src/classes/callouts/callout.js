@@ -2,8 +2,8 @@
  * @file Módulo responsável por estabelecer comunicação com endpoints do backend.
  * @copyright Lucas N. T. Sab
  */
-import { requests } from './calloutRequest.js';
-import { endpoints } from './calloutEndpoint.js';
+import requests from './calloutRequest.js';
+import endpoints from './calloutEndpoint.js';
 
 const callouts = {
   code: {

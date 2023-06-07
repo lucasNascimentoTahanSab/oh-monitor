@@ -2,7 +2,7 @@
  * @file Módulo responsável pela obtenção de endpoints para comunicação com o backend.
  * @copyright Lucas N. T. Sab
  */
-export const endpoints = {
+const endpoints = {
   code: {
     post: () => '/api/code/submit'
   },
@@ -18,3 +18,5 @@ export const endpoints = {
     getCode: (path, language, extension) => `/api/repo/${encodeURI(language)}${encodeURI(path)}.${encodeURI(extension)}`
   }
 };
+
+export default endpoints;

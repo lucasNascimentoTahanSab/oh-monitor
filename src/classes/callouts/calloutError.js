@@ -1,3 +1,7 @@
+/**
+ * @file Módulo responsável pela exibição de mensagens de erro em toast.
+ * @copyright Lucas N. T. Sab 2023
+ */
 import ShowToastEvent from "../util/ShowModal/ShowToastEvent";
 
 const calloutError = {

@@ -2,7 +2,7 @@
  * @file Módulo responsável pela obtenção da requisição para comunicação com o backend.
  * @copyright Lucas N. T. Sab
  */
-export const requests = {
+const requests = {
   code: {
     post: body => ({
       method: 'POST',
@@ -44,3 +44,5 @@ export const requests = {
     })
   }
 };
+
+export default requests;
