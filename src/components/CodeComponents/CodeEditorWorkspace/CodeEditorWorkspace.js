@@ -3,7 +3,7 @@
  * além do editor, menu e tela para animações. 
  * @copyright Lucas N. T. Sab 2023
  */
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen.js';
 import CodeEditorFile from '../CodeEditorFile/CodeEditorFile.js';
 import CodeEditorMenu from '../CodeEditorMenu/CodeEditorMenu.js';

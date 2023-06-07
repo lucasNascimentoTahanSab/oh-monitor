@@ -3,7 +3,6 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import ResizerComponent from '../../ResizerComponent/ResizerComponent.js';
 import AnimationEngine from '../AnimationEngine/AnimationEngine.js';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand.js';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
@@ -13,7 +12,6 @@ import Dragger from '../../../classes/util/Dragger.js';
 import Fullscreen from '../../../classes/util/Fullscreen.js';
 import Util from '../../../classes/util/Util.js';
 import config from '../../../config.json';
-import Resizer from '../../../classes/util/Resizer.js';
 
 function AnimationScreen(props) {
   const [, setRender] = useContext(RenderContext);
