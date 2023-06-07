@@ -4,9 +4,9 @@
  */
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import AnimationEngine from '../AnimationEngine/AnimationEngine.js';
-import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand.js';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
 import InputRange from '../../InputComponents/InputRange/InputRange.js';
+import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand.js';
 import RenderContext from '../../Context/RenderContext/RenderContext.js';
 import Dragger from '../../../classes/util/Dragger.js';
 import Fullscreen from '../../../classes/util/Fullscreen.js';
