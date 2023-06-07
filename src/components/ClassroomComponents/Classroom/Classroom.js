@@ -13,9 +13,9 @@ import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext
 import PromisesContext from '../../Context/PromisesContext/PromisesContext.js';
 import User from '../../../classes/strapi/user/User.js';
 import Subject from '../../../classes/strapi/Subject.js';
-import Util from '../../../classes/util/Util.js';
 import callouts from '../../../classes/callouts/callout.js';
 import calloutError from '../../../classes/callouts/calloutError.js';
+import Util from '../../../classes/util/Util.js';
 
 function Classroom(props) {
   const [, setToastEvent] = useContext(ToastEventContext);
@@ -46,9 +46,7 @@ function Classroom(props) {
     // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
     if (result?.error) { return setToastEvent(calloutError.content(result.error)); }
 
-    const newUser = new User(props.user);
-
-    newUser.updateState(new Subject(result?.data?.[0]));
+    const newUser = getNewUser(result);
 
     Util.handle(props.setUser, newUser);
 
@@ -58,6 +56,14 @@ function Classroom(props) {
     setTabs(newSubject.tabs);
     setCurrentTab(newCurrentTab);
     setLoading(false);
+  }
+
+  function getNewUser(result) {
+    const newUser = new User(props.user);
+
+    newUser.updateState(new Subject(result?.data?.[0]));
+
+    return newUser;
   }
 
   /**
@@ -85,18 +91,24 @@ function Classroom(props) {
    * @param {array} tabs 
    */
   function updateTabs(tabs) {
-    const newUser = new User(user);
-    const oldSubject = newUser.state.get(Util.getURLLastPathname());
-    const newSubject = new Subject({ ...oldSubject, tabs });
+    const subjectUid = Util.getURLLastPathname();
 
-    newUser.state.set(oldSubject.uid, newSubject);
+    updateUserState(subjectUid, tabs);
 
-    Util.handle(props.setUser, newUser);
+    Util.handle(props.setUser, user);
 
+    const newSubject = user.state.get(subjectUid);
     const retrievedCurrentTab = Util.getCurrentItem(newSubject.tabs);
 
     setTabs(newSubject.tabs);
     setCurrentTab(retrievedCurrentTab);
+  }
+
+  function updateUserState(subjectUid, tabs) {
+    const oldSubject = user.state.get(subjectUid);
+    const newSubject = new Subject({ ...oldSubject, tabs });
+
+    user.state.set(oldSubject.uid, newSubject);
   }
 
   /**
