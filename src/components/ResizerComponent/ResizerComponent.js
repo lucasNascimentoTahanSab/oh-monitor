@@ -15,8 +15,12 @@ function ResizerComponent(props) {
    */
   useEffect(() => { setResizerRefCallback(resizerRef) }, [setResizerRefCallback]);
 
+  function getClassName() {
+    return `${props.vertical ? 'tcc-resizer--vertical' : 'tcc-resizer--horizontal'}`;
+  }
+
   return (
-    <div className='tcc-code-editor-prompt__resizer' ref={resizerRef} onMouseDown={event => props.resizer?.resize?.(event)}>
+    <div className={getClassName()} ref={resizerRef} onMouseDown={event => props.resizer?.resize?.(event)}>
       <ButtonResize width={props.width} height={props.height} color={props.color} onClick={() => props.resizer?.toggleResizer?.()} />
     </div>
   );

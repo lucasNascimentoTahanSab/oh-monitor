@@ -10,11 +10,14 @@ export default class Resizer {
     this.direction = direction;
     this._parentHeight = null;
     this._parentWidth = null;
-    this._contentInitialPosition = null;
     this._contentInitialHeight = null;
     this._contentInitialWidth = null;
+    this._contentInitialTopPosition = null;
+    this._contentInitialRightPosition = null;
     this._mouseInitialYPosition = null;
     this._mouseInitialXPosition = null;
+
+    window.addEventListener('resize', () => this._DIRECTION[this.direction](this).adjust());
   }
 
   toggleResizer() {
@@ -28,32 +31,75 @@ export default class Resizer {
   _DIRECTION = {
     'horizontal': (resizer) => {
       /**
-       * Método responsável por controlar abertura parcial e fechamento do elemento.
+       * Método responsável por ajustar dimensões do elemento a partir do redimensionamento
+       * do elemento pai.
        */
-      function toggleResizer() {
-        if (_isOpen()) { _close(); }
-        else { _open(); }
+      function adjust() {
+        if (_isHalfOpen()) { _adjustHalfOpen(); }
+        else { _adjustOther(); }
       }
 
-      function _close() {
-        resizer.current.style.width = '0px';
+      function _adjustOther() {
+        const growthRate = _getGrowthRate();
+
+        _adjustWidth(growthRate);
+        _adjustRight(growthRate);
+      }
+
+      function _adjustRight(growthRate) {
+        if (!resizer.current.style.right) { return; }
+
+        resizer.current.style.right = `${Math.round(parseInt(resizer.current.style.right.replace('px')) * growthRate)}px`;
+      }
+
+      function _adjustWidth(growthRate) {
+        if (!resizer.current.style.width) { return; }
+
+        resizer.current.style.width = `${Math.round(parseInt(resizer.current.style.width.replace('px')) * growthRate)}px`;
+      }
+
+      function _getGrowthRate() {
+        const oldParentWidth = resizer._parentWidth;
+
+        resizer._setParentSizing();
+
+        return resizer._parentWidth / oldParentWidth;
+      }
+
+      function _adjustHalfOpen() {
+        resizer._setParentSizing();
+
+        _halfOpen();
+      }
+
+      function _isHalfOpen() {
+        return resizer.current.style.width === `${Math.round(resizer._parentWidth * .5) - Math.round((resizer.discount / 2))}px`;
       }
 
       /**
-       * Método responsável pela abertura do elemento até a metade da altura do container.
-       * O desconto aplicado ao tamanho final se dá por conta de possíveis elementos
-       * associados que não sofram redimensionamento.
+       * Método responsável por controlar abertura parcial ou total do elemento.
        */
-      function _open() {
-        resizer.current.style.width = `${(resizer._parentWidth * .5) - resizer.discount}px`;
+      function toggleResizer() {
+        resizer._setParentSizing();
+
+        if (_isFullOpen()) { _halfOpen(); }
+        else { _fullOpen(); }
       }
 
-      function _isOpen() {
-        if (!resizer.current.style.width) { return false; }
+      function _halfOpen() {
+        resizer.current.style.width = `${Math.round(resizer._parentWidth * .5) - Math.round((resizer.discount / 2))}px`;
+      }
+
+      function _fullOpen() {
+        resizer.current.style.width = `${Math.round(resizer._parentWidth) - Math.round(resizer.discount)}px`;
+      }
+
+      function _isFullOpen() {
+        if (!resizer.current.style.width) { return true; }
 
         const currentWidth = parseInt(resizer.current.style.width.replace('px', ''));
 
-        return currentWidth > 0;
+        return (currentWidth + Math.round(resizer.discount)) === Math.round(resizer._parentWidth);
       }
 
       /**
@@ -65,10 +111,10 @@ export default class Resizer {
       function resize(event) {
         event.preventDefault();
 
-        resizer._setParentWidth();
-        resizer._setContentPosition();
-        resizer._setContentInitialWidth();
-        resizer._setMouseInitialXPosition(event);
+        resizer._setParentSizing();
+        resizer._setContentInitialPosition();
+        resizer._setContentInitialSizing();
+        resizer._setMouseInitialPosition(event);
 
         window.addEventListener('mousemove', _handleResizerMouseMoveBind);
         window.addEventListener('mouseup', _handleResizerMouseUp);
@@ -90,24 +136,72 @@ export default class Resizer {
       function _handleResizerMouseMove(event) {
         event.preventDefault();
 
-        const newWidth = resizer._contentInitialWidth - (event.pageX - resizer._mouseInitialXPosition);
+        const newWidth = resizer._contentInitialWidth + (event.pageX - resizer._mouseInitialXPosition);
 
         if (newWidth > (resizer._parentWidth - resizer.discount)) { return; }
         if (newWidth < 0) { return; }
 
         resizer.current.style.width = `${newWidth}px`;
-        resizer.current.style.left = `${resizer._contentInitialPosition + (event.pageX - resizer._mouseInitialXPosition)}px`;
+        resizer.current.style.right = `${resizer._contentInitialRightPosition + (event.pageX - resizer._mouseInitialXPosition)}px`;
       }
 
-      return { toggleResizer, resize };
+      return { adjust, toggleResizer, resize };
     },
     'vertical': resizer => {
+      /**
+       * Método responsável por ajustar dimensões do elemento a partir do redimensionamento
+       * do elemento pai.
+       */
+      function adjust() {
+        if (_isHalfOpen()) { _adjustHalfOpen(); }
+        else { _adjustOther(); }
+      }
+
+      function _adjustOther() {
+        const growthRate = _getGrowthRate();
+
+        _adjustHeight(growthRate);
+        _adjustTop(growthRate);
+      }
+
+      function _adjustTop(growthRate) {
+        if (!resizer.current.style.top) { return; }
+
+        resizer.current.style.top = `${Math.round(parseInt(resizer.current.style.top.replace('px')) * growthRate)}px`;
+      }
+
+      function _adjustHeight(growthRate) {
+        if (!resizer.current.style.height) { return; }
+
+        resizer.current.style.height = `${Math.round(parseInt(resizer.current.style.height.replace('px')) * growthRate)}px`;
+      }
+
+      function _getGrowthRate() {
+        const oldParentHeight = resizer._parentHeight;
+
+        resizer._setParentSizing();
+
+        return resizer._parentHeight / oldParentHeight;
+      }
+
+      function _adjustHalfOpen() {
+        resizer._setParentSizing();
+
+        _halfOpen();
+      }
+
+      function _isHalfOpen() {
+        return resizer.current.style.height === `${Math.round((resizer._parentHeight * .5) - resizer.discount)}px`;
+      }
+
       /**
        * Método responsável por controlar abertura parcial e fechamento do elemento.
        */
       function toggleResizer() {
+        resizer._setParentSizing();
+
         if (_isOpen()) { _close(); }
-        else { _open(); }
+        else { _halfOpen(); }
       }
 
       function _close() {
@@ -119,8 +213,8 @@ export default class Resizer {
        * O desconto aplicado ao tamanho final se dá por conta de possíveis elementos
        * associados que não sofram redimensionamento.
        */
-      function _open() {
-        resizer.current.style.height = `${(resizer._parentHeight * .5) - resizer.discount}px`;
+      function _halfOpen() {
+        resizer.current.style.height = `${Math.round((resizer._parentHeight * .5) - resizer.discount)}px`;
       }
 
       function _isOpen() {
@@ -140,10 +234,10 @@ export default class Resizer {
       function resize(event) {
         event.preventDefault();
 
-        resizer._setParentHeight();
-        resizer._setContentPosition();
-        resizer._setContentInitialHeight();
-        resizer._setMouseInitialYPosition(event);
+        resizer._setParentSizing();
+        resizer._setContentInitialPosition();
+        resizer._setContentInitialSizing();
+        resizer._setMouseInitialPosition(event);
 
         window.addEventListener('mousemove', _handleResizerMouseMoveBind);
         window.addEventListener('mouseup', _handleResizerMouseUp);
@@ -171,44 +265,34 @@ export default class Resizer {
         if (newHeight < 0) { return; }
 
         resizer.current.style.height = `${newHeight}px`;
-        resizer.current.style.top = `${resizer._contentInitialPosition + (event.pageY - resizer._mouseInitialYPosition)}px`;
+        resizer.current.style.top = `${resizer._contentInitialTopPosition + (event.pageY - resizer._mouseInitialYPosition)}px`;
       }
 
-      return { toggleResizer, resize };
+      return { adjust, toggleResizer, resize };
     }
   };
 
-  _setMouseInitialYPosition(event) {
+  _setMouseInitialPosition(event) {
     this._mouseInitialYPosition = event.pageY;
-  }
-
-  _setMouseInitialXPosition(event) {
     this._mouseInitialXPosition = event.pageX;
   }
 
-  _setContentInitialWidth() {
+  _setContentInitialSizing() {
     this._contentInitialWidth = this.current?.offsetWidth;
-  }
-
-  _setContentInitialHeight() {
     this._contentInitialHeight = this.current?.offsetHeight;
   }
 
-  _setContentPosition() {
+  _setContentInitialPosition() {
     const contentBoundaries = this.current?.getBoundingClientRect();
 
-    this._contentInitialPosition = contentBoundaries.top;
+    this._contentInitialTopPosition = contentBoundaries.top;
+    this._contentInitialRightPosition = contentBoundaries.right;
   }
 
-  _setParentWidth() {
+  _setParentSizing() {
     const parentBoundaries = this.parent?.getBoundingClientRect();
 
     this._parentWidth = parentBoundaries.width;
-  }
-
-  _setParentHeight() {
-    const parentBoundaries = this.parent?.getBoundingClientRect();
-
     this._parentHeight = parentBoundaries.height;
   }
 }

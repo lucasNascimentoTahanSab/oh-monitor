@@ -3,15 +3,17 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import RenderContext from '../../Context/RenderContext/RenderContext.js';
+import ResizerComponent from '../../ResizerComponent/ResizerComponent.js';
 import AnimationEngine from '../AnimationEngine/AnimationEngine.js';
 import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand.js';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
 import InputRange from '../../InputComponents/InputRange/InputRange.js';
+import RenderContext from '../../Context/RenderContext/RenderContext.js';
 import Dragger from '../../../classes/util/Dragger.js';
 import Fullscreen from '../../../classes/util/Fullscreen.js';
 import Util from '../../../classes/util/Util.js';
 import config from '../../../config.json';
+import Resizer from '../../../classes/util/Resizer.js';
 
 function AnimationScreen(props) {
   const [, setRender] = useContext(RenderContext);
@@ -31,8 +33,8 @@ function AnimationScreen(props) {
   const [timer, setTimer] = useState(null);
   const [fullscreen, setFullscreen] = useState(false);
   const [fullscreenOperator,] = useState(new Fullscreen(setFullscreen));
-  const animationCamera = useRef(null);
-  const animationScreen = useRef(null);
+  const animationCameraRef = useRef(null);
+  const animationScreenRef = useRef(null);
 
   useEffect(() => { setCommands(props.commands) }, [props.commands]);
 
@@ -41,15 +43,15 @@ function AnimationScreen(props) {
    * focar em elementos expecíficos.
    */
   useEffect(() => {
-    if (!animationCamera) { return; }
+    if (!animationCameraRef) { return; }
     if (!animationEngine) { return; }
 
-    setDragger(new Dragger(animationCamera.current, animationEngine.current));
+    setDragger(new Dragger(animationCameraRef.current, animationEngine.current));
   }, [animationEngine]);
 
   useEffect(() => {
-    if (fullscreen) { fullscreenOperator.open(animationScreen.current, setFullscreen); }
-    else { fullscreenOperator.close(animationScreen.current); }
+    if (fullscreen) { fullscreenOperator.open(animationScreenRef.current, setFullscreen); }
+    else { fullscreenOperator.close(animationScreenRef.current); }
   }, [fullscreenOperator, fullscreen]);
 
   const pauseTimelineCallback = useCallback(pauseTimeline, [pauseTimeline]);
@@ -90,10 +92,6 @@ function AnimationScreen(props) {
 
     resetTimelineCallback();
   }, [reset, totalTime, snapshots, playing, resetTimelineCallback]);
-
-  function getClassName() {
-    return `tcc-animation-screen ${fullscreen ? 'tcc-animation-screen--fullscreen' : ''}`;
-  }
 
   function configureSnapshots(result) {
     setReset(true);
@@ -283,9 +281,13 @@ function AnimationScreen(props) {
     clearInterval(timer);
   }
 
+  function getClassName() {
+    return `tcc-animation-screen ${fullscreen ? 'tcc-animation-screen--fullscreen' : ''}`;
+  }
+
   return (
-    <div className={getClassName()} ref={animationScreen}>
-      <div className='tcc-animation-screen__camera' ref={animationCamera} onMouseDown={handleScreenMouseDown}>
+    <div className={getClassName()} ref={animationScreenRef}>
+      <div className='tcc-animation-screen__camera' ref={animationCameraRef} onMouseDown={handleScreenMouseDown}>
         <AnimationEngine
           commands={commands}
           setAnimationEngine={setAnimationEngine}
@@ -295,9 +297,9 @@ function AnimationScreen(props) {
           dragger={dragger} />
       </div>
       <div className='tcc-animation-screen__control'>
-        <ButtonPlay height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={toggleTimeline} playing={playing} />
-        <InputRange theme={props.theme} max={totalTime} value={currentTime} onChange={onInputRangeChange} onMouseUp={onInputMouseUp} />
-        <ButtonExpand height='1.5rem' width='1.5rem' color={props.theme === 'dark' ? '#3498DB' : '#1E1E1E'} onClick={() => setFullscreen(!fullscreen)} />
+        <ButtonPlay height='1.5rem' width='1.5rem' color='#3498DB' onClick={toggleTimeline} playing={playing} />
+        <InputRange max={totalTime} value={currentTime} onChange={onInputRangeChange} onMouseUp={onInputMouseUp} />
+        <ButtonExpand height='1.5rem' width='1.5rem' color='#3498DB' onClick={() => setFullscreen(!fullscreen)} />
       </div>
     </div>
   );
