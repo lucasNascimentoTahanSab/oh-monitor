@@ -1,6 +1,6 @@
-import ShowToastEvent from "./ShowModal/ShowToastEvent";
-import callouts from "../callouts/callout";
-import Util from "./Util";
+import ShowToastEvent from "./ShowModal/ShowToastEvent.js";
+import callouts from "../callouts/callout.js";
+import Util from "./Util.js";
 
 export default class Validator {
   constructor(setToastEvent, setLoading) {
