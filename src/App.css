@@ -469,6 +469,10 @@ button {
   height: 100%;
 }
 
+.monaco-editor {
+  padding-top: .625rem;
+}
+
 /* AnimationScreen */
 
 .tcc-animation-screen {

@@ -21,7 +21,7 @@ function ResizerComponent(props) {
 
   return (
     <div className={getClassName()} ref={resizerRef} onMouseDown={event => props.resizer?.resize?.(event)}>
-      <ButtonResize width={props.width} height={props.height} color={props.color} onClick={() => props.resizer?.toggleResizer?.()} />
+      <ButtonResize width={props.width} height={props.height} color={props.color} onClick={event => props.resizer?.toggleResizer?.(event)} />
     </div>
   );
 }

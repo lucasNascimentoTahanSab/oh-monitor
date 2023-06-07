@@ -20,11 +20,15 @@ export default class Resizer {
     window.addEventListener('resize', () => this._DIRECTION[this.direction](this).adjust());
   }
 
-  toggleResizer() {
+  toggleResizer(event) {
+    if (event && event?.type !== 'click') { return; }
+
     this._DIRECTION[this.direction](this).toggleResizer();
   }
 
   resize(event) {
+    if (event?.type !== 'mousedown') { return; }
+
     this._DIRECTION[this.direction](this).resize(event);
   }
 
@@ -36,6 +40,7 @@ export default class Resizer {
        */
       function adjust() {
         if (_isHalfOpen()) { _adjustHalfOpen(); }
+        if (_isFullOpen()) { _adjustFullOpen(); }
         else { _adjustOther(); }
       }
 
@@ -66,6 +71,18 @@ export default class Resizer {
         return resizer._parentWidth / oldParentWidth;
       }
 
+      function _adjustFullOpen() {
+        resizer._setParentSizing();
+
+        _fullOpen();
+      }
+
+      function _isFullOpen() {
+        if (!resizer.current.style.width) { return true; }
+
+        return resizer.current.style.width === `${Math.round(resizer._parentWidth - resizer.discount)}px`;
+      }
+
       function _adjustHalfOpen() {
         resizer._setParentSizing();
 
@@ -73,7 +90,7 @@ export default class Resizer {
       }
 
       function _isHalfOpen() {
-        return resizer.current.style.width === `${Math.round(resizer._parentWidth * .5) - Math.round((resizer.discount / 2))}px`;
+        return resizer.current.style.width === `${Math.round((resizer._parentWidth * .5) - (resizer.discount / 2))}px`;
       }
 
       /**
@@ -87,19 +104,11 @@ export default class Resizer {
       }
 
       function _halfOpen() {
-        resizer.current.style.width = `${Math.round(resizer._parentWidth * .5) - Math.round((resizer.discount / 2))}px`;
+        resizer.current.style.width = `${Math.round((resizer._parentWidth * .5) - (resizer.discount / 2))}px`;
       }
 
       function _fullOpen() {
-        resizer.current.style.width = `${Math.round(resizer._parentWidth) - Math.round(resizer.discount)}px`;
-      }
-
-      function _isFullOpen() {
-        if (!resizer.current.style.width) { return true; }
-
-        const currentWidth = parseInt(resizer.current.style.width.replace('px', ''));
-
-        return (currentWidth + Math.round(resizer.discount)) === Math.round(resizer._parentWidth);
+        resizer.current.style.width = `${Math.round(resizer._parentWidth - resizer.discount)}px`;
       }
 
       /**
@@ -153,11 +162,6 @@ export default class Resizer {
        * do elemento pai.
        */
       function adjust() {
-        if (_isHalfOpen()) { _adjustHalfOpen(); }
-        else { _adjustOther(); }
-      }
-
-      function _adjustOther() {
         const growthRate = _getGrowthRate();
 
         _adjustHeight(growthRate);
@@ -184,24 +188,14 @@ export default class Resizer {
         return resizer._parentHeight / oldParentHeight;
       }
 
-      function _adjustHalfOpen() {
-        resizer._setParentSizing();
-
-        _halfOpen();
-      }
-
-      function _isHalfOpen() {
-        return resizer.current.style.height === `${Math.round((resizer._parentHeight * .5) - resizer.discount)}px`;
-      }
-
       /**
        * Método responsável por controlar abertura parcial e fechamento do elemento.
        */
       function toggleResizer() {
         resizer._setParentSizing();
 
-        if (_isOpen()) { _close(); }
-        else { _halfOpen(); }
+        if (_isFullOpen()) { _close(); }
+        else { _fullOpen(); }
       }
 
       function _close() {
@@ -213,16 +207,14 @@ export default class Resizer {
        * O desconto aplicado ao tamanho final se dá por conta de possíveis elementos
        * associados que não sofram redimensionamento.
        */
-      function _halfOpen() {
-        resizer.current.style.height = `${Math.round((resizer._parentHeight * .5) - resizer.discount)}px`;
+      function _fullOpen() {
+        resizer.current.style.height = `${Math.round(resizer._parentHeight - resizer.discount)}px`;
       }
 
-      function _isOpen() {
+      function _isFullOpen() {
         if (!resizer.current.style.height) { return false; }
 
-        const currentHeight = parseInt(resizer.current.style.height.replace('px', ''));
-
-        return currentHeight > 0;
+        return resizer.current.style.height === `${Math.round(resizer._parentHeight - resizer.discount)}px`;
       }
 
       /**
