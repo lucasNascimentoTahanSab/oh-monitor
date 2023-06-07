@@ -15,11 +15,11 @@ import ValidationContext from '../../Context/ValidationContext/ValidationContext
 import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
 import ModalEventContext from '../../Context/ModalEventContext/ModalEventContext.js';
 import Element from '../../../classes/strapi/Element.js';
+import callouts from '../../../classes/callouts/callout.js';
+import calloutError from '../../../classes/callouts/calloutError.js';
 import ShowModalConfirmationEvent from '../../../classes/util/ShowModal/ShowModalConfirmationEvent.js';
 import Validator from '../../../classes/util/Validator.js';
 import Util from '../../../classes/util/Util.js';
-import callouts from '../../../classes/callouts/callout.js';
-import calloutError from '../../../classes/callouts/calloutError.js';
 
 function Exercises(props) {
   const [user,] = useContext(UserContext);

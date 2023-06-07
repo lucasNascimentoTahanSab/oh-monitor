@@ -1,3 +1,7 @@
+/**
+ * @file Módulo responsável pela exibição de questão de múltipla escolha.
+ * @copyright Lucas N. T. Sab 2023
+ */
 import React, { useContext, useEffect, useState } from 'react';
 import ExerciseChoice from '../ExerciseChoice/ExerciseChoice.js';
 import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
