@@ -554,14 +554,14 @@ button {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: var(--color-black--dark);
+  background-color: var(--color-blue--light);
   width: 2.5rem;
   height: 2.5rem;
 }
 
 .tcc-bst-node>span {
   padding: .625rem;
-  color: var(--color-white);
+  color: var(--color-black--dark);
   font-family: var(--font-family--ubuntu);
   font-size: var(--font-size-14);
   font-weight: var(--font-weigth--bold);
@@ -607,7 +607,7 @@ button {
   position: absolute;
   z-index: 1;
   transform: translateY(-100%);
-  background: var(--color-black--dark);
+  background: var(--color-blue--light);
   width: .0625rem;
   height: 2rem;
 }
@@ -618,7 +618,7 @@ button {
   z-index: 1;
   top: 0;
   transform: translateY(-100%) translateX(50%);
-  background: linear-gradient(to bottom right, #0000 49%, var(--color-black--dark) 0, #0000 51%);
+  background: linear-gradient(to bottom right, #0000 49%, var(--color-blue--light) 0, #0000 51%);
   width: calc(25% + .25rem);
   height: 3rem;
 }
@@ -629,7 +629,7 @@ button {
   z-index: 1;
   top: 0;
   transform: translateY(-100%) translateX(-50%);
-  background: linear-gradient(to bottom left, #0000 49%, var(--color-black--dark) 0, #0000 51%);
+  background: linear-gradient(to bottom left, #0000 49%, var(--color-blue--light) 0, #0000 51%);
   width: calc(25% + .25rem);
   height: 3rem;
 }
