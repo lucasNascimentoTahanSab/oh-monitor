@@ -3,8 +3,8 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useEffect, useRef } from 'react';
-import Util from '../../../classes/util/Util.js';
 import LoadingComponent from '../../LoadingComponents/LoadingComponent/LoadingComponent.js';
+import Util from '../../../classes/util/Util.js';
 
 function ButtonConfirmation(props) {
   const buttonRef = useRef(null);

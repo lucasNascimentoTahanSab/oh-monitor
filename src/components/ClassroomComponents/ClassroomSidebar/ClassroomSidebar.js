@@ -3,10 +3,10 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useState } from 'react';
+import LoadingProgress from '../../LoadingComponents/LoadingProgress/LoadingProgress.js';
 import ClassroomSidebarItem from '../ClassroomSidebarItem/ClassroomSidebarItem.js';
 import TabsContext from '../../Context/TabsContext/TabsContext.js';
 import Util from '../../../classes/util/Util.js';
-import LoadingProgress from '../../LoadingComponents/LoadingProgress/LoadingProgress.js';
 
 function ClassroomSidebar() {
   const [tabs, setTabs] = useContext(TabsContext);

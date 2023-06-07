@@ -3,10 +3,10 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
+import ButtonChoice from '../../ButtonComponents/ButtonChoice/ButtonChoice.js';
+import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
 import ValidationContext from '../../Context/ValidationContext/ValidationContext.js';
 import Util from '../../../classes/util/Util.js';
-import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
-import ButtonChoice from '../../ButtonComponents/ButtonChoice/ButtonChoice.js';
 
 function ExerciseChoice(props) {
   const [currentExercise,] = useContext(ExerciseContext);

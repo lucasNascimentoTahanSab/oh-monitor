@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useEffect, useState } from 'react';
-import Util from '../../../classes/util/Util';
+import Util from '../../../classes/util/Util.js';
 
 function Modal(props) {
   const [modalEvent, setModalEvent] = useState(null);

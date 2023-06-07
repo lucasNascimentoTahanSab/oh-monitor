@@ -180,29 +180,6 @@ export default class Util {
   }
 
   /**
-   * Método responsável por alternar o valor de open no item de uid recebido.
-   * 
-   * @param {array} items 
-   * @param {function} setItems 
-   * @returns {function}
-   */
-  static toggleOpen(items, setItems, ...params) {
-    if (typeof setItems !== 'function') { return function () { }; }
-    if (!items?.length) { return function () { }; }
-
-    return function (uid) {
-      openItemByUid(uid);
-      setItems([...items], ...params);
-
-      function openItemByUid(uid) {
-        const item = Util.getItemByUid(items, uid);
-
-        if (item) { item.open = !item.open; }
-      }
-    }
-  }
-
-  /**
    * Método responsável pela atualização do código em arquivo dentre os arquivos
    * recebidos.
    * 

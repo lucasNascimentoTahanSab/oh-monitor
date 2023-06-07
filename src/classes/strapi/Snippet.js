@@ -4,7 +4,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 
-import Code from "./Code";
+import Code from "./Code.js";
 
 export default class Snippet {
   constructor(snippet) {

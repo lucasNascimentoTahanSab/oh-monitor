@@ -2,10 +2,19 @@
  * @file Módulo responsável pela exibição do menu do terminal do editor de código.
  * @copyright Lucas N. T. Sab 2023 
  */
-import React from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import CodeEditorMenuItem from '../CodeEditorMenuItem/CodeEditorMenuItem.js';
 
 function CodeEditorPromptMenu(props) {
+  const menuRef = useRef();
+
+  const setMenuRefCallback = useCallback(ref => props.setMenuRef(ref), [props]);
+
+  /**
+   * Hook responsável por entregar referência ao menu para o terminal.
+   */
+  useEffect(() => { setMenuRefCallback(menuRef) }, [setMenuRefCallback]);
+
   /**
    * Método responsável pela obtenção dos itens do menu para exibição no terminal.
    * 
@@ -27,7 +36,7 @@ function CodeEditorPromptMenu(props) {
   }
 
   return (
-    <div className='tcc-code-editor-prompt-menu'>
+    <div className='tcc-code-editor-prompt-menu' ref={menuRef}>
       {getMenuItems()}
     </div>
   );

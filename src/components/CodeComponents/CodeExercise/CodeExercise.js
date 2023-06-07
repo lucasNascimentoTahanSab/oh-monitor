@@ -3,11 +3,11 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext } from 'react';
-import AnswerContext from '../../Context/AnswerContext/AnswerContext';
-import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext';
-import CodeEditor from '../CodeEditor/CodeEditor';
-import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
-import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt';
+import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace.js';
+import CodeEditor from '../CodeEditor/CodeEditor.js';
+import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt.js';
+import ExerciseContext from '../../Context/ExerciseContext/ExerciseContext.js';
+import AnswerContext from '../../Context/AnswerContext/AnswerContext.js';
 
 function CodeExercise() {
   const [currentExercise, setCurrentExercise] = useContext(ExerciseContext);

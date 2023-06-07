@@ -3,8 +3,8 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useEffect } from 'react';
-import LoadingComponent from '../../LoadingComponents/LoadingComponent/LoadingComponent';
-import Util from '../../../classes/util/Util';
+import LoadingComponent from '../../LoadingComponents/LoadingComponent/LoadingComponent.js';
+import Util from '../../../classes/util/Util.js';
 
 function IframeComponent(props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps

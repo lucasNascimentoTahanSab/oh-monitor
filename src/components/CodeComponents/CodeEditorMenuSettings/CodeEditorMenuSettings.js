@@ -3,17 +3,17 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useState } from 'react';
-import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand.js';
+import ButtonReload from '../../ButtonComponents/ButtonReload/ButtonReload.js';
 import ButtonPlay from '../../ButtonComponents/ButtonPlay/ButtonPlay.js';
+import ButtonExpand from '../../ButtonComponents/ButtonExpand/ButtonExpand.js';
 import TabContext from '../../Context/TabContext/TabContext.js';
+import FileContext from '../../Context/FileContext/FileContext.js';
 import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext.js';
 import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
 import callouts from '../../../classes/callouts/callout.js';
 import calloutError from '../../../classes/callouts/calloutError.js';
 import config from '../../../config.json';
-import FileContext from '../../Context/FileContext/FileContext.js';
-import ButtonReload from '../../ButtonComponents/ButtonReload/ButtonReload.js';
 
 function CodeEditorMenuSettings() {
   const [, setToastEvent] = useContext(ToastEventContext);

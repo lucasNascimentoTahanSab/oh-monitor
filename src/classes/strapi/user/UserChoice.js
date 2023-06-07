@@ -2,7 +2,7 @@
  * @file Módulo responsável pela normalização do objeto UserChoice retornado em integração.
  * @copyright Lucas N. T. Sab 2023
 */
-import Choice from "../Choice";
+import Choice from "../Choice.js";
 
 export default class UserChoice extends Choice {
   constructor(answer, state) {
