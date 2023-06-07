@@ -4,7 +4,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useEffect } from 'react';
-import Util from '../../../classes/util/Util';
+import Util from '../../../classes/util/Util.js';
 
 function ThankYou(props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
