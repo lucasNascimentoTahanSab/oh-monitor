@@ -6,7 +6,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import CodeEditorMenu from '../CodeEditorMenu/CodeEditorMenu.js';
 import CodeEditorFile from '../CodeEditorFile/CodeEditorFile.js';
-import ResizerComponent from '../../ResizerComponent/ResizerComponent.js';
+import ResizerComponent from '../../ResizerComponents/ResizerComponent/ResizerComponent.js';
 import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen.js';
 import CodeEditorRefContext from '../../Context/CodeEditorRefContext/CodeEditorRefContext.js';
 import FileContext from '../../Context/FileContext/FileContext.js';

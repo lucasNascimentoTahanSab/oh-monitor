@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useCallback, useEffect, useRef } from 'react';
-import ButtonResize from '../ButtonComponents/ButtonResize/ButtonResize';
+import ButtonResize from '../../ButtonComponents/ButtonResize/ButtonResize.js';
 
 function ResizerComponent(props) {
   const resizerRef = useRef();

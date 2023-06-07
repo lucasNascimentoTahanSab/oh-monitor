@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import ResizerComponent from '../../ResizerComponent/ResizerComponent.js';
+import ResizerComponent from '../../ResizerComponents/ResizerComponent/ResizerComponent.js';
 import CodeEditorPromptMenu from '../CodeEditorPromptMenu/CodeEditorPromptMenu.js';
 import CodeEditorPromptContent from '../CodeEditorPromptContent/CodeEditorPromptContent.js';
 import PromptMenuItem from '../../../classes/prompt/PromptMenuItem.js';
