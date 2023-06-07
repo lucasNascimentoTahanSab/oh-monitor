@@ -4,16 +4,16 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen.js';
-import CodeEditorFile from '../CodeEditorFile/CodeEditorFile.js';
 import CodeEditorMenu from '../CodeEditorMenu/CodeEditorMenu.js';
+import CodeEditorFile from '../CodeEditorFile/CodeEditorFile.js';
 import ResizerComponent from '../../ResizerComponent/ResizerComponent.js';
+import AnimationScreen from '../../AnimationComponents/AnimationScreen/AnimationScreen.js';
 import CodeEditorRefContext from '../../Context/CodeEditorRefContext/CodeEditorRefContext.js';
 import FileContext from '../../Context/FileContext/FileContext.js';
 import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import CodeContext from '../../Context/CodeContext/CodeContext.js';
-import Util from '../../../classes/util/Util.js';
 import Resizer from '../../../classes/util/Resizer.js';
+import Util from '../../../classes/util/Util.js';
 
 function CodeEditorWorkspace() {
   const codeEditorRef = useContext(CodeEditorRefContext);

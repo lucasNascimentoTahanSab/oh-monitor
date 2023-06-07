@@ -3,7 +3,7 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext } from 'react';
-import CodeEditorMenuItem from '../CodeEditorMenuItem/CodeEditorMenuItem';
+import CodeEditorMenuItem from '../CodeEditorMenuItem/CodeEditorMenuItem.js';
 import CodeEditorMenuSettings from '../CodeEditorMenuSettings/CodeEditorMenuSettings.js';
 import CodesContext from '../../Context/CodesContext/CodesContext.js';
 import Util from '../../../classes/util/Util.js';

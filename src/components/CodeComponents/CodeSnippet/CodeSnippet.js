@@ -3,12 +3,12 @@
  * @copyright Lucas N. T. Sab 2023
  */
 import React, { useContext, useEffect, useState } from 'react';
-import CodeEditor from '../CodeEditor/CodeEditor';
-import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace';
-import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt';
+import CodeEditorWorkspace from '../CodeEditorWorkspace/CodeEditorWorkspace.js';
+import CodeEditor from '../CodeEditor/CodeEditor.js';
+import CodeEditorPrompt from '../CodeEditorPrompt/CodeEditorPrompt.js';
 import ElementsContext from '../../Context/ElementsContext/ElementsContext.js';
-import Element from '../../../classes/strapi/Element';
-import Util from '../../../classes/util/Util';
+import Element from '../../../classes/strapi/Element.js';
+import Util from '../../../classes/util/Util.js';
 
 function CodeSnippet(props) {
   const [elements, setElements] = useContext(ElementsContext);

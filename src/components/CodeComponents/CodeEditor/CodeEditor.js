@@ -15,9 +15,9 @@ import RenderContext from '../../Context/RenderContext/RenderContext.js';
 import CodeEditorRefContext from '../../Context/CodeEditorRefContext/CodeEditorRefContext';
 import FileContext from '../../Context/FileContext/FileContext';
 import Code from '../../../classes/strapi/Code.js';
+import callouts from '../../../classes/callouts/callout.js';
 import Fullscreen from '../../../classes/util/Fullscreen.js';
 import Util from '../../../classes/util/Util.js';
-import callouts from '../../../classes/callouts/callout.js';
 import config from '../../../config.json';
 
 function CodeEditor(props) {

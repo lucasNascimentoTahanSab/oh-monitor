@@ -8,8 +8,8 @@ import CodeEditorPromptMenu from '../CodeEditorPromptMenu/CodeEditorPromptMenu.j
 import CodeEditorPromptContent from '../CodeEditorPromptContent/CodeEditorPromptContent.js';
 import PromptMenuItem from '../../../classes/prompt/PromptMenuItem.js';
 import FileContext from '../../Context/FileContext/FileContext.js';
-import Util from '../../../classes/util/Util.js';
 import Resizer from '../../../classes/util/Resizer.js';
+import Util from '../../../classes/util/Util.js';
 import config from '../../../config.json';
 
 function CodeEditorPrompt() {
