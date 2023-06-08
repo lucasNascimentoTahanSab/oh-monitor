@@ -4,7 +4,7 @@
  */
 export default class NodeState {
   constructor(state) {
-    this.focus = state?.focus ?? true;
+    this.focus = state?.focus ?? false;
     this.found = state?.found ?? false;
     this.delete = state?.delete ?? false;
   }

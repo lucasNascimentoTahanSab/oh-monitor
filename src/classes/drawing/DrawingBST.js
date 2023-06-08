@@ -159,15 +159,15 @@ export default class DrawingBST extends Drawing {
   _originFound(node) {
     this._status.origin = true;
 
-    return this._unfocusNode(node);
+    return this._removeNodeState(node);
   }
 
   _focusNode(node) {
     return new Node({ ...node, state: { ...node.state, focus: true } });
   }
 
-  _unfocusNode(node) {
-    return new Node({ ...node, state: { ...node.state, focus: false } });
+  _removeNodeState(node) {
+    return new Node({ ...node, state: null });
   }
 
   /**
@@ -187,7 +187,7 @@ export default class DrawingBST extends Drawing {
   _updateObjectRecursively(node, command) {
     if (command.old < node.value) { node.left = this._updateObjectRecursively(new Node(node.left), command); }
     else if (command.old > node.value) { node.right = this._updateObjectRecursively(new Node(node.right), command); }
-    else { node = new Node({ ...node, value: command.new, state: { ...node.state, focus: true } }); }
+    else { node = new Node({ ...node, value: command.new, state: { ...node.state, found: true } }); }
 
     return node;
   }
@@ -235,7 +235,7 @@ export default class DrawingBST extends Drawing {
   }
 
   _insertObjectRecursively(node, command) {
-    if (!node) { return new Node(command); }
+    if (!node) { return new Node({ ...command, state: { found: true } }); }
 
     if (command.value < node.value) { node.left = this._insertObjectRecursively(node.left ? new Node(node.left) : null, command); }
     else if (command.value > node.value) { node.right = this._insertObjectRecursively(node.right ? new Node(node.right) : null, command); }
