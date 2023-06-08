@@ -59,9 +59,38 @@ export default class DrawingBST extends Drawing {
         this._walkthroughTree(command);
         this._snapshot();
         break;
+      case 'markDelete':
+        this._markDelete(command);
+        this._snapshot();
+        break;
       default:
         break;
     }
+  }
+
+  /**
+   * Método responsável por marcar para remoção o elemento indicado no comando
+   * recebido.
+   * 
+   * @param {object} command 
+   */
+  _markDelete(command) {
+    const tree = new Tree(this._trees.get(command.structure));
+
+    tree.root = this._markDeleteRecursively(new Node(tree.root), command);
+
+    this._trees.set(command.structure, tree);
+  }
+
+  _markDeleteRecursively(node, command) {
+    if (!node) { return node; }
+
+    if (command.value < node.value) { node.left = this._markDeleteRecursively(new Node(node.left), command); }
+    else if (command.value > node.value) { node.right = this._markDeleteRecursively(new Node(node.right), command); }
+    else if (command.value === node.value && command.address !== node.address) { node.right = this._markDeleteRecursively(new Node(node.right), command); }
+    else { return new Node({ ...node, state: { delete: true } }); }
+
+    return node;
   }
 
   /**
@@ -167,7 +196,7 @@ export default class DrawingBST extends Drawing {
   }
 
   _removeNodeState(node) {
-    return new Node({ ...node, state: null });
+    return new Node({ ...node, state: { delete: node.state.delete } }); // Estado 'delete' só pode ser removido na remoção do nó.
   }
 
   /**
@@ -187,7 +216,7 @@ export default class DrawingBST extends Drawing {
   _updateObjectRecursively(node, command) {
     if (command.old < node.value) { node.left = this._updateObjectRecursively(new Node(node.left), command); }
     else if (command.old > node.value) { node.right = this._updateObjectRecursively(new Node(node.right), command); }
-    else { node = new Node({ ...node, value: command.new, state: { ...node.state, found: true } }); }
+    else { node = new Node({ ...node, value: command.new, state: { found: true } }); }
 
     return node;
   }

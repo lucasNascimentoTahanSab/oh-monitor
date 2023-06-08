@@ -29,9 +29,9 @@ function BSTNodeComponent(props) {
    * @returns {string}
    */
   function getState() {
-    return node?.state?.focus ? 'tcc-bst-node--focus'
-      : node?.state?.found ? 'tcc-bst-node--found'
-        : node?.state?.delete ? 'tcc-bst-node--delete'
+    return node?.state?.found ? 'tcc-bst-node--found'
+      : node?.state?.delete ? 'tcc-bst-node--delete'
+        : node?.state?.focus ? 'tcc-bst-node--focus'
           : '';
   }
 

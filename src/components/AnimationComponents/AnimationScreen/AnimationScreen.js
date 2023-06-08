@@ -96,6 +96,8 @@ function AnimationScreen(props) {
     setSnapshot(null);
     setSnapshots(result);
     setTotalTime(result?.length * config.animation.duration);
+
+    Util.handle(props.clearCommands);
   }
 
   /**
