@@ -572,6 +572,14 @@ button {
   background-color: var(--color-blue--dark);
 }
 
+.tcc-bst-node--found {
+  background-color: var(--color-green);
+}
+
+.tcc-bst-node--delete {
+  background-color: var(--color-red);
+}
+
 /* BSTChildrenComponent */
 
 .tcc-bst-children {

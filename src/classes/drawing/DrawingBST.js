@@ -163,11 +163,11 @@ export default class DrawingBST extends Drawing {
   }
 
   _focusNode(node) {
-    return new Node({ ...node, focus: true });
+    return new Node({ ...node, state: { ...node.state, focus: true } });
   }
 
   _unfocusNode(node) {
-    return new Node({ ...node, focus: false });
+    return new Node({ ...node, state: { ...node.state, focus: false } });
   }
 
   /**
@@ -187,7 +187,7 @@ export default class DrawingBST extends Drawing {
   _updateObjectRecursively(node, command) {
     if (command.old < node.value) { node.left = this._updateObjectRecursively(new Node(node.left), command); }
     else if (command.old > node.value) { node.right = this._updateObjectRecursively(new Node(node.right), command); }
-    else { node = new Node({ ...node, value: command.new, focus: true }); }
+    else { node = new Node({ ...node, value: command.new, state: { ...node.state, focus: true } }); }
 
     return node;
   }

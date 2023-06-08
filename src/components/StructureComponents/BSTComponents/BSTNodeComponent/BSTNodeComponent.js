@@ -16,7 +16,8 @@ function BSTNodeComponent(props) {
    * Hook responsável por posicionar nó atual ao centro da tela, pô-lo em foco.
    */
   useEffect(() => {
-    if (!node?.focus || !nodeRef) { return; }
+    if (!nodeRef) { return; }
+    if (!node?.state?.focus && !node?.state?.found && !node?.state?.delete) { return; }
 
     dragger?.focus(nodeRef.current);
   }, [node, dragger]);
@@ -27,12 +28,15 @@ function BSTNodeComponent(props) {
    * 
    * @returns {string}
    */
-  function getFocus() {
-    return node?.focus ? 'tcc-bst-node--focus' : '';
+  function getState() {
+    return node?.state?.focus ? 'tcc-bst-node--focus'
+      : node?.state?.found ? 'tcc-bst-node--found'
+        : node?.state?.delete ? 'tcc-bst-node--delete'
+          : '';
   }
 
   return (
-    <div id={`_${node?.address}`} className={`tcc-bst-node ${getFocus()}`} title={node?.value} ref={nodeRef}>
+    <div id={`_${node?.address}`} className={`tcc-bst-node ${getState()}`} title={node?.value} ref={nodeRef}>
       <span className='tcc-truncate-string'>{node?.value}</span>
     </div>
   );
