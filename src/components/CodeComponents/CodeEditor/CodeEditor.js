@@ -244,13 +244,17 @@ function CodeEditor(props) {
     return currentFile.output;
   }
 
+  function clearCommands() {
+    Util.handle(props.setFile, { ...currentFile, commands: [] });
+  }
+
   function getClassName() {
     return `tcc-code-editor ${fullscreen ? 'tcc-code-editor--fullscreen' : ''} ${!currentFile?.codes?.length ? 'tcc-skeleton' : ''}`;
   }
 
   return (
     <CodeEditorRefContext.Provider value={codeEditorRef}>
-      <FileContext.Provider value={[currentFile, updateResult, reloadCodes, updateCodesFromOrigin]}>
+      <FileContext.Provider value={[currentFile, updateResult, reloadCodes, updateCodesFromOrigin, clearCommands]}>
         <CodesContext.Provider value={[codes, updateCodes]}>
           <CodeContext.Provider value={[currentCode, updateCurrentCode]}>
             <OutputContext.Provider value={[output, setOutput]}>

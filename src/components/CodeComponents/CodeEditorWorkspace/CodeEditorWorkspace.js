@@ -17,7 +17,7 @@ import Util from '../../../classes/util/Util.js';
 
 function CodeEditorWorkspace() {
   const codeEditorRef = useContext(CodeEditorRefContext);
-  const [file, setFile] = useContext(FileContext);
+  const [file, , , , clearCommands] = useContext(FileContext);
   const [codes, setCodes] = useContext(CodesContext);
   const [currentCode,] = useContext(CodeContext);
   const [resizer, setResizer] = useState(null);
@@ -57,7 +57,7 @@ function CodeEditorWorkspace() {
       <div className='tcc-code-editor-workspace__content'>
         <CodeEditorFile code={currentCode} onChange={Util.updateCodeIn(codes, setCodes)} setCodeEditorFileRef={setCodeEditorFileRef} />
         <ResizerComponent width='.875rem' height='.875rem' color='#5F5F5F' resizer={resizer} setResizerRef={setResizerRef} vertical />
-        <AnimationScreen commands={file?.commands} clearCommands={() => setFile({ ...file, commands: [] })} />
+        <AnimationScreen commands={file?.commands} clearCommands={clearCommands} />
       </div>
     </div>
   );

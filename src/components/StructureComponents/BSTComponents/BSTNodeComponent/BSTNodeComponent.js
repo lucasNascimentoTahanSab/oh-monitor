@@ -17,7 +17,12 @@ function BSTNodeComponent(props) {
    */
   useEffect(() => {
     if (!nodeRef) { return; }
-    if (!node?.state?.focus && !node?.state?.found && !node?.state?.delete) { return; }
+    if (
+      !node?.state?.focus &&
+      !node?.state?.insert &&
+      !node?.state?.update &&
+      !node?.state?.delete
+    ) { return; }
 
     dragger?.focus(nodeRef.current);
   }, [node, dragger]);
@@ -29,10 +34,12 @@ function BSTNodeComponent(props) {
    * @returns {string}
    */
   function getState() {
-    return node?.state?.found ? 'tcc-bst-node--found'
-      : node?.state?.delete ? 'tcc-bst-node--delete'
-        : node?.state?.focus ? 'tcc-bst-node--focus'
-          : '';
+    return node?.state?.insert ? 'tcc-bst-node--found'
+      : node?.state?.update ? 'tcc-bst-node--found'
+        : node?.state?.delete ? 'tcc-bst-node--delete'
+          : node?.state?.found ? 'tcc-bst-node--found'
+            : node?.state?.focus ? 'tcc-bst-node--focus'
+              : '';
   }
 
   return (
