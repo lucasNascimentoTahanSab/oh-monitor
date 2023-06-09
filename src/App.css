@@ -520,15 +520,15 @@ button {
   width: 100%;
   height: 100%;
   overflow: visible;
-  -webkit-transition: all .375s;
-  -moz-transition: .375s;
-  transition: .375s;
+  -webkit-transition: all .4s;
+  -moz-transition: .4s;
+  transition: .4s;
 }
 
 .tcc-animation-engine * {
-  -webkit-transition: all .375s ease;
-  -moz-transition: .375s ease;
-  transition: .375s ease;
+  -webkit-transition: all .4s ease;
+  -moz-transition: .4s ease;
+  transition: .4s ease;
 }
 
 .tcc-animation-engine::-webkit-scrollbar {
@@ -570,6 +570,14 @@ button {
 
 .tcc-bst-node--focus {
   background-color: var(--color-blue--dark);
+}
+
+.tcc-bst-node--found {
+  background-color: var(--color-green);
+}
+
+.tcc-bst-node--delete {
+  background-color: var(--color-red);
 }
 
 /* BSTChildrenComponent */

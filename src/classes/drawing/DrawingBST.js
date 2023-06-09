@@ -7,6 +7,7 @@ import BSTComponent from '../../components/StructureComponents/BSTComponents/BST
 import Drawing from './Drawing.js';
 import Tree from '../tree/Tree.js';
 import Node from '../tree/Node.js';
+import NodeState from '../tree/NodeState.js';
 
 export default class DrawingBST extends Drawing {
   constructor() {
@@ -59,9 +60,90 @@ export default class DrawingBST extends Drawing {
         this._walkthroughTree(command);
         this._snapshot();
         break;
+      case 'markDelete':
+        this._markDelete(command);
+        this._snapshot();
+        break;
+      case 'found':
+        this._found(command);
+        this._snapshot();
+        break;
+      case 'exitFound':
+        this._exitFound(command);
+        this._snapshot();
+        break;
       default:
         break;
     }
+  }
+
+  /**
+   * Método responsável por encerar abertura de buscar em BST.
+   */
+  _exitFound(command) {
+    const tree = new Tree(this._trees.get(command.structure));
+
+    tree.root = this._exitFoundRecursively(new Node(tree.root));
+
+    this._trees.set(command.structure, tree);
+  }
+
+  _exitFoundRecursively(node) {
+    if (!node) { return node; }
+
+    node.left = this._exitFoundRecursively(node.left ? new Node(node.left) : null);
+
+    node = new Node({ ...node, state: { ...node.state, found: false } });
+
+    node.right = this._exitFoundRecursively(node.right ? new Node(node.right) : null);
+
+    return new Node(node);
+  }
+
+  /**
+   * Método responsável por marcar o elemento como encontrado.
+   * 
+   * @param {object} command 
+   */
+  _found(command) {
+    const tree = new Tree(this._trees.get(command.structure));
+
+    tree.root = this._foundRecursively(tree.root ? new Node(tree.root) : null, command);
+
+    this._trees.set(command.structure, tree);
+  }
+
+  _foundRecursively(node, command) {
+    if (command.value < node.value) { node.left = this._foundRecursively(new Node(node.left), command); }
+    else if (command.value > node.value) { node.right = this._foundRecursively(new Node(node.right), command); }
+    else { node = new Node({ ...node, state: { found: true } }); }
+
+    return node;
+  }
+
+  /**
+   * Método responsável por marcar para remoção o elemento indicado no comando
+   * recebido.
+   * 
+   * @param {object} command 
+   */
+  _markDelete(command) {
+    const tree = new Tree(this._trees.get(command.structure));
+
+    tree.root = this._markDeleteRecursively(tree.root ? new Node(tree.root) : null, command);
+
+    this._trees.set(command.structure, tree);
+  }
+
+  _markDeleteRecursively(node, command) {
+    if (!node) { return node; }
+
+    if (command.value < node.value) { node.left = this._markDeleteRecursively(new Node(node.left), command); }
+    else if (command.value > node.value) { node.right = this._markDeleteRecursively(new Node(node.right), command); }
+    else if (command.value === node.value && command.address !== node.address) { node.right = this._markDeleteRecursively(new Node(node.right), command); }
+    else { return new Node({ ...node, state: { delete: true } }); }
+
+    return node;
   }
 
   /**
@@ -88,7 +170,7 @@ export default class DrawingBST extends Drawing {
   _walkthroughTree(command) {
     const tree = new Tree(this._trees.get(command.structure));
 
-    tree.root = this._walkthroughTreeRecursively(new Node(tree.root), command);
+    tree.root = this._walkthroughTreeRecursively(tree.root ? new Node(tree.root) : null, command);
 
     this._trees.set(command.structure, tree);
 
@@ -159,15 +241,15 @@ export default class DrawingBST extends Drawing {
   _originFound(node) {
     this._status.origin = true;
 
-    return this._unfocusNode(node);
+    return this._removeNodeState(node);
   }
 
   _focusNode(node) {
-    return new Node({ ...node, focus: true });
+    return new Node({ ...node, state: { delete: node.state.delete, found: node.state.found, focus: true } });
   }
 
-  _unfocusNode(node) {
-    return new Node({ ...node, focus: false });
+  _removeNodeState(node) {
+    return new Node({ ...node, state: { delete: node.state.delete, found: node.state.found, focus: false } });
   }
 
   /**
@@ -179,7 +261,7 @@ export default class DrawingBST extends Drawing {
   _updateObject(command) {
     const tree = new Tree(this._trees.get(command.structure));
 
-    tree.root = this._updateObjectRecursively(new Node(tree.root), command);
+    tree.root = this._updateObjectRecursively(tree.root ? new Node(tree.root) : null, command);
 
     this._trees.set(command.structure, tree);
   }
@@ -187,7 +269,7 @@ export default class DrawingBST extends Drawing {
   _updateObjectRecursively(node, command) {
     if (command.old < node.value) { node.left = this._updateObjectRecursively(new Node(node.left), command); }
     else if (command.old > node.value) { node.right = this._updateObjectRecursively(new Node(node.right), command); }
-    else { node = new Node({ ...node, value: command.new, focus: true }); }
+    else { node = new Node({ ...node, value: command.new, state: { update: true } }); }
 
     return node;
   }
@@ -201,7 +283,7 @@ export default class DrawingBST extends Drawing {
   _deleteObject(command) {
     const tree = new Tree(this._trees.get(command.structure));
 
-    tree.root = this._deleteObjectRecursively(new Node(tree.root), command);
+    tree.root = this._deleteObjectRecursively(tree.root ? new Node(tree.root) : null, command);
 
     this._trees.set(command.structure, tree);
   }
@@ -235,7 +317,7 @@ export default class DrawingBST extends Drawing {
   }
 
   _insertObjectRecursively(node, command) {
-    if (!node) { return new Node(command); }
+    if (!node) { return new Node({ ...command, state: { insert: true } }); }
 
     if (command.value < node.value) { node.left = this._insertObjectRecursively(node.left ? new Node(node.left) : null, command); }
     else if (command.value > node.value) { node.right = this._insertObjectRecursively(node.right ? new Node(node.right) : null, command); }
