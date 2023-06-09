@@ -17,12 +17,7 @@ function BSTNodeComponent(props) {
    */
   useEffect(() => {
     if (!nodeRef) { return; }
-    if (
-      !node?.state?.focus &&
-      !node?.state?.insert &&
-      !node?.state?.update &&
-      !node?.state?.delete
-    ) { return; }
+    if (!node?.state?.focus && !node?.state?.insert) { return; }
 
     dragger?.focus(nodeRef.current);
   }, [node, dragger]);

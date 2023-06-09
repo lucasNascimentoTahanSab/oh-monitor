@@ -193,8 +193,8 @@ export default class DrawingBST extends Drawing {
   _walkthroughTreeRecursively(node, command) {
     if (!node) { return node; }
 
-    if (node.value === command.origin) { node = this._originFound(new Node(node)); }
-    if (node.value === command.destiny) { node = this._destinyFound(new Node(node)); }
+    if (node.value === command.origin && node.address === command.originAddress) { node = this._originFound(new Node(node)); }
+    if (node.value === command.destiny && node.address === command.destinyAddress) { node = this._destinyFound(new Node(node)); }
 
     if (!this._status.origin && command.origin !== null) { node = this._findOrigin(new Node(node), command); }
     if (!this._status.destiny && command.destiny !== null) { node = this._findDestiny(new Node(node), command); }
@@ -213,6 +213,9 @@ export default class DrawingBST extends Drawing {
   _findDestiny(node, command) {
     if (command.destiny < node.value) { node.left = this._walkthroughTreeRecursively(new Node(node.left), command); }
     else if (command.destiny > node.value) { node.right = this._walkthroughTreeRecursively(new Node(node.right), command); }
+    else if (command.destiny === node.value && command.destinyAddress !== node.address) {
+      node.right = this._walkthroughTreeRecursively(new Node(node.right), command);
+    }
 
     return node;
   }
@@ -228,6 +231,9 @@ export default class DrawingBST extends Drawing {
   _findOrigin(node, command) {
     if (command.origin < node.value) { node.left = this._walkthroughTreeRecursively(new Node(node.left), command); }
     else if (command.origin > node.value) { node.right = this._walkthroughTreeRecursively(new Node(node.right), command); }
+    else if (command.origin === node.value && command.originAddress !== node.address) {
+      node.right = this._walkthroughTreeRecursively(new Node(node.right), command);
+    }
 
     return node;
   }
