@@ -4,8 +4,8 @@
  * @copyright Lucas N. T. Sab 2023
  */
 const express = require('express');
-const ST = require('../strapi/strapiRouter');
-const ST_AUTH = require('../strapi/strapiAuth');
+const ST = require('../strapi/strapiRouter.js');
+const ST_AUTH = require('../strapi/strapiAuth.js');
 
 require('dotenv').config();
 
@@ -71,7 +71,7 @@ const router = express.Router();
  * Endpoint responsável por encaminhar o usuário à tela de entrada ou tela atual
  * quando já autenticado.
  */
-router.get('/', ST_AUTH.validate, (req, res) => {
+router.get('/', ST_AUTH.validateServer, (req, res) => {
   ST.getMe(req)
     .then(user => REDIRECT['/'](user, res))
     .catch(() => res.redirect('/signin'));
@@ -81,7 +81,7 @@ router.get('/', ST_AUTH.validate, (req, res) => {
  * Endpoint responsável por encaminhar o usuário à tela /tcle, quando permitido, ou 
  * à tela atual, caso contrário.
  */
-router.get('/tcle', ST_AUTH.validate, (req, res, next) => {
+router.get('/tcle', ST_AUTH.validateServer, (req, res, next) => {
   ST.getMe(req)
     .then(user => REDIRECT['/tcle'](user, res, next))
     .catch(() => res.redirect('/signin'));
@@ -91,7 +91,7 @@ router.get('/tcle', ST_AUTH.validate, (req, res, next) => {
  * Endpoint responsável por encaminhar o usuário à tela /background, quando permitido, 
  * ou à tela atual, caso contrário.
  */
-router.get('/background', ST_AUTH.validate, (req, res, next) => {
+router.get('/background', ST_AUTH.validateServer, (req, res, next) => {
   ST.getMe(req)
     .then(user => REDIRECT['/background'](user, res, next))
     .catch(() => res.redirect('/signin'));
@@ -101,7 +101,7 @@ router.get('/background', ST_AUTH.validate, (req, res, next) => {
  * Endpoint responsável por encaminhar o usuário à tela /classroom/:uid, quando permitido, 
  * ou à tela atual, caso contrário.
  */
-router.get('/classroom/:uid', ST_AUTH.validate, (req, res, next) => {
+router.get('/classroom/:uid', ST_AUTH.validateServer, (req, res, next) => {
   ST.getMe(req)
     .then(user => REDIRECT['/classroom/:uid'](user, res, next))
     .catch(() => res.redirect('/signin'));
@@ -111,7 +111,7 @@ router.get('/classroom/:uid', ST_AUTH.validate, (req, res, next) => {
  * Endpoint responsável por encaminhar o usuário à tela /classroom, quando permitido, 
  * ou à tela atual, caso contrário.
  */
-router.get('/classroom', ST_AUTH.validate, (req, res) => {
+router.get('/classroom', ST_AUTH.validateServer, (req, res) => {
   ST.getMe(req)
     .then(user => REDIRECT['/classroom'](user, res))
     .catch(() => res.redirect('/signin'));
@@ -121,7 +121,7 @@ router.get('/classroom', ST_AUTH.validate, (req, res) => {
  * Endpoint responsável por encaminhar o usuário à tela /feedback, quando permitido, 
  * ou à tela atual, caso contrário.
  */
-router.get('/feedback', ST_AUTH.validate, (req, res, next) => {
+router.get('/feedback', ST_AUTH.validateServer, (req, res, next) => {
   ST.getMe(req)
     .then(user => REDIRECT['/feedback'](user, res, next))
     .catch(() => res.redirect('/signin'));
@@ -131,7 +131,7 @@ router.get('/feedback', ST_AUTH.validate, (req, res, next) => {
  * Endpoint responsável por encaminhar o usuário à tela /thanks, quando permitido, 
  * ou à tela atual, caso contrário.
  */
-router.get('/thanks', ST_AUTH.validate, (req, res, next) => {
+router.get('/thanks', ST_AUTH.validateServer, (req, res, next) => {
   ST.getMe(req)
     .then(user => REDIRECT['/thanks'](user, res, next))
     .catch(() => res.redirect('/signin'));

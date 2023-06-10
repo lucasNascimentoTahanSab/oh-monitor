@@ -322,4 +322,8 @@ export default class Util {
 
     return pathname[pathname.length - 1];
   }
+
+  static redirectToSignIn() {
+    window.location.href = '/signin';
+  }
 }

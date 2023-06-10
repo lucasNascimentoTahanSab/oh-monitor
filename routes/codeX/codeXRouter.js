@@ -4,7 +4,7 @@
  */
 const express = require('express');
 const axios = require('axios');
-const CX_REQUEST = require('./codeXRequest');
+const CX_REQUEST = require('./codeXRequest.js');
 
 require('dotenv').config();
 

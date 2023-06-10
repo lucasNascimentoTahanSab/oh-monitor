@@ -9,6 +9,7 @@ import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/Button
 import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
 import callouts from '../../../classes/callouts/callout.js';
 import calloutError from '../../../classes/callouts/calloutError.js';
+import Util from '../../../classes/util/Util.js';
 
 function FormSignUp() {
   const [, setToastEvent] = useContext(ToastEventContext);
@@ -42,7 +43,11 @@ function FormSignUp() {
     setLoading(false);
 
     // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
-    if (result.error) { return setToastEvent(calloutError.content(result.error)); }
+    if (result?.error) {
+      if (result.error?.name === 'InternalServerError') { Util.redirectToSignIn(); }
+
+      return setToastEvent(calloutError.content(result.error));
+    }
 
     window.location.href = '/tcle';
   }
