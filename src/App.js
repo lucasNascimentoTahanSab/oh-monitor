@@ -20,6 +20,7 @@ import ModalEventContext from './components/Context/ModalEventContext/ModalEvent
 import User from './classes/strapi/user/User.js';
 import callouts from './classes/callouts/callout.js';
 import calloutError from './classes/callouts/calloutError.js';
+import Util from './classes/util/Util';
 import config from './config.json';
 
 const USER = { timeout: null };
@@ -123,7 +124,11 @@ function App() {
 
   function updateMe(result) {
     // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
-    if (result?.error) { return setToastEvent(calloutError.content(result.error)); }
+    if (result?.error) {
+      if (result.error?.name === 'InternalServerError') { Util.redirectToSignIn(); }
+
+      return setToastEvent(calloutError.content(result.error));
+    }
 
     setUser(new User(result));
     setLoading(false);

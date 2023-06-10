@@ -4,7 +4,7 @@
  */
 const express = require('express');
 const axios = require('axios');
-const GH_REQUEST = require('./gitHubRequest');
+const GH_REQUEST = require('./gitHubRequest.js');
 
 require('dotenv').config();
 

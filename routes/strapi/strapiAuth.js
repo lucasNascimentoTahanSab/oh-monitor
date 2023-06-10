@@ -5,9 +5,15 @@
  */
 const ST_AUTH = {
   validate(req, res, next) {
-    if (!req.session.token) { return res.redirect('/signin'); }
+    if (req.session.token) { return next(); }
 
-    next();
+    res.status(401);
+    res.send();
+  },
+  validateServer(req, res, next) {
+    if (req.session.token) { return next(); }
+
+    res.redirect('/signin');
   }
 };
 

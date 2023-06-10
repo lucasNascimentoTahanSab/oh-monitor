@@ -162,9 +162,16 @@ function Exercises(props) {
       Util.handle(setLoading, true);
 
       callouts.content.updateMe(user)
-        .then(result => Util.handle(then, result, setLoading))
+        .then(result => updateUserResult(then, result, setLoading))
         .catch(error => setToastEvent(calloutError.content(error)));
     }
+  }
+
+  function updateUserResult(then, result, setLoading) {
+    // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
+    if (result?.error?.name === 'InternalServerError') { Util.redirectToSignIn(); }
+
+    Util.handle(then, result, setLoading);
   }
 
   return (

@@ -1,5 +1,6 @@
 {
-  "name": "tcc-impl",
+  "name": "oh-monitor",
+  "description": "Site de educação em computação para Árvores Binárias de Busca ou BSTs.",
   "version": "0.1.0",
   "private": true,
   "engines": {

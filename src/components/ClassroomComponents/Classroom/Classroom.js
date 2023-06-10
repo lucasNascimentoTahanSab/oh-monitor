@@ -44,7 +44,11 @@ function Classroom(props) {
 
   function updateSubject(result) {
     // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
-    if (result?.error) { return setToastEvent(calloutError.content(result.error)); }
+    if (result?.error) {
+      if (result.error?.name === 'InternalServerError') { Util.redirectToSignIn(); }
+
+      return setToastEvent(calloutError.content(result.error));
+    }
 
     const newUser = getNewUser(result);
 

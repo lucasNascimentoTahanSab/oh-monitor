@@ -2,7 +2,7 @@
  * @file Módulo responsável pela elaboração de requisições à API CodeX.
  * @copyright Lucas N. T. Sab 2023 
  */
-const CX_BUILDER = require('./codeXBuilder');
+const CX_BUILDER = require('./codeXBuilder.js');
 
 require('dotenv').config();
 

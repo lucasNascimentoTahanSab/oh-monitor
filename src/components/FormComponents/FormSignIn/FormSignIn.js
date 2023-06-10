@@ -28,7 +28,7 @@ function FormSignIn() {
    * @param {array} param0 
    */
   function signIn([identifier, password]) {
-    callouts.content.signIn({ identifier: identifier.value, password: password.value })
+    callouts.content.signIn({ identifier: identifier.value })
       .then(result => redirectUser(result))
       .catch(error => showError(error));
   }
@@ -42,7 +42,7 @@ function FormSignIn() {
     setLoading(false);
 
     // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
-    if (result.error) { return setToastEvent(calloutError.content(result.error)); }
+    if (result?.error) { return setToastEvent(calloutError.content(result.error)); }
 
     window.location.href = '/tcle';
   }
@@ -56,7 +56,6 @@ function FormSignIn() {
         <Form method='POST' onSubmit={onSubmit}>
           <section className='tcc-form__fields'>
             <FormField id='sign-identifier' name='identifier' type='text' label='Nome ou email:' />
-            <FormField id='sign-password' name='password' type='password' label='Senha:' />
           </section>
           <div className='tcc-form__submit'>
             <ButtonConfirmation value='Entrar' width='100%' loading={loading} />

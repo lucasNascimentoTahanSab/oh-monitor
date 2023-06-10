@@ -13,6 +13,7 @@ import FullscreenContext from '../../Context/FullscreenContext/FullscreenContext
 import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
 import callouts from '../../../classes/callouts/callout.js';
 import calloutError from '../../../classes/callouts/calloutError.js';
+import Util from '../../../classes/util/Util.js';
 import config from '../../../config.json';
 
 function CodeEditorMenuSettings() {
@@ -63,6 +64,9 @@ function CodeEditorMenuSettings() {
   }
 
   function getResult(result) {
+    // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
+    if (result?.error?.name === 'InternalServerError') { Util.redirectToSignIn(); }
+
     setLoadingPlay(false);
     setCurrentTab({ ...currentTab, loading: false });
     setFile({ ...file, result });
