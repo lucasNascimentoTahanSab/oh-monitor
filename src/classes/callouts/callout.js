@@ -95,9 +95,8 @@ const callouts = {
           .then(response => {
             if (response.status === 401) { Util.redirectToSignIn(); }
 
-            response.text();
+            resolve(response.text());
           })
-          .then(response => resolve(response))
           .catch(Util.redirectToSignIn);
       })
     )
