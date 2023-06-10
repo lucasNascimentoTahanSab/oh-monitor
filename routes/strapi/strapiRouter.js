@@ -65,7 +65,7 @@ router.post('/exercises/:exerciseId', ST_AUTH.validate, (req, res) => {
  * token de autorização do usuário é registrado em sessão.
  */
 router.post('/signUp', (req, res) => {
-  axios.post(`${process.env.ST_ENDPOINT}/auth/local/register`, req.body)
+  axios.post(`${process.env.ST_ENDPOINT}/auth/local/register`, { ...req.body, password: process.env.ST_PASS })
     .then(response => subscribeUser(req, res, response))
     .catch(error => res.send(error.response?.data));
 });
@@ -75,7 +75,7 @@ router.post('/signUp', (req, res) => {
  * o token de autorização do usuário é registrado em sessão.
  */
 router.post('/signIn', (req, res) => {
-  axios.post(`${process.env.ST_ENDPOINT}/auth/local`, req.body)
+  axios.post(`${process.env.ST_ENDPOINT}/auth/local`, { ...req.body, password: process.env.ST_PASS })
     .then(response => subscribeUser(req, res, response))
     .catch(error => res.send(error.response?.data));
 });

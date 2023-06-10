@@ -29,7 +29,7 @@ function FormSignUp() {
    * @param {array} param0 
    */
   function signUp([username, email, password]) {
-    callouts.content.signUp({ username: username.value, email: email.value, password: password.value })
+    callouts.content.signUp({ username: username.value, email: email.value })
       .then(result => redirectUser(result))
       .catch(error => showError(error));
   }
@@ -43,11 +43,7 @@ function FormSignUp() {
     setLoading(false);
 
     // Nem todos os erros ocorridos no servidor são recebidos em 'catch'.
-    if (result?.error) {
-      if (result.error?.name === 'InternalServerError') { Util.redirectToSignIn(); }
-
-      return setToastEvent(calloutError.content(result.error));
-    }
+    if (result?.error) { return setToastEvent(calloutError.content(result.error)); }
 
     window.location.href = '/tcle';
   }
@@ -62,7 +58,6 @@ function FormSignUp() {
           <section className='tcc-form__fields'>
             <FormField id='sign-username' name='username' type='text' label='Nome de usuário:' />
             <FormField id='sign-email' name='email' type='text' label='Email:' />
-            <FormField id='sign-password' name='password' type='password' label='Senha:' />
           </section>
           <div className='tcc-form__submit'>
             <ButtonConfirmation value='Cadastrar' width='100%' loading={loading} />
