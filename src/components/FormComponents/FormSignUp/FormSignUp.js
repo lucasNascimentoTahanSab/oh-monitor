@@ -9,7 +9,6 @@ import ButtonConfirmation from '../../ButtonComponents/ButtonConfirmation/Button
 import ToastEventContext from '../../Context/ToastEventContext/ToastEventContext.js';
 import callouts from '../../../classes/callouts/callout.js';
 import calloutError from '../../../classes/callouts/calloutError.js';
-import Util from '../../../classes/util/Util.js';
 
 function FormSignUp() {
   const [, setToastEvent] = useContext(ToastEventContext);
