@@ -54,7 +54,7 @@ Tempo até sessão ser expirada.
 
 Ambiente de execução, tradicionalmente _development_.
 
-O repositório Strapi com o modelo de dados necessário para a aplicação pode ser encontrado [aqui](https://github.com/nasciontem/oh-monitor-strapi) e informa o preenchimento das demais variáveis associadas ao Strapi.
+O repositório Strapi com o modelo de dados necessário para a aplicação pode ser encontrado [aqui](https://github.com/lucasNascimentoTahanSab/oh-monitor-strapi) e informa o preenchimento das demais variáveis associadas ao Strapi.
 
 Em seguida, execute:
 
@@ -69,4 +69,4 @@ Abra [http://localhost:3001](http://localhost:3001) para visualizá-lo em seu na
 
 Caso deseje operar em ambiente _production_, execute o comando `npm run build`, para gerar uma versão mais atual da pasta _build_, em seguida `npm run server`, para inicial o servidor na porta 3000, e acesse a porta [3000](http://localhost:3000) no navegador.
 
-Para acessar os códigos apresentados pela plataforma, realize um _fork_ do repositório [oh-monitor-codes](https://github.com/nasciontem/oh-monitor-codes).
+Para acessar os códigos apresentados pela plataforma, realize um _fork_ do repositório [oh-monitor-codes](https://github.com/lucasNascimentoTahanSab/oh-monitor-codes).
